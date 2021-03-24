@@ -10,6 +10,7 @@ public abstract class BaseElement implements IDraw{
     protected int x, y;
     protected int width, height;
     protected int speed;
+    protected int hp;
     protected Direction direction;
 
     public BaseElement() {
@@ -34,10 +35,10 @@ public abstract class BaseElement implements IDraw{
         this.width = ann.width();
         this.height = ann.height();
         this.direction = ann.direction();
+        this.hp = ann.hp();
     }
 
     public void action() {
-        move();
     }
 
     protected void move() {
@@ -55,7 +56,34 @@ public abstract class BaseElement implements IDraw{
     public Rectangle getRectangle() {
         return new Rectangle(x, y, width, height);
     }
-
+    
+    /**
+     * @Description 动作前判定 服务列表中调用 通过重写该方法，为元素的某个动作进行判断
+     * @Param []
+     * @return boolean
+     */
+    public boolean beforeActionJudge() {
+        return true;
+    }
+    
+    /**
+     * @Description 遇到玩家处理 结束之后是否移除
+     * @Param [player]
+     * @return boolean
+     */
+    public boolean encounterPlayer(Player player) {
+        return false;
+    }
+    
+    /**
+     * @Description 遇到边界或者墙面 结束之后是否移除
+     * @Param []
+     * @return void
+     */
+    public void encounterSide() {
+        
+    }
+    
     /**
      * @Description 是否与指定矩形相交
      * @Param [element]
@@ -67,11 +95,23 @@ public abstract class BaseElement implements IDraw{
 
     /**
      * @Description 当元素自身满足离开条件时，从服务列表移除
-     * @Param [player]
+     * @Param [element]
      * @return boolean
      */
-    public boolean remove(Player player) {
+    public boolean remove(BaseElement element) {
         return false;
+    }
+
+    public void die() {
+        this.hp = 0;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
+
+    public boolean alive() {
+        return hp > 0;
     }
 
     public int getX() {
@@ -100,5 +140,9 @@ public abstract class BaseElement implements IDraw{
 
     public Direction getDirection() {
         return direction;
+    }
+
+    public void setDirection(Direction direction) {
+        this.direction = direction;
     }
 }

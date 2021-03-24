@@ -8,7 +8,8 @@ public enum Keys {
     UP(KeyEvent.VK_W),
     DOWN(KeyEvent.VK_S),
     LEFT(KeyEvent.VK_A),
-    RIGHT(KeyEvent.VK_D);
+    RIGHT(KeyEvent.VK_D),
+    SPACE(KeyEvent.VK_SPACE);
     private int keyValue;
     private static Set<Integer> keySet = new HashSet<>();//按键
     Keys(int keyValue) {

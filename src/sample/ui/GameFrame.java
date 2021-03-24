@@ -2,10 +2,9 @@ package sample.ui;
 
 import sample.auxiliary.CommonUtils;
 import sample.auxiliary.Constant;
+import sample.auxiliary.ElementBean;
 import sample.auxiliary.Keys;
-import sample.auxiliary.graphics.TextureAtlas;
 import sample.content.GameContent;
-import sample.content.player.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +12,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class GameFrame extends JFrame {
-    TextureAtlas textureAtlas;
 
     public GameFrame() {
         this.setTitle("Tanks");
@@ -32,10 +30,9 @@ public class GameFrame extends JFrame {
 
     //初始化游戏内容
     public void init() {
-        textureAtlas = new TextureAtlas(Constant.ATLAS_FILE_NAME);
-        GameContent gameContent = new GameContent(textureAtlas);
+        ElementBean.init();
+        GameContent gameContent = new GameContent();
         GamePanel panel = new GamePanel(gameContent);
-//        GamePanel panel = new GamePanel(new Player(textureAtlas));
         this.add(panel);
         this.setVisible(true);
         CommonUtils.task(5, () -> {

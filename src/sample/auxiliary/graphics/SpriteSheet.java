@@ -1,18 +1,21 @@
 package sample.auxiliary.graphics;
 
+import sample.auxiliary.Constant;
+
 import java.awt.image.BufferedImage;
 
 public class SpriteSheet {
     private BufferedImage sheet;
     private int spriteCount;
-    private int scale;
+    private int size;
     private int spritesInWidth;
 
-    public SpriteSheet(BufferedImage sheet, int spriteCount, int scale) {
+    public SpriteSheet(BufferedImage sheet, int size) {
         this.sheet = sheet;
-        this.spriteCount = spriteCount;
-        this.scale = scale;
-        this.spritesInWidth = sheet.getWidth() / scale;
+        this.size = size;
+        this.spritesInWidth = sheet.getWidth() / size;
+        this.spriteCount = spritesInWidth * (sheet.getHeight() / size);
+//        System.out.println("spriteCount = " + spriteCount);
     }
 
     /**
@@ -22,8 +25,16 @@ public class SpriteSheet {
      */
     public BufferedImage getSprite(int index) {
         index = index % spriteCount;
-        int x = index % spritesInWidth * scale;
-        int y = index / spritesInWidth * scale;
-        return sheet.getSubimage(x, y, scale, scale);
+        int x = index % spritesInWidth * size;
+        int y = index / spritesInWidth * size;
+        return sheet.getSubimage(x, y, size, size);
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public int getSpriteCount() {
+        return spriteCount;
     }
 }

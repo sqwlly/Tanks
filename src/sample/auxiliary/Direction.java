@@ -1,9 +1,14 @@
 package sample.auxiliary;
 
 public enum Direction {
-    UP{
+    UP {
         @Override
         public boolean up() {
+            return true;
+        }
+    }, RIGHT {
+        @Override
+        public boolean right() {
             return true;
         }
     }, DOWN {
@@ -16,21 +21,20 @@ public enum Direction {
         public boolean left() {
             return true;
         }
-    }, RIGHT {
-        @Override
-        public boolean right() {
-            return true;
-        }
     };
+
     public boolean up() {
         return false;
     }
+
     public boolean down() {
         return false;
     }
+
     public boolean left() {
         return false;
     }
+
     public boolean right() {
         return false;
     }

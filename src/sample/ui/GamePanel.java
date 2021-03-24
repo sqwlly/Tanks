@@ -1,12 +1,9 @@
 package sample.ui;
 
-import sample.auxiliary.Constant;
-import sample.auxiliary.graphics.TextureAtlas;
 import sample.base.IDraw;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 public class GamePanel extends JPanel {
     private IDraw[] draws;//待绘制的元素

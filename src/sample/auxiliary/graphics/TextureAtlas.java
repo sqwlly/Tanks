@@ -1,17 +1,14 @@
 package sample.auxiliary.graphics;
 
+import sample.auxiliary.Constant;
 import sample.auxiliary.ResourceLoader;
 
 import java.awt.image.BufferedImage;
 
-//Sprite compose auxiliary
 public class TextureAtlas {
-    BufferedImage image;
-    public TextureAtlas(String imageName) {
-        image = ResourceLoader.loadImage(imageName);
-    }
+    private static BufferedImage atlas = ResourceLoader.loadImage(Constant.ATLAS_FILE_NAME);
 
-    public BufferedImage cut(int x, int y, int w, int h) {
-        return image.getSubimage(x, y, w, h);
+    public static BufferedImage cut(int x, int y, int width, int height) {
+        return atlas.getSubimage(x, y, width, height);
     }
 }

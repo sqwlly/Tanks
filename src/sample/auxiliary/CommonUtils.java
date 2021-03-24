@@ -4,13 +4,13 @@ import sample.base.ITimer;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public abstract class CommonUtils {
     private static final Random RANDOM = new Random(); //随机数
-
 
     /**
      * @Description 获取整形随机数 不判断开始范围于结束范围
@@ -20,7 +20,6 @@ public abstract class CommonUtils {
     public static int nextInt(int start, int end) {
         return start == end ? start : start + RANDOM.nextInt(end - start);
     }
-
 
     /**
      * @Description 开启一个指定频率的定时器
