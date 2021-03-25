@@ -12,7 +12,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@IElement(width = Constant.ELEMENT_SIZE / 2, height = Constant.ELEMENT_SIZE / 2)
+@IElement(width = Constant.ELEMENT_SIZE / 2 - 2, height = Constant.ELEMENT_SIZE / 2 - 2)
 public class Tile extends BaseElement {
     
     private int type;
@@ -31,7 +31,7 @@ public class Tile extends BaseElement {
             sprites.add(new Sprite(sheet, 1, i));
         }
         //for(int i = 0; i < 4; ++i) state[i] = 1;
-        state = new int[] {1,0,1,1};
+        state = new int[] {1,1,1,1};
         diversity();
     }
 
@@ -45,15 +45,6 @@ public class Tile extends BaseElement {
 
     }
 
-    @Override
-    public boolean encounterPlayer(Player player) {
-        if(this.getRectangle().intersects(player.getRectangle())) {
-//            System.out.println("player stay");
-            player.stay();
-            return true;
-        }
-        return super.encounterPlayer(player);
-    }
     //1111
     //
     // 01 -> 0
@@ -107,15 +98,15 @@ public class Tile extends BaseElement {
         for(int i = 0; i < sie.length; ++i) {
             boolean same = true;
             for(int j = 0; j < state.length; ++j) {
-                System.out.println(state[j] + " " + sie[i][j]);
+//                System.out.println(state[j] + " " + sie[i][j]);
                 if(sie[i][j] != state[j]) {
                     same = false;
-                    //break;
+                    break;
                 }
             }
-            System.out.println("------------------");
+//            System.out.println("------------------");
             if(same) {
-                System.out.println(i);
+//                System.out.println(i);
                 return i;
             }
         }
@@ -138,7 +129,7 @@ public class Tile extends BaseElement {
                 }
                 break;
             case 1:
-                sprites.get(getState()).render(g, x, y, width * 2 + 1, height * 2 + 1);
+                sprites.get(getState()).render(g, x, y, Constant.ELEMENT_SIZE + 1, Constant.ELEMENT_SIZE + 1);
                 break;
         }
     }

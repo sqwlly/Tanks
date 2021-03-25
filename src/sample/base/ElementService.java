@@ -5,6 +5,7 @@ import sample.auxiliary.ElementBean;
 import sample.content.player.Player;
 import sample.content.substance.Bullet;
 import sample.content.substance.BulletBoom;
+import sample.content.substance.Steel;
 import sample.content.substance.Tile;
 
 import java.awt.*;
@@ -41,8 +42,11 @@ public abstract class ElementService<T extends BaseElement> extends BaseService<
 
             //物质和子弹相遇
             if (this.encounterBullet(element, player.getBullet())) {
-                if(element instanceof Tile) {
+                if(!(element instanceof IBulletCross)) {
                     System.out.println("encounterBullet");
+                    if(element instanceof Steel) {
+                        return;
+                    }
                     this.remove(element);
                 }
                 return;

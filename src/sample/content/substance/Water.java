@@ -7,31 +7,29 @@ import sample.auxiliary.graphics.TextureAtlas;
 import sample.base.BaseElement;
 import sample.base.IBulletCross;
 import sample.base.IElement;
-import sample.base.ITankCross;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
 @IElement
-public class Born extends BaseElement implements IBulletCross, ITankCross {
+public class Water extends BaseElement implements IBulletCross {
     private Animation animation;
 
-    public Born(int x, int y) {
+    public Water(int x, int y) {
         super(x, y);
-        BufferedImage[] act = new BufferedImage[4];
-        SpriteSheet sheet = new SpriteSheet(TextureAtlas.cut(16 * Constant.ELEMENT_SIZE, 4 * Constant.ELEMENT_SIZE,
-                Constant.ELEMENT_SIZE * 4, Constant.ELEMENT_SIZE), Constant.ELEMENT_SIZE);
-        for(int i = 0; i < 4; ++i) {
+        BufferedImage[] act = new BufferedImage[2];
+        SpriteSheet sheet = new SpriteSheet(TextureAtlas.cut(0, Constant.ELEMENT_SIZE * 7,
+                Constant.ELEMENT_SIZE * 2, Constant.ELEMENT_SIZE), Constant.ELEMENT_SIZE);
+        for(int i = 0; i < act.length; ++i) {
             act[i] = sheet.getSprite(i);
         }
-        animation = new Animation(act, 60);
+        animation = new Animation(act, 200);
         animation.start();
     }
 
     @Override
     public void drawImage(Graphics g) {
-        if(animation.hasPlayed(5)) return;
-        g.drawImage(animation.getSprite(), x, y, null);
+        g.drawImage(animation.getSprite(), x, y, Constant.ELEMENT_SIZE + 2, Constant.ELEMENT_SIZE + 2, null);
         animation.update();
     }
 }

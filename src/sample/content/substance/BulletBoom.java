@@ -7,6 +7,7 @@ import sample.auxiliary.graphics.Sprite;
 import sample.auxiliary.graphics.SpriteSheet;
 import sample.auxiliary.graphics.TextureAtlas;
 import sample.base.BaseElement;
+import sample.base.IBulletCross;
 import sample.base.IElement;
 
 import java.awt.*;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @IElement
-public class BulletBoom extends BaseElement {
+public class BulletBoom extends BaseElement implements IBulletCross {
 
     private Animation animation;
     private BufferedImage[] act;

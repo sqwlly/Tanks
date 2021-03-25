@@ -1,5 +1,6 @@
 package sample.auxiliary.graphics;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -136,6 +137,4 @@ public class Animation {
     }
 
     public long getFrameDelay() { return frameDelay; }
-
-
 }
