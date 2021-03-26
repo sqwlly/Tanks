@@ -11,7 +11,7 @@ import sample.base.IElement;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-@IElement
+@IElement(width = Constant.ELEMENT_SIZE / 2, height = Constant.ELEMENT_SIZE / 2)
 public class Water extends BaseElement implements IBulletCross {
     private Animation animation;
 
@@ -29,7 +29,7 @@ public class Water extends BaseElement implements IBulletCross {
 
     @Override
     public void drawImage(Graphics g) {
-        g.drawImage(animation.getSprite(), x, y, Constant.ELEMENT_SIZE + 2, Constant.ELEMENT_SIZE + 2, null);
+        g.drawImage(animation.getSprite(), x, y, Constant.ELEMENT_SIZE / 2 + 2, Constant.ELEMENT_SIZE / 2 + 2, null);
         animation.update();
     }
 }

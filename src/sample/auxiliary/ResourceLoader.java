@@ -2,8 +2,7 @@ package sample.auxiliary;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 public class ResourceLoader {
     public static final String PATH = "resources/";
@@ -17,4 +16,15 @@ public class ResourceLoader {
         }
         return bufferedImage;
     }
+
+    public static BufferedReader loadMapConfig(String fileName) {
+        BufferedReader bufferedReader = null;
+        try {
+            bufferedReader = new BufferedReader(new FileReader(PATH + fileName));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return bufferedReader;
+    }
+
 }

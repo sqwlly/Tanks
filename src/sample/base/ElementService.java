@@ -43,7 +43,7 @@ public abstract class ElementService<T extends BaseElement> extends BaseService<
             //物质和子弹相遇
             if (this.encounterBullet(element, player.getBullet())) {
                 if(!(element instanceof IBulletCross)) {
-                    System.out.println("encounterBullet");
+//                    System.out.println("encounterBullet");
                     if(element instanceof Steel) {
                         return;
                     }

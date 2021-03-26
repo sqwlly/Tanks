@@ -6,13 +6,12 @@ import sample.auxiliary.graphics.SpriteSheet;
 import sample.auxiliary.graphics.TextureAtlas;
 import sample.base.BaseElement;
 import sample.base.IElement;
-import sample.content.player.Player;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@IElement(width = Constant.ELEMENT_SIZE / 2 - 2, height = Constant.ELEMENT_SIZE / 2 - 2)
+@IElement(width = Constant.ELEMENT_SIZE / 2, height = Constant.ELEMENT_SIZE / 2)
 public class Tile extends BaseElement {
     
     private int type;
@@ -124,7 +123,7 @@ public class Tile extends BaseElement {
             case 0:
                 for(int i = 0; i < 2; ++i) {
                     for(int j = 0; j < 2; ++j) {
-                        sprites.get(5).render(g, x + j * width, y + height * i, width * 2 + 1, height * 2 + 1);
+                        sprites.get(getState()).render(g, x + j * width, y + height * i, width * 2 + 1, height * 2 + 1);
                     }
                 }
                 break;

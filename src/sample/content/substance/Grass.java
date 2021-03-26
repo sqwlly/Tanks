@@ -12,17 +12,17 @@ import sample.base.ITankCross;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-@IElement
+@IElement(width = Constant.ELEMENT_SIZE / 2 + 2, height = Constant.ELEMENT_SIZE / 2 + 2)
 public class Grass extends BaseElement implements IBulletCross, ITankCross {
     private Sprite sprite;
     public Grass(int x, int y) {
         super(x, y);
         sprite = new Sprite(new SpriteSheet(TextureAtlas.cut(4 * Constant.ELEMENT_SIZE, 7 * Constant.ELEMENT_SIZE,
-                Constant.ELEMENT_SIZE, Constant.ELEMENT_SIZE), Constant.ELEMENT_SIZE), 1, 0);
+                Constant.ELEMENT_SIZE, Constant.ELEMENT_SIZE), Constant.ELEMENT_SIZE / 2), 1, 0);
     }
 
     @Override
     public void drawImage(Graphics g) {
-        sprite.render(g, x, y, Constant.ELEMENT_SIZE + 2, Constant.ELEMENT_SIZE + 2);
+        sprite.render(g, x, y, Constant.ELEMENT_SIZE / 2 + 2, Constant.ELEMENT_SIZE / 2 + 2);
     }
 }

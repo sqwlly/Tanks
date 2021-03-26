@@ -98,7 +98,7 @@ public class Player extends BaseElement implements IBulletCross, ITankCross {
         bullet.setX(tx);
         bullet.setY(ty);
         bullet.setDirection(direction);
-        System.out.println(ElementBean.Substance.getService().getElementList().size());
+//        System.out.println(ElementBean.Substance.getService().getElementList().size());
         ElementBean.Player.getService().add(bullet);
     }
 

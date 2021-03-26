@@ -1,9 +1,6 @@
 package sample.ui;
 
-import sample.auxiliary.CommonUtils;
-import sample.auxiliary.Constant;
-import sample.auxiliary.ElementBean;
-import sample.auxiliary.Keys;
+import sample.auxiliary.*;
 import sample.content.GameContent;
 
 import javax.swing.*;
@@ -13,6 +10,7 @@ import java.awt.event.KeyEvent;
 
 public class GameFrame extends JFrame {
 
+    private Map map;
     public GameFrame() {
         this.setTitle("Tanks");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -31,7 +29,8 @@ public class GameFrame extends JFrame {
     //初始化游戏内容
     public void init() {
         ElementBean.init();
-        GameContent gameContent = new GameContent();
+        map = new Map("/levels/Level_1");
+        GameContent gameContent = new GameContent(map);
         GamePanel panel = new GamePanel(gameContent);
         this.add(panel);
         this.setVisible(true);

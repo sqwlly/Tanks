@@ -3,6 +3,7 @@ package sample.content;
 import sample.auxiliary.CommonUtils;
 import sample.auxiliary.Constant;
 import sample.auxiliary.ElementBean;
+import sample.auxiliary.Map;
 import sample.auxiliary.service.SubstanceElementService;
 import sample.base.ElementService;
 import sample.base.IDraw;
@@ -15,19 +16,18 @@ import sample.content.substance.Water;
 import java.awt.*;
 
 public class GameContent implements IDraw {
-    Player player; //玩家
-
-    public GameContent() {
-        player =  new Player(100, 100);
-        ElementBean.Player.getService().add(player);
-        ElementBean.Substance.getService().add(player.getBorn());
-        ElementBean.Substance.getService().add(player.getInvincible());
-
-        buildTiles();
+    private Map map;
+    public GameContent(Map map) {
+//        player =  new Player(100, 100);
+//        ElementBean.Player.getService().add(player);
+//        ElementBean.Substance.getService().add(player.getBorn());
+//        ElementBean.Substance.getService().add(player.getInvincible());
+//        buildTiles();
         //buildTiles();
         //刷新动作内容
+        this.map = map;
         CommonUtils.task(20, () -> {
-            this.wholeAction(player);//游戏整体动作
+            this.wholeAction(map.getPlayer());//游戏整体动作
 //            player.action();//玩家动作
 
         });
@@ -51,9 +51,7 @@ public class GameContent implements IDraw {
             Water water = new Water(150 + i * Constant.ELEMENT_SIZE, 300);
             ElementBean.Substance.getService().add(water);
         }
-    }
 
-    public void buildEnemy() {
 
     }
 
