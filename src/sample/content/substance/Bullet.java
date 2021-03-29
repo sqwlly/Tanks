@@ -18,17 +18,28 @@ public class Bullet extends BaseElement implements IBulletCross {
 
     private HashMap<Direction, Sprite> spriteMap;
 
+    public boolean isDestroy_Steel() {
+        return destroy_Steel;
+    }
+
+    public void setDestroy_Steel(boolean destroy_Steel) {
+        this.destroy_Steel = destroy_Steel;
+    }
+
+    private boolean destroy_Steel;
+
     public Bullet(int x, int y, Direction direction) {
         super(x, y);
         this.direction = direction;
         spriteMap = new HashMap<>();
         SpriteSheet sheet = new SpriteSheet(TextureAtlas.cut(0 * Constant.ELEMENT_SIZE, 5 * Constant.ELEMENT_SIZE,
                 20, 20), 10);
-        int i = 0;
+//        int i = 0;
         spriteMap.put(Direction.UP, new Sprite(sheet, 1, 0));
         spriteMap.put(Direction.DOWN, new Sprite(sheet, 1, 1));
         spriteMap.put(Direction.LEFT, new Sprite(sheet, 1, 2));
         spriteMap.put(Direction.RIGHT, new Sprite(sheet, 1, 3));
+        destroy_Steel = false;
     }
 
     @Override
@@ -37,10 +48,20 @@ public class Bullet extends BaseElement implements IBulletCross {
     }
 
     public void boom() {
+        //die();
         ElementBean.Substance.getService().add(new BulletBoom(x - 17 + 5, y - 17 + 5));
-        ElementBean.Player.getService().remove(this);
-        this.setX(-Constant.FRAME_WIDTH);
-        die();
+        //ElementBean.Player.getService().remove(this);
+        //this.setX(-Constant.FRAME_WIDTH);
+        //die();
+    }
+
+    @Override
+    public boolean remove(BaseElement element) {
+        if(!alive() || encounterSide()) {
+            boom();
+            return true;
+        }
+        return super.remove(element);
     }
 
     @Override

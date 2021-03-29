@@ -7,10 +7,7 @@ import sample.auxiliary.Keys;
 import sample.auxiliary.graphics.Sprite;
 import sample.auxiliary.graphics.SpriteSheet;
 import sample.auxiliary.graphics.TextureAtlas;
-import sample.base.BaseElement;
-import sample.base.IBulletCross;
-import sample.base.IElement;
-import sample.base.ITankCross;
+import sample.base.*;
 import sample.content.substance.Born;
 import sample.content.substance.Bullet;
 import sample.content.substance.Invincible;
@@ -19,7 +16,7 @@ import java.awt.*;
 import java.util.HashMap;
 
 @IElement(width = Constant.ELEMENT_SIZE - 3, height = Constant.ELEMENT_SIZE - 3)
-public class Player extends BaseElement implements IBulletCross, ITankCross {
+public class Player extends BaseElement implements IBulletCross, ITankCross, IMovable {
     private final static int size = Constant.ELEMENT_SIZE;
 
     private final static float scale = 1f;
@@ -30,6 +27,16 @@ public class Player extends BaseElement implements IBulletCross, ITankCross {
     private Invincible invincible;
     private final Born born;
     private int oldX, oldY;
+
+    public int getBulletNum() {
+        return bulletNum;
+    }
+
+    public void setBulletNum(int bulletNum) {
+        this.bulletNum = bulletNum;
+    }
+
+    private int bulletNum;
 
     public Player(int x, int y) {
         super(x, y);
@@ -43,8 +50,9 @@ public class Player extends BaseElement implements IBulletCross, ITankCross {
         }
         born = new Born(x, y);
         invincible = new Invincible(x, y);
-        bullet = new Bullet(-1, -1, direction);
-        bullet.die();
+        //bullet = new Bullet(-1, -1, direction);
+        //bullet.die();
+        bulletNum = 1;
     }
 
     public void beHurt() {
@@ -57,6 +65,9 @@ public class Player extends BaseElement implements IBulletCross, ITankCross {
         invincible.movedByPlayer(this);
         if(Keys.SPACE.use()) {
             shoot();
+        }
+        if(bulletNum <= 0) {
+            bulletNum += 1;
         }
     }
 
@@ -73,8 +84,11 @@ public class Player extends BaseElement implements IBulletCross, ITankCross {
     }
 
     public void shoot() {
-        if(bullet.alive()) return;
-        bullet.setHp(10);
+//        if(bullet.alive()) return;
+//        bullet.setHp(10);
+        if(bulletNum <= 0) return;
+        bulletNum--;
+        //setBulletNum(0);
         int tx = x + 17 - 3;
         int ty = y + 17 - 3;
         switch (direction) {
@@ -95,13 +109,16 @@ public class Player extends BaseElement implements IBulletCross, ITankCross {
                 ty = y + height / 2 - 3;
                 break;
         }
-        bullet.setX(tx);
-        bullet.setY(ty);
-        bullet.setDirection(direction);
+        bullet = new Bullet(tx, ty, direction);
+//        bullet.setX(tx);
+//        bullet.setY(ty);
+//        bullet.setDirection(direction);
 //        System.out.println(ElementBean.Substance.getService().getElementList().size());
         ElementBean.Player.getService().add(bullet);
+//        System.out.println(ElementBean.Player.getService().getElementList().size());
     }
 
+    @Override
     public void stay() {
         x = oldX;
         y = oldY;

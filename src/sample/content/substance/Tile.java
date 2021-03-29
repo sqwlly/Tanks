@@ -119,6 +119,7 @@ public class Tile extends BaseElement {
      */
     @Override
     public void drawImage(Graphics g) {
+        if(!alive()) return; //temp handle
         switch (type) {
             case 0:
                 for(int i = 0; i < 2; ++i) {

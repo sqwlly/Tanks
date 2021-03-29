@@ -4,26 +4,17 @@ import sample.auxiliary.CommonUtils;
 import sample.auxiliary.Constant;
 import sample.auxiliary.ElementBean;
 import sample.auxiliary.Map;
+import sample.auxiliary.service.EnemyElementService;
 import sample.auxiliary.service.SubstanceElementService;
 import sample.base.ElementService;
 import sample.base.IDraw;
 import sample.content.player.Player;
-import sample.content.substance.Grass;
-import sample.content.substance.Steel;
-import sample.content.substance.Tile;
-import sample.content.substance.Water;
 
 import java.awt.*;
 
 public class GameContent implements IDraw {
     private Map map;
     public GameContent(Map map) {
-//        player =  new Player(100, 100);
-//        ElementBean.Player.getService().add(player);
-//        ElementBean.Substance.getService().add(player.getBorn());
-//        ElementBean.Substance.getService().add(player.getInvincible());
-//        buildTiles();
-        //buildTiles();
         //刷新动作内容
         this.map = map;
         CommonUtils.task(20, () -> {
@@ -33,33 +24,14 @@ public class GameContent implements IDraw {
         });
     }
 
-
-    public void buildTiles() {
-        for(int i = 0; i < 10; ++i) {
-            Tile tile = new Tile(150 + i * Constant.ELEMENT_SIZE / 2, 150, 1);
-            ElementBean.Substance.getService().add(tile);
-        }
-        for(int i = 0; i < 10; ++i) {
-            Steel steel = new Steel(150 + i * Constant.ELEMENT_SIZE / 2, 200);
-            ElementBean.Substance.getService().add(steel);
-        }
-        for(int i = 0; i < 5; ++i) {
-            Grass grass = new Grass(150 + i * Constant.ELEMENT_SIZE, 250);
-            ElementBean.Substance.getService().add(grass);
-        }
-        for(int i = 0; i < 5; ++i) {
-            Water water = new Water(150 + i * Constant.ELEMENT_SIZE, 300);
-            ElementBean.Substance.getService().add(water);
-        }
-
-
-    }
-
     public void wholeAction(Player player) {
         //玩家
         ElementService playerService = (ElementService) ElementBean.Player.getService();
         ElementService substanceService = (SubstanceElementService) ElementBean.Substance.getService();
-        substanceService.action(player);
+        ElementService enemyService = (EnemyElementService) ElementBean.Enemy.getService();
+        enemyService.action(player);
+        substanceService.action(player, enemyService);
+        substanceService.action(player, playerService);
         playerService.action(player);
     }
 

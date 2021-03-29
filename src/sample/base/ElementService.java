@@ -2,11 +2,9 @@ package sample.base;
 
 import sample.auxiliary.Constant;
 import sample.auxiliary.ElementBean;
+import sample.content.enemy.Enemy;
 import sample.content.player.Player;
-import sample.content.substance.Bullet;
-import sample.content.substance.BulletBoom;
-import sample.content.substance.Steel;
-import sample.content.substance.Tile;
+import sample.content.substance.*;
 
 import java.awt.*;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -14,15 +12,21 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public abstract class ElementService<T extends BaseElement> extends BaseService<T> {
     public final <S extends BaseElement> void action(Player player, ElementService<S>... services) {
         this.getElementList().forEach(element -> {
-            //根据元素自身判断其离开条件
-            if (this.removeElement(element, player)) {
-                if(element instanceof Player) return;
-                if(element instanceof Bullet) {
-                    player.getBullet().boom();
-                }
+            if(element.remove(element)) {
                 this.remove(element);
                 return;
             }
+            //根据元素自身判断其离开条件
+//            if (this.removeElement(element, player)) {
+//                if(element instanceof Player) return;
+//                if(element instanceof Enemy) return;
+//                if(element instanceof Bullet) {
+//                    player.getBullet().boom();
+//                }
+//                this.remove(element);
+//                return;
+//            }
+//            element.encounterSide();
 //            //边距判定
 //            boolean sideJudge = ElementBean.getBackground().sideJudge(element);
 //            if (sideJudge) {
@@ -32,25 +36,25 @@ public abstract class ElementService<T extends BaseElement> extends BaseService<
             if (!element.beforeActionJudge()) {
                 return;
             }
-            //与玩家相遇
-            if (this.encounterPlayer(element, player)) {
-                if(element instanceof Bullet) {
-                    this.remove(element);
-                }
-                return;
-            }
+//            //与玩家相遇
+//            if (this.encounterPlayer(element, player)) {
+//                if(element instanceof Bullet) {
+//                    this.remove(element);
+//                }
+//                return;
+//            }
 
-            //物质和子弹相遇
-            if (this.encounterBullet(element, player.getBullet())) {
-                if(!(element instanceof IBulletCross)) {
-//                    System.out.println("encounterBullet");
-                    if(element instanceof Steel) {
-                        return;
-                    }
-                    this.remove(element);
-                }
-                return;
-            }
+//            //物质和子弹相遇
+//            if (this.encounterBullet(element, player.getBullet())) {
+//                if(!(element instanceof IBulletCross)) {
+////                    System.out.println("encounterBullet");
+//                    if(element instanceof Steel) {
+//                        return;
+//                    }
+//                    this.remove(element);
+//                }
+//                return;
+//            }
 
             //与其它元素相交处理
             Rectangle myself = element.getRectangle();
@@ -62,11 +66,9 @@ public abstract class ElementService<T extends BaseElement> extends BaseService<
                     if (myself.intersects(serviceElement.getRectangle())) {
                         //相交处理 处理结束之后是否把对方从对方的元素列表中移除
                         boolean removeOther = this.intersectsHandle(element, serviceElement);
-                        if(serviceElement instanceof Tile) {
-                            System.out.println("tile");
-                        }
                         if (removeOther) {
-                            System.out.println("remove");
+//                            serviceElement.remove(serviceElement);
+//                            System.out.println("remove");
                             service.remove(serviceElement);
                         }
                     }
@@ -105,8 +107,7 @@ public abstract class ElementService<T extends BaseElement> extends BaseService<
      * @return boolean
      */
     protected boolean removeElement(T element, Player player) {
-        return element.remove(player) || element.getY() > Constant.FRAME_HEIGHT
-                || element.getX() < 0 || element.getY() < 0 || element.getX() > Constant.FRAME_HEIGHT;
+        return element.remove(player);
     }
 
     /**

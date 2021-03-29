@@ -1,5 +1,7 @@
 package sample.auxiliary;
 
+import sample.base.IDraw;
+import sample.content.enemy.Enemy;
 import sample.content.player.Player;
 import sample.content.substance.*;
 
@@ -9,6 +11,7 @@ import java.io.IOException;
 public class Map {
     private final int width = 26, height = 26;
     private int[][] map;
+    private IDraw[][] cells;
     private Player player;
 
     public Player getPlayer() {
@@ -57,6 +60,7 @@ public class Map {
 //        }
         ElementBean.Substance.getService().add(new Home(6 * Constant.ELEMENT_SIZE, 12 * Constant.ELEMENT_SIZE));
         playerInit();
+        enemyInit();
         for(int i = 0; i < height; ++i) {
             for(int j = 0; j < width; ++j) {
                 getEntity(map[i][j], j * Constant.ELEMENT_SIZE / 2, i * Constant.ELEMENT_SIZE / 2);
@@ -65,6 +69,7 @@ public class Map {
     }
 
     public void getEntity(int type, int x, int y) {
+        //IDraw draw;
         switch (type) {
             case 1:
 //                for(int i = 0; i < 2; ++i) {
@@ -72,6 +77,7 @@ public class Map {
 //                        ElementBean.Substance.getService().add(new Tile(x + i * Constant.ELEMENT_SIZE / 2, y + j * Constant.ELEMENT_SIZE / 2, 1));
 //                    }
 //                }
+
                 ElementBean.Substance.getService().add(new Steel(x, y));
 
                 break;
@@ -91,10 +97,35 @@ public class Map {
     }
 
     public void playerInit() {
-        player = new Player(4 * Constant.ELEMENT_SIZE + Constant.ELEMENT_SIZE / 2, 12 * Constant.ELEMENT_SIZE);
+        player = new Player(4 * Constant.ELEMENT_SIZE, 12 * Constant.ELEMENT_SIZE);
         ElementBean.Player.getService().add(player);
         ElementBean.Substance.getService().add(player.getBorn());
         ElementBean.Substance.getService().add(player.getInvincible());
-
     }
+
+    public void enemyInit() {
+        for (int i = 0; i < 4; ++i) {
+            ElementBean.Enemy.getService().add(new Enemy(i * Constant.ELEMENT_SIZE, 0, i));
+        }
+    }
+
+    public int getCell(int x, int y) {
+        int w = Constant.ELEMENT_SIZE / 2;
+        x /= w;
+        y /= w;
+        return map[x][y];
+    }
+
+    public int[] getRow(int i) {
+        return map[i];
+    }
+
+    public int[] getCol(int i) {
+        int[] t = new int[height];
+        for(int j = 0; j < height; ++j) {
+            t[j] = map[j][i];
+        }
+        return t;
+    }
+
 }

@@ -1,11 +1,13 @@
 package sample.auxiliary;
 
+import sample.auxiliary.service.EnemyElementService;
 import sample.auxiliary.service.PlayerElementService;
 import sample.auxiliary.service.SubstanceElementService;
 import sample.base.IBaseService;
 
 public enum ElementBean {
     Player(new PlayerElementService()),
+    Enemy(new EnemyElementService()),
     Substance(new SubstanceElementService());
 
     ElementBean(IBaseService service) {

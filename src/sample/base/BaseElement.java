@@ -80,8 +80,11 @@ public abstract class BaseElement implements IDraw{
      * @Param []
      * @return void
      */
-    public void encounterSide() {
-        
+    public boolean encounterSide() {
+        if(x - speed <= 0 || x + speed >= Constant.FRAME_WIDTH || y - speed <= 0 || y  + speed >= Constant.FRAME_HEIGHT) {
+            return true;
+        }
+        return false;
     }
     
     /**
@@ -108,6 +111,14 @@ public abstract class BaseElement implements IDraw{
 
     public void setHp(int hp) {
         this.hp = hp;
+    }
+
+    public int getHp() {
+        return hp;
+    }
+
+    public void subHp() {
+        hp -= 50;
     }
 
     public boolean alive() {
