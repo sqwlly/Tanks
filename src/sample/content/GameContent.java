@@ -29,7 +29,7 @@ public class GameContent implements IDraw {
         ElementService playerService = (ElementService) ElementBean.Player.getService();
         ElementService substanceService = (SubstanceElementService) ElementBean.Substance.getService();
         ElementService enemyService = (EnemyElementService) ElementBean.Enemy.getService();
-        enemyService.action(player);
+        enemyService.action(player, playerService);
         substanceService.action(player, enemyService);
         substanceService.action(player, playerService);
         playerService.action(player);

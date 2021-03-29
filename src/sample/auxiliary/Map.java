@@ -33,12 +33,12 @@ public class Map {
                 if(s == null) break;
                 String[] msg = s.split(delimiters);
                 for(int j = 0; j < width && j < msg.length; ++j) {
-                    System.out.print(msg[j] + " ");
+//                    System.out.print(msg[j] + " ");
                     map[i][j] = Integer.parseInt(msg[j]);
                 }
-                System.out.println();
+//                System.out.println();
             }
-            System.out.println("--------------");
+//            System.out.println("--------------");
             loadMap();
         }catch (IOException ignored) {
 
@@ -46,18 +46,6 @@ public class Map {
     }
 
     public void loadMap() {
-//        for(int i = 0; i < 3; ++i) {
-//            ElementBean.Substance.getService().add(new Tile(5 * Constant.ELEMENT_SIZE + Constant.ELEMENT_SIZE / 2,
-//                    11 * Constant.ELEMENT_SIZE + Constant.ELEMENT_SIZE / 2 * (i + 1), 1));
-//        }
-//        for(int i = 0; i < 3; ++i) {
-//            ElementBean.Substance.getService().add(new Tile(7 * Constant.ELEMENT_SIZE,
-//                    11 * Constant.ELEMENT_SIZE + Constant.ELEMENT_SIZE / 2 * (i + 1), 1));
-//        }
-//        for(int i = 0; i < 2; ++i) {
-//            ElementBean.Substance.getService().add(new Tile(5 * Constant.ELEMENT_SIZE + Constant.ELEMENT_SIZE / 2 * (i + 2),
-//                    11 * Constant.ELEMENT_SIZE + Constant.ELEMENT_SIZE / 2, 1));
-//        }
         ElementBean.Substance.getService().add(new Home(6 * Constant.ELEMENT_SIZE, 12 * Constant.ELEMENT_SIZE));
         playerInit();
         enemyInit();
@@ -69,22 +57,12 @@ public class Map {
     }
 
     public void getEntity(int type, int x, int y) {
-        //IDraw draw;
         switch (type) {
             case 1:
-//                for(int i = 0; i < 2; ++i) {
-//                    for(int j = 0; j < 2; ++j) {
-//                        ElementBean.Substance.getService().add(new Tile(x + i * Constant.ELEMENT_SIZE / 2, y + j * Constant.ELEMENT_SIZE / 2, 1));
-//                    }
-//                }
-
                 ElementBean.Substance.getService().add(new Steel(x, y));
-
                 break;
             case 2:
-//                for(int i = 0; i < 2; ++i) {
-//                    ElementBean.Substance.getService().add(new Steel(x + i * Constant.ELEMENT_SIZE / 2, y));
-//                }
+
                 ElementBean.Substance.getService().add(new Tile(x, y, 1));
                 break;
             case 3:
@@ -105,7 +83,9 @@ public class Map {
 
     public void enemyInit() {
         for (int i = 0; i < 4; ++i) {
-            ElementBean.Enemy.getService().add(new Enemy(i * Constant.ELEMENT_SIZE, 0, i));
+            Enemy enemy = new Enemy(i * Constant.ELEMENT_SIZE, 0, i);
+            ElementBean.Enemy.getService().add(enemy);
+            ElementBean.Substance.getService().add(enemy.getBorn());
         }
     }
 

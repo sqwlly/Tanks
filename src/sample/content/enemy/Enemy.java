@@ -4,32 +4,26 @@ import sample.auxiliary.CommonUtils;
 import sample.auxiliary.Constant;
 import sample.auxiliary.Direction;
 import sample.auxiliary.ElementBean;
-import sample.auxiliary.graphics.Sprite;
+import sample.auxiliary.graphics.Animation;
 import sample.auxiliary.graphics.SpriteSheet;
 import sample.auxiliary.graphics.TextureAtlas;
-import sample.base.BaseElement;
-import sample.base.IElement;
-import sample.base.IMovable;
-import sample.content.player.Player;
+import sample.base.*;
 import sample.content.substance.Born;
 import sample.content.substance.Bullet;
-import sample.content.substance.EnemyBullet;
-import sample.content.substance.Home;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 @IElement(width = Constant.ELEMENT_SIZE - 2, height = Constant.ELEMENT_SIZE - 2)
-public class Enemy extends BaseElement implements IMovable {
+public class Enemy extends Tank {
     private int type;
     private Born born;
-    private Bullet bullet;
-    private final List<HashMap<Direction, Sprite>> sprites;
-    private int oldX, oldY;
+    private final List<HashMap<Direction, Animation>> sprites;
     private int step;
-    private int bulletNum;
+    private Animation animation;
 
     public Enemy(int x, int y, int type) {
         super(x, y);
@@ -40,26 +34,30 @@ public class Enemy extends BaseElement implements IMovable {
                 Constant.ELEMENT_SIZE * 32, Constant.ELEMENT_SIZE), Constant.ELEMENT_SIZE);
         int c = 0;
         for(int i = 0; i < 4; ++i) {
-            HashMap<Direction, Sprite> spriteMap = new HashMap<>();
+            HashMap<Direction, Animation> spriteMap = new HashMap<>();
+            BufferedImage[] act = new BufferedImage[2];
             for(Direction d : Direction.values()) {
-                spriteMap.put(d, new Sprite(sheet, 1, c));
-                c += 2;
+                for(int j = 0; j < 2; ++j) {
+                    act[j] = sheet.getSprite(c++);
+                }
+                animation = new Animation(act, 50);
+                animation.start();
+                spriteMap.put(d, animation);
             }
             sprites.add(spriteMap);
         }
         speed = 2;
         bulletNum = 1;
-//        bullet = new EnemyBullet(-10, y, direction);
         born = new Born(x, y);
-//        bullet.die();
     }
 
-    private void shoot() {
-//        System.out.println(bullet.getHp());
-//        System.out.println(bullet.toString() + " " +  bullet.getX() + " " + bullet.getY());
-//        if(bulletNum <= 0) return;
-//        bulletNum--;
-       // bullet.setHp(10);
+    public Born getBorn() {
+        return born;
+    }
+
+    public void shoot() {
+        if(!fireAble()) return;
+        bulletNum--;
         int tx = x + 17 - 3;
         int ty = y + 17 - 3;
         switch (direction) {
@@ -80,19 +78,7 @@ public class Enemy extends BaseElement implements IMovable {
                 ty = y + height / 2 - 3;
                 break;
         }
-//        bullet.setX(tx);
-//        bullet.setY(ty);
-//        bullet.setDirection(direction);
-        bullet = new Bullet(tx, ty, direction);
-        ElementBean.Enemy.getService().add(bullet);
-//        System.out.println(this.toString() + " shoot" + "|" + ElementBean.Enemy.getService().getElementList().size());
-    }
-
-    @Override
-    public void stay() {
-        x = oldX;
-        y = oldY;
-//        System.out.println("stay " + x + " " + y);
+        ElementBean.Enemy.getService().add(new Bullet(tx, ty, direction, this));
     }
 
     @Override
@@ -117,16 +103,10 @@ public class Enemy extends BaseElement implements IMovable {
     @Override
     public void action() {
         move();
-//        if(encounterSide()) {
-////            System.out.println("stay");
-//            stay();
-//        }
     }
 
     @Override
-    protected void move() {
-
-        shoot();
+    public void move() {
         oldX = x;
         oldY = y;
 
@@ -144,18 +124,18 @@ public class Enemy extends BaseElement implements IMovable {
             this.x -= speed;
         }
 
-
         step--;
         if(step <= 0) {
             int r = CommonUtils.nextInt(0, 4);
             direction = Direction.values()[r];
             step = CommonUtils.nextInt(0, 50) + 30;
+            shoot();
         }
-//        System.out.println(this.toString() + "|step = " + step + "| "+ "direction "+ direction+" |" +x + " " + y);
     }
 
     @Override
     public void drawImage(Graphics g) {
-        sprites.get(type).get(direction).render(g, x, y, width, height);
+        sprites.get(type).get(direction).update();
+        g.drawImage(sprites.get(type).get(direction).getSprite(), x, y, width, height, null);
     }
 }
