@@ -6,6 +6,7 @@ import sample.auxiliary.graphics.Animation;
 import sample.auxiliary.graphics.SpriteSheet;
 import sample.auxiliary.graphics.TextureAtlas;
 import sample.base.BaseElement;
+import sample.base.IBulletCross;
 import sample.base.IElement;
 import sample.base.ITankCross;
 
@@ -13,14 +14,15 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 @IElement(width = Constant.ELEMENT_SIZE * 2, height = Constant.ELEMENT_SIZE * 2)
-public class TankBoom extends BaseElement implements ITankCross {
+public class TankBoom extends BaseElement implements ITankCross, IBulletCross {
 
     private Animation animation;
 
     public TankBoom(int x, int y) {
         super(x, y);
         SpriteSheet sheet = new SpriteSheet(TextureAtlas.cut(23 * Constant.ELEMENT_SIZE, 4 * Constant.ELEMENT_SIZE,
-                Constant.ELEMENT_SIZE * 4, Constant.ELEMENT_SIZE * 2), Constant.ELEMENT_SIZE * 2);
+                Constant.ELEMENT_SIZE * 4, Constant.ELEMENT_SIZE * 2),
+                Constant.ELEMENT_SIZE * 2, Constant.ELEMENT_SIZE * 2);
         BufferedImage[] act = new BufferedImage[2];
         for(int i = 0; i < 2; ++i) {
             act[i] = sheet.getSprite(i);
@@ -31,7 +33,7 @@ public class TankBoom extends BaseElement implements ITankCross {
 
     @Override
     public void drawImage(Graphics g) {
-        if(animation.hasPlayed(2)) {
+        if(animation.hasPlayed(3)) {
             ElementBean.Substance.getService().remove(this);
             return;
         }

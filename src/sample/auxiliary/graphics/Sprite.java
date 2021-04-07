@@ -13,7 +13,7 @@ public class Sprite {
     protected int index;
     public Sprite(SpriteSheet sheet, float scale, int index) {
         this.sheet = sheet;
-        this.index = index % sheet.getSize();
+        this.index = index % sheet.getW();
         BufferedImage origin = this.sheet.getSprite(index);
         BufferedImage actual = new BufferedImage((int)(origin.getWidth() * scale), (int)(origin.getHeight() * scale), BufferedImage.TYPE_INT_ARGB);
         actual.getGraphics().drawImage(origin, 0, 0, actual.getWidth(), actual.getHeight(), null);

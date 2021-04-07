@@ -11,6 +11,7 @@ import sample.auxiliary.graphics.TextureAtlas;
 import sample.base.*;
 import sample.content.substance.Born;
 import sample.content.substance.Bullet;
+import sample.content.substance.GameOver;
 import sample.content.substance.Invincible;
 
 import java.awt.*;
@@ -24,17 +25,16 @@ public class Player extends Tank{
     private final static int size = Constant.ELEMENT_SIZE;
 
     private final static float scale = 1f;
-
+    private int score;
     private final HashMap<Direction, Animation> sprites = new HashMap<>();
     private Invincible invincible;
     private final Born born;
     private Animation animation;
-
     public Player(int x, int y) {
         super(x, y);
         int cnt = 0;
         BufferedImage[] act = new BufferedImage[2];
-        SpriteSheet sheet = new SpriteSheet(TextureAtlas.cut(0, 0, size * 8, size), size);
+        SpriteSheet sheet = new SpriteSheet(TextureAtlas.cut(0, 0, size * 8, size), size, size);
         for(Direction d : Direction.values()) {
             for(int i = 0; i < 2; ++i) {
                 act[i] = sheet.getSprite(cnt++);
@@ -52,13 +52,34 @@ public class Player extends Tank{
 
     }
 
+    public void initScore() {
+        score = 0;
+    }
+
+    public void addScore(int base) {
+        score += base;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
     @Override
     public void action() {
-        move();
-        invincible.movedByPlayer(this);
-        if(Keys.SPACE.use()) {
-            shoot();
-        }
+       // System.out.println(getHp());
+       // if(alive()) {
+            move();
+            invincible.movedByPlayer(this);
+            if (Keys.SPACE.use()) {
+                shoot();
+            }
+//        }else {
+//            if (gameOver == null) {
+//                gameOver = new GameOver();
+//                System.out.println("new GameOver");
+//                ElementBean.Substance.getService().add(gameOver);
+//            }
+//        }
     }
 
     public Invincible getInvincible() {
@@ -106,22 +127,24 @@ public class Player extends Tank{
             }
             this.direction = Direction.UP;
         } else if (Keys.DOWN.use()) {
-            if (y + speed < Constant.FRAME_HEIGHT - height * 2) {
+            if (y + speed < Constant.FRAME_HEIGHT - height * 2 + 3) {
                 y = y + speed;
             } else {
-                y = Constant.FRAME_HEIGHT - height * 2 - speed;
+                y = Constant.FRAME_HEIGHT - height * 2 + 3;
             }
             this.direction = Direction.DOWN;
         } else if (Keys.LEFT.use()) {
             if (this.x - speed > 0) {
                 x = x - speed;
+            }else{
+                x = 0;
             }
             this.direction = Direction.LEFT;
         } else if (Keys.RIGHT.use()) {
-            if (this.x + width + speed < Constant.FRAME_WIDTH) {
+            if (this.x + width + speed < Constant.GAME_WIDTH) {
                 x = x + speed;
             } else {
-                x = Constant.FRAME_WIDTH - width - speed;
+                x = Constant.GAME_WIDTH - width;
             }
             this.direction = Direction.RIGHT;
         }

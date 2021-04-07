@@ -19,7 +19,7 @@ public class Water extends BaseElement implements IBulletCross {
         super(x, y);
         BufferedImage[] act = new BufferedImage[2];
         SpriteSheet sheet = new SpriteSheet(TextureAtlas.cut(0, Constant.ELEMENT_SIZE * 7,
-                Constant.ELEMENT_SIZE * 2, Constant.ELEMENT_SIZE), Constant.ELEMENT_SIZE);
+                Constant.ELEMENT_SIZE * 2, Constant.ELEMENT_SIZE), Constant.ELEMENT_SIZE, Constant.ELEMENT_SIZE);
         for(int i = 0; i < act.length; ++i) {
             act[i] = sheet.getSprite(i);
         }

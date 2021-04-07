@@ -81,7 +81,7 @@ public abstract class BaseElement implements IDraw{
      * @return void
      */
     public boolean encounterSide() {
-        if(x - speed <= 0 || x + speed >= Constant.FRAME_WIDTH || y - speed <= 0 || y  + speed >= Constant.FRAME_HEIGHT) {
+        if(x - speed <= 0 || x + speed >= Constant.GAME_WIDTH || y - speed <= 0 || y  + speed >= Constant.FRAME_HEIGHT) {
             return true;
         }
         return false;

@@ -22,7 +22,7 @@ public class Steel extends BaseElement {
         super(x, y);
         BufferedImage[] act = new BufferedImage[4];
         SpriteSheet sheet = new SpriteSheet(TextureAtlas.cut(0, 6 * Constant.ELEMENT_SIZE,
-                Constant.ELEMENT_SIZE * 4, Constant.ELEMENT_SIZE), Constant.ELEMENT_SIZE);
+                Constant.ELEMENT_SIZE * 4, Constant.ELEMENT_SIZE), Constant.ELEMENT_SIZE, Constant.ELEMENT_SIZE);
 //        state = new int[] {1, 1, 1, 1};
         sprite = new Sprite(sheet, 1, 0);
     }

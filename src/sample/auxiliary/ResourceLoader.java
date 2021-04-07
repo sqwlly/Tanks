@@ -1,11 +1,13 @@
 package sample.auxiliary;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 
 public class ResourceLoader {
     public static final String PATH = "resources/";
+
     public static BufferedImage loadImage(String fileName) {
         BufferedImage bufferedImage = null;
         try {
@@ -27,4 +29,13 @@ public class ResourceLoader {
         return bufferedReader;
     }
 
+    public static InputStream loadFontStream(String fileName) {
+        InputStream stream = null;
+        try {
+            stream = new FileInputStream("resources/joystix.ttf");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return stream;
+    }
 }

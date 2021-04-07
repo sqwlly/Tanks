@@ -18,7 +18,8 @@ public class Grass extends BaseElement implements IBulletCross, ITankCross {
     public Grass(int x, int y) {
         super(x, y);
         sprite = new Sprite(new SpriteSheet(TextureAtlas.cut(4 * Constant.ELEMENT_SIZE, 7 * Constant.ELEMENT_SIZE,
-                Constant.ELEMENT_SIZE, Constant.ELEMENT_SIZE), Constant.ELEMENT_SIZE / 2), 1, 0);
+                Constant.ELEMENT_SIZE, Constant.ELEMENT_SIZE), Constant.ELEMENT_SIZE / 2, Constant.ELEMENT_SIZE / 2),
+                1, 0);
     }
 
     @Override

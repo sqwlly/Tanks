@@ -25,10 +25,10 @@ public class Invincible extends BaseElement implements IBulletCross, ITankCross 
         super(x, y);
         BufferedImage[] act = new BufferedImage[3];
         SpriteSheet sheet = new SpriteSheet(TextureAtlas.cut(13 * Constant.ELEMENT_SIZE, 7 * Constant.ELEMENT_SIZE,
-                Constant.ELEMENT_SIZE * 3, Constant.ELEMENT_SIZE), Constant.ELEMENT_SIZE);
+                Constant.ELEMENT_SIZE * 3, Constant.ELEMENT_SIZE), Constant.ELEMENT_SIZE, Constant.ELEMENT_SIZE);
         act[0] = sheet.getSprite(0);
         act[1] = sheet.getSprite(2);
-        animation = new Animation(act, 35);
+        animation = new Animation(act, 20);
         animation.start();
     }
 

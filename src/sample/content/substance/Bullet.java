@@ -34,7 +34,7 @@ public class Bullet extends BaseElement implements IMovable {
         this.direction = direction;
         spriteMap = new HashMap<>();
         SpriteSheet sheet = new SpriteSheet(TextureAtlas.cut(0 * Constant.ELEMENT_SIZE, 5 * Constant.ELEMENT_SIZE,
-                20, 20), 10);
+                20, 20), 10, 10);
         spriteMap.put(Direction.UP, new Sprite(sheet, 1, 0));
         spriteMap.put(Direction.DOWN, new Sprite(sheet, 1, 1));
         spriteMap.put(Direction.LEFT, new Sprite(sheet, 1, 2));

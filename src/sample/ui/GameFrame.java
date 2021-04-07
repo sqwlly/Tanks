@@ -1,16 +1,17 @@
 package sample.ui;
 
 import sample.auxiliary.*;
-import sample.content.GameContent;
+import sample.auxiliary.GameStateManager;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class GameFrame extends JFrame {
 
-    private Map map;
     public GameFrame() {
         this.setTitle("Tanks");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -28,15 +29,12 @@ public class GameFrame extends JFrame {
 
     //初始化游戏内容
     public void init() {
-        ElementBean.init();
-        map = new Map("/levels/Level_1");
-        GameContent gameContent = new GameContent(map);
-        GamePanel panel = new GamePanel(gameContent);
+        GameStateManager gsm = new GameStateManager();
+        GamePanel panel = new GamePanel(gsm);
         this.add(panel);
         this.setVisible(true);
         CommonUtils.task(5, () -> {
             panel.repaint();
-
         });
         //玩家键盘监听
         this.addKeyListener(new KeyAdapter() {
@@ -48,6 +46,13 @@ public class GameFrame extends JFrame {
             @Override
             public void keyReleased(KeyEvent e) {
                 Keys.remove(e.getKeyCode());
+            }
+        });
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                gsm.mouseClicked(e);
             }
         });
     }

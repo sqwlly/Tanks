@@ -25,7 +25,7 @@ public class Tile extends BaseElement {
         super(x, y);
         this.type = type;
         sheet = new SpriteSheet(TextureAtlas.cut(4 * Constant.ELEMENT_SIZE, 5 * Constant.ELEMENT_SIZE,
-                15 * Constant.ELEMENT_SIZE, Constant.ELEMENT_SIZE), Constant.ELEMENT_SIZE);
+                15 * Constant.ELEMENT_SIZE, Constant.ELEMENT_SIZE), Constant.ELEMENT_SIZE, Constant.ELEMENT_SIZE);
         for(int i = 0; i < sheet.getSpriteCount(); ++i) {
             sprites.add(new Sprite(sheet, 1, i));
         }

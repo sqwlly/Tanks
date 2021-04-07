@@ -27,7 +27,7 @@ public class BulletBoom extends BaseElement implements IBulletCross {
         act = new BufferedImage[3];
         sprites = new ArrayList<>();
         SpriteSheet sheet = new SpriteSheet(TextureAtlas.cut(20 * Constant.ELEMENT_SIZE, 4 * Constant.ELEMENT_SIZE,
-                Constant.ELEMENT_SIZE * 3, Constant.ELEMENT_SIZE), Constant.ELEMENT_SIZE);
+                Constant.ELEMENT_SIZE * 3, Constant.ELEMENT_SIZE), Constant.ELEMENT_SIZE, Constant.ELEMENT_SIZE);
         for(int i = 0; i < 3; ++i) {
             act[i] = sheet.getSprite(i);
             sprites.add(new Sprite(sheet, 1, i));

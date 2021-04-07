@@ -10,11 +10,18 @@ import java.awt.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public abstract class ElementService<T extends BaseElement> extends BaseService<T> {
+    private Player player;
     public final <S extends BaseElement> void action(Player player, ElementService<S>... services) {
         this.getElementList().forEach(element -> {
-            if(element.remove(element)) {
+            if(element.remove(player)) {
                 this.remove(element);
                 return;
+            }
+
+            if(element instanceof Home) {
+                if(!element.alive()) {
+                    player.subHp();
+                }
             }
 
             //前置操作

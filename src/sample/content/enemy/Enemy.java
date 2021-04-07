@@ -17,11 +17,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-@IElement(width = Constant.ELEMENT_SIZE - 2, height = Constant.ELEMENT_SIZE - 2)
+@IElement(width = Constant.ELEMENT_SIZE - 2, height = Constant.ELEMENT_SIZE - 2, speed = 2)
 public class Enemy extends Tank {
     private int type;
     private Born born;
     private final List<HashMap<Direction, Animation>> sprites;
+    public final static int[] REWARD = {100,200,300,400};
     private int step;
     private Animation animation;
 
@@ -31,7 +32,8 @@ public class Enemy extends Tank {
         this.direction = Direction.DOWN;
         sprites = new ArrayList<>();
         SpriteSheet sheet = new SpriteSheet(TextureAtlas.cut(0, 2 * Constant.ELEMENT_SIZE,
-                Constant.ELEMENT_SIZE * 32, Constant.ELEMENT_SIZE), Constant.ELEMENT_SIZE);
+                Constant.ELEMENT_SIZE * 32, Constant.ELEMENT_SIZE),
+                Constant.ELEMENT_SIZE, Constant.ELEMENT_SIZE);
         int c = 0;
         for(int i = 0; i < 4; ++i) {
             HashMap<Direction, Animation> spriteMap = new HashMap<>();
@@ -46,9 +48,12 @@ public class Enemy extends Tank {
             }
             sprites.add(spriteMap);
         }
-        speed = 2;
         bulletNum = 1;
         born = new Born(x, y);
+    }
+
+    public int getReward() {
+        return REWARD[type];
     }
 
     public Born getBorn() {
@@ -92,15 +97,6 @@ public class Enemy extends Tank {
     }
 
     @Override
-    public boolean encounterSide() {
-        if(x - speed < 0 || x + speed > Constant.FRAME_WIDTH || y - speed < 0 || y + speed > Constant.FRAME_HEIGHT) {
-            //stay();
-            return true;
-        }
-        return super.encounterSide();
-    }
-
-    @Override
     public void action() {
         move();
     }
@@ -110,22 +106,34 @@ public class Enemy extends Tank {
         oldX = x;
         oldY = y;
 
-        if(direction.up()) {
-            if(y - speed >= 0)
-            this.y -= speed;
-        }else if(direction.down()) {
-            if(y + speed + height <= Constant.FRAME_HEIGHT)
-            this.y += speed;
-        }else if(direction.right()) {
-            if(x + speed + width <= Constant.FRAME_WIDTH)
-            this.x += speed;
-        }else if(direction.left()) {
-            if(x - speed >= 0)
-            this.x -= speed;
+        if (direction.up()) {
+            if (y - speed >= 0) {
+                this.y -= speed;
+            }else{
+                y = 0;
+            }
+        } else if (direction.down()) {
+            if (y + speed + height * 2 <= Constant.FRAME_HEIGHT + 3) {
+                this.y += speed;
+            } else {
+                y = Constant.FRAME_HEIGHT - height * 2 + 3;
+            }
+        } else if (direction.right()) {
+            if (x + speed + width <= Constant.GAME_WIDTH) {
+                this.x += speed;
+            }else{
+                x = Constant.GAME_WIDTH - width;
+            }
+        } else if (direction.left()) {
+            if (x - speed >= 0) {
+                this.x -= speed;
+            }else{
+                this.x = 0;
+            }
         }
 
         step--;
-        if(step <= 0) {
+        if (step <= 0) {
             int r = CommonUtils.nextInt(0, 4);
             direction = Direction.values()[r];
             step = CommonUtils.nextInt(0, 50) + 30;

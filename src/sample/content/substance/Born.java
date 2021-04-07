@@ -20,7 +20,7 @@ public class Born extends BaseElement implements IBulletCross, ITankCross {
         super(x, y);
         BufferedImage[] act = new BufferedImage[4];
         SpriteSheet sheet = new SpriteSheet(TextureAtlas.cut(16 * Constant.ELEMENT_SIZE, 4 * Constant.ELEMENT_SIZE,
-                Constant.ELEMENT_SIZE * 4, Constant.ELEMENT_SIZE), Constant.ELEMENT_SIZE);
+                Constant.ELEMENT_SIZE * 4, Constant.ELEMENT_SIZE), Constant.ELEMENT_SIZE, Constant.ELEMENT_SIZE);
         for(int i = 0; i < 4; ++i) {
             act[i] = sheet.getSprite(i);
         }

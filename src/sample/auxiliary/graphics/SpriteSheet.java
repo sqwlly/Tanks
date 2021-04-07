@@ -7,14 +7,15 @@ import java.awt.image.BufferedImage;
 public class SpriteSheet {
     private BufferedImage sheet;
     private int spriteCount;
-    private int size;
+    private int w, h;
     private int spritesInWidth;
 
-    public SpriteSheet(BufferedImage sheet, int size) {
+    public SpriteSheet(BufferedImage sheet, int w, int h) {
         this.sheet = sheet;
-        this.size = size;
-        this.spritesInWidth = sheet.getWidth() / size;
-        this.spriteCount = spritesInWidth * (sheet.getHeight() / size);
+        this.w = w;
+        this.h = h;
+        this.spritesInWidth = sheet.getWidth() / w;
+        this.spriteCount = spritesInWidth * (sheet.getHeight() / h);
 //        System.out.println("spriteCount = " + spriteCount);
     }
 
@@ -25,14 +26,16 @@ public class SpriteSheet {
      */
     public BufferedImage getSprite(int index) {
         index = index % spriteCount;
-        int x = index % spritesInWidth * size;
-        int y = index / spritesInWidth * size;
-        return sheet.getSubimage(x, y, size, size);
+        int x = index % spritesInWidth * w;
+        int y = index / spritesInWidth * h;
+        return sheet.getSubimage(x, y, w, h);
     }
 
-    public int getSize() {
-        return size;
+    public int getW() {
+        return w;
     }
+
+    public int getH() { return h; }
 
     public int getSpriteCount() {
         return spriteCount;
