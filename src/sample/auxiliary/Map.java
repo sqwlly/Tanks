@@ -15,7 +15,6 @@ public class Map {
     private final int width = 26, height = 26;
     private int[][] map;
     private IDraw[][] cells; //先暂时放着吧
-    private Player player;
     private Queue<Enemy> enemies;
     private String[] enemyType;
 
@@ -24,15 +23,8 @@ public class Map {
     }
 
     private int sumReward;
-    public Player getPlayer() {
-        return player;
-    }
 
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
-    public Map(String file) {
+    public Map(String file, Player player) {
         BufferedReader br = ResourceLoader.loadMapConfig(file);
         String delimiters = "";
         try {
@@ -46,24 +38,31 @@ public class Map {
                     map[i][j] = Integer.parseInt(msg[j]);
                 }
             }
-            loadMap();
+            loadMap(player);
         }catch (IOException ignored) {
 
         }
     }
 
-    public void loadMap() {
-        for(ElementBean bean : ElementBean.values()) {
-            bean.getService().init();
-        }
+    public void loadMap(Player player) {
         ElementBean.Substance.getService().add(new Home(6 * Constant.ELEMENT_SIZE, 12 * Constant.ELEMENT_SIZE));
-        playerInit();
         enemyInit();
+        playerInit(player);
         for(int i = 0; i < height; ++i) {
             for(int j = 0; j < width; ++j) {
                 getEntity(map[i][j], j * Constant.ELEMENT_SIZE / 2, i * Constant.ELEMENT_SIZE / 2);
             }
         }
+    }
+
+    public void playerInit(Player player) {
+        player.setX(4 * Constant.ELEMENT_SIZE);
+        player.setY(12 * Constant.ELEMENT_SIZE);
+        player.setBorn(new Born(player.getX(), player.getY()));
+        player.setInvincible(new Invincible(player.getX(), player.getY()));
+        ElementBean.Player.getService().add(player);
+        ElementBean.Substance.getService().add(player.getBorn());
+        ElementBean.Substance.getService().add(player.getInvincible());
     }
 
     public void getEntity(int type, int x, int y) {
@@ -83,13 +82,6 @@ public class Map {
         }
     }
 
-    public void playerInit() {
-        player = new Player(4 * Constant.ELEMENT_SIZE, 12 * Constant.ELEMENT_SIZE);
-        ElementBean.Player.getService().add(player);
-        ElementBean.Substance.getService().add(player.getBorn());
-        ElementBean.Substance.getService().add(player.getInvincible());
-    }
-
     public void enemyInit() {
         enemies = new LinkedList<>();
         for (String s : enemyType) {
@@ -98,8 +90,8 @@ public class Map {
             //随机产生横坐标，并且保证当前坐标没有障碍物（即为空0）
             do {
                 x = CommonUtils.nextInt(0, 24);
-//                System.out.println(x + "," + 0 + " = " + getCell(0, x));
-            } while (getCell(x, 0) != 0 && getCell(x, 1) != 0);
+                System.out.println(x + "," + 0 + " = " + getCell(0, x));
+            } while (getCell(0, x) != 0 || getCell(1, x) != 0);
             enemies.add(new Enemy(x / 2 * Constant.ELEMENT_SIZE, 0, Integer.parseInt(s) - 1));
         }
 

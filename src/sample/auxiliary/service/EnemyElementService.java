@@ -1,5 +1,6 @@
 package sample.auxiliary.service;
 
+import sample.auxiliary.Progress;
 import sample.base.BaseElement;
 import sample.base.ElementService;
 import sample.base.ITankCross;
@@ -9,6 +10,7 @@ import sample.content.player.Player;
 import sample.content.substance.Bullet;
 
 public class EnemyElementService extends ElementService {
+
     @Override
     public void init() {
         super.init();

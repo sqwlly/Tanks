@@ -1,9 +1,5 @@
 package sample.auxiliary.graphics;
 
-import sample.auxiliary.Constant;
-import sample.auxiliary.ResourceLoader;
-
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 

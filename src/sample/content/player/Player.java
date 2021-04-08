@@ -9,10 +9,7 @@ import sample.auxiliary.graphics.Sprite;
 import sample.auxiliary.graphics.SpriteSheet;
 import sample.auxiliary.graphics.TextureAtlas;
 import sample.base.*;
-import sample.content.substance.Born;
-import sample.content.substance.Bullet;
-import sample.content.substance.GameOver;
-import sample.content.substance.Invincible;
+import sample.content.substance.*;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -20,32 +17,57 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-@IElement(width = Constant.ELEMENT_SIZE - 3, height = Constant.ELEMENT_SIZE - 3, speed = 2)
+@IElement(width = Constant.ELEMENT_SIZE - 2, height = Constant.ELEMENT_SIZE - 2, speed = 2)
 public class Player extends Tank{
     private final static int size = Constant.ELEMENT_SIZE;
 
     private final static float scale = 1f;
     private int score;
-    private final HashMap<Direction, Animation> sprites = new HashMap<>();
+    private int level;
+    private final List<HashMap<Direction, Animation>> sprite = new ArrayList<>();
     private Invincible invincible;
-    private final Born born;
-    private Animation animation;
+    private Born born;
+
+    public void addLevel() {
+        level++;
+    }
+
+    public void initLevel() {
+        level = 0;
+    }
+
+    public void setBorn(Born born) {
+        this.born = born;
+    }
+
+    public void setInvincible(Invincible invincible) {
+        this.invincible = invincible;
+    }
+
     public Player(int x, int y) {
         super(x, y);
-        int cnt = 0;
+        int c = 0;
         BufferedImage[] act = new BufferedImage[2];
-        SpriteSheet sheet = new SpriteSheet(TextureAtlas.cut(0, 0, size * 8, size), size, size);
-        for(Direction d : Direction.values()) {
-            for(int i = 0; i < 2; ++i) {
-                act[i] = sheet.getSprite(cnt++);
+        SpriteSheet sheet = new SpriteSheet(TextureAtlas.cut(0, 0, size * 32, size), size, size);
+        for(int i = 0; i < 4; ++i) {
+            //一共四个方向，四种形态
+            HashMap<Direction, Animation> sprites = new HashMap<>();
+            for(Direction d : Direction.values()) {
+                //一个方向有两帧
+                for(int j = 0; j < 2; ++j) {
+                    act[j] = sheet.getSprite(c++);
+                }
+                Animation animation = new Animation(act, 50);
+                sprites.put(d, animation);
+                animation.start();
             }
-            animation = new Animation(act, 50);
-            sprites.put(d, animation);
-            animation.start();
+            //将一种形态的四个方向animation加入sprite列表，随后可以通过level来分别取得不同形态
+            sprite.add(sprites);
         }
+        initLevel();
         born = new Born(x, y);
         invincible = new Invincible(x, y);
-        bulletNum = 1;
+        bulletNumInit();
     }
 
     public void beHurt() {
@@ -66,20 +88,11 @@ public class Player extends Tank{
 
     @Override
     public void action() {
-       // System.out.println(getHp());
-       // if(alive()) {
-            move();
-            invincible.movedByPlayer(this);
-            if (Keys.SPACE.use()) {
-                shoot();
-            }
-//        }else {
-//            if (gameOver == null) {
-//                gameOver = new GameOver();
-//                System.out.println("new GameOver");
-//                ElementBean.Substance.getService().add(gameOver);
-//            }
-//        }
+        move();
+        invincible.movedByPlayer(this);
+        if (Keys.SPACE.use()) {
+            shoot();
+        }
     }
 
     public Invincible getInvincible() {
@@ -152,7 +165,9 @@ public class Player extends Tank{
 
     @Override
     public void drawImage(Graphics g) {
-        g.drawImage(sprites.get(direction).getSprite(), x, y, width, height, null);
-        sprites.get(direction).update();
+        g.drawImage(sprite.get(level).get(direction).getSprite(), x, y, width, height, null);
+//        g.drawImage(sprites.get(direction).getSprite(), x, y, width, height, null);
+//        sprites.get(direction).update();
+        sprite.get(level).get(direction).update();
     }
 }

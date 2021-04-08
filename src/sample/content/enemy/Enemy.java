@@ -19,6 +19,10 @@ import java.util.List;
 
 @IElement(width = Constant.ELEMENT_SIZE - 2, height = Constant.ELEMENT_SIZE - 2, speed = 2)
 public class Enemy extends Tank {
+    public int getType() {
+        return type;
+    }
+
     private int type;
     private Born born;
     private final List<HashMap<Direction, Animation>> sprites;
@@ -48,7 +52,7 @@ public class Enemy extends Tank {
             }
             sprites.add(spriteMap);
         }
-        bulletNum = 1;
+        bulletNumInit();
         born = new Born(x, y);
     }
 

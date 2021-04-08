@@ -1,14 +1,12 @@
 package sample.auxiliary.graphics;
 
-import sample.auxiliary.Constant;
-
 import java.awt.image.BufferedImage;
 
 public class SpriteSheet {
     private BufferedImage sheet;
-    private int spriteCount;
-    private int w, h;
-    private int spritesInWidth;
+    private final int spriteCount;
+    private final int w, h;
+    private final int spritesInWidth;
 
     public SpriteSheet(BufferedImage sheet, int w, int h) {
         this.sheet = sheet;

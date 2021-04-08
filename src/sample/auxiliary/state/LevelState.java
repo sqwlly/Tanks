@@ -26,11 +26,16 @@ public class LevelState extends GameState implements ActionListener {
 
     public void init() {
         progress = Progress.getInstance();
+        progress.set("currentScore", 0 + "");
+        for(int i = 0; i < 4; ++i) {
+            progress.set("killed" + (i + 1), 0 + "");
+        }
+
         Level_ID = Integer.parseInt(progress.get("levelToPlay"));
         if(Level_ID >= 19) {
             setLevel_ID(Level_ID = 1);
         }
-        map = new Map("/levels/Level_" + Level_ID);
+        map = new Map("/levels/Level_" + Level_ID, gsm.getPlayer());
     }
 
     @Override
@@ -43,26 +48,16 @@ public class LevelState extends GameState implements ActionListener {
         progress.store();
     }
 
-    public void wholeAction(Player player) {
-        //玩家
-        ElementService playerService = (ElementService) ElementBean.Player.getService();
-        ElementService substanceService = (SubstanceElementService) ElementBean.Substance.getService();
-        ElementService enemyService = (EnemyElementService) ElementBean.Enemy.getService();
-        enemyService.action(player, playerService);
-        substanceService.action(player, enemyService);
-        substanceService.action(player, playerService);
-        playerService.action(player);
-
-        //暂时就先写在这里吧。
-        //System.out.println(player.getScore());
+    public void action(Player player) {
+//        System.out.println(player.getScore());
         if (player.getScore() >= 100 && finishTime == 0) {
             finishTime = System.currentTimeMillis();
-            player.initScore();
         }
-        if(player.getScore() >= 100 && System.currentTimeMillis() - finishTime > 5000) {
-            setLevel_ID(Level_ID + 1);
+        //清除完所有坦克即可进入下一关
+        if(player.getScore() >= 100 && System.currentTimeMillis() - finishTime > 3500) {
             player.initScore();
             gsm.setGameState(STATE.COUNT);
+            setLevel_ID(Level_ID + 1);
         }
     }
 

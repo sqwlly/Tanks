@@ -5,6 +5,8 @@ import sample.auxiliary.GameStateManager;
 import sample.auxiliary.Progress;
 import sample.auxiliary.ResourceLoader;
 import sample.auxiliary.graphics.Sprite;
+import sample.auxiliary.graphics.SpriteSheet;
+import sample.auxiliary.graphics.TextureAtlas;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -13,12 +15,14 @@ import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SettleScoreState extends GameState {
     private GameStateManager gsm;
 
     private Progress pr;
-    private Sprite sprite;
+    private final List<Sprite> sprites = new ArrayList<>();
     private BufferedImage coin;
 
     private int levelID;
@@ -30,7 +34,12 @@ public class SettleScoreState extends GameState {
     public SettleScoreState(GameStateManager gsm) {
         this.gsm = gsm;
         pr = Progress.getInstance();
-
+        init();
+        SpriteSheet sheet = new SpriteSheet(TextureAtlas.cut(0, Constant.ELEMENT_SIZE * 2,
+                Constant.ELEMENT_SIZE * 32, Constant.ELEMENT_SIZE), Constant.ELEMENT_SIZE, Constant.ELEMENT_SIZE);
+        for(int i = 0; i < 4; ++i) {
+            sprites.add(new Sprite(sheet, 1, i * 8));
+        }
         levelID = Integer.parseInt(pr.get("levelToPlay"));
         try {
             font = Font.createFont(Font.TRUETYPE_FONT, ResourceLoader.loadFontStream("joystix.ttf")).deriveFont(20f);
@@ -57,31 +66,30 @@ public class SettleScoreState extends GameState {
 
         g.setFont(font.deriveFont(20f));
         g.setColor(Color.WHITE);
-        g.drawString("STAGE " + levelID, Constant.ELEMENT_SIZE * 6 - 17, Constant.ELEMENT_SIZE * 2);
+        g.drawString("STAGE " + levelID, Constant.ELEMENT_SIZE * 6 - 17, Constant.ELEMENT_SIZE * 3 / 2);
 
         g.setColor(Color.RED);
-        g.drawString("I-PLAYER", Constant.ELEMENT_SIZE * 2 - 17, Constant.ELEMENT_SIZE * 4);
+        g.drawString("I-PLAYER", Constant.ELEMENT_SIZE * 2 - 17, Constant.ELEMENT_SIZE * 3);
         g.setColor(Color.YELLOW.darker());
-        g.drawString(pr.get("currentScore"), Constant.ELEMENT_SIZE * 5, Constant.ELEMENT_SIZE * 5);
+        int tx = Constant.ELEMENT_SIZE * 3;
+        g.drawString(pr.get("currentScore"), tx, Constant.ELEMENT_SIZE * 4);
 
         g.setColor(Color.WHITE);
         int killed = 0;
         for (int i = 0; i < 4; i++) {
+            int ty = Constant.ELEMENT_SIZE * 5 + i * (Constant.ELEMENT_SIZE + 10) + 10;
             g.drawString(Integer.parseInt(pr.get("killed" + (i + 1))) * (i + 1) + (Integer.parseInt(pr.get("killed" + (i + 1))) == 0 ? "" : "00"),
-                    Constant.ELEMENT_SIZE * 5, Constant.ELEMENT_SIZE * 6 + i * Constant.ELEMENT_SIZE);
-            g.drawString("PTS", Constant.ELEMENT_SIZE * 7, Constant.ELEMENT_SIZE * 6 + i * Constant.ELEMENT_SIZE);
-            g.drawString(pr.get("killed" + (i + 1)), Constant.ELEMENT_SIZE * 10, Constant.ELEMENT_SIZE * 6 + i * Constant.ELEMENT_SIZE);
-            //g.drawImage(sprite.getImage(0, i), 780, 310+i*70, 50, 50, null);
+                    tx, ty);
+            g.drawString("PTS", tx + Constant.ELEMENT_SIZE * 3, ty);
+            g.drawString(pr.get("killed" + (i + 1)), tx + Constant.ELEMENT_SIZE * 6, ty);
+            sprites.get(i).render(g, tx + Constant.ELEMENT_SIZE * 8, ty - 25);
             killed += Integer.parseInt(pr.get("killed" + (i + 1)));
         }
-        g.fillRect(Constant.ELEMENT_SIZE * 2 + 17, Constant.ELEMENT_SIZE * (6 + 4), Constant.FRAME_WIDTH * 2 / 3, 6);
-        g.drawString("TOTAL  " + killed, Constant.ELEMENT_SIZE * 6 + 17, Constant.ELEMENT_SIZE * 11);
-  //      g.drawString("COINS   10", Constant.ELEMENT_SIZE * 2 + Constant.ELEMENT_SIZE / 2, Constant.ELEMENT_SIZE * 6 + Constant.ELEMENT_SIZE / 2);
-
+        int ty = Constant.ELEMENT_SIZE * 6 + 3 * (Constant.ELEMENT_SIZE + 10);
+        g.fillRect(Constant.ELEMENT_SIZE * 2 + 17, ty, Constant.FRAME_WIDTH * 2 / 3, 6);
+        g.drawString("TOTAL  " + killed, Constant.ELEMENT_SIZE * 5 + 17, ty + 34);
         g.setColor(Color.decode("#636363"));
         g.setFont(font.deriveFont(10f));
-        g.drawString("Click to continue", Constant.ELEMENT_SIZE * 3, Constant.ELEMENT_SIZE * 12);
-
-        //g.drawImage(coin, 790, 670, 30, 30, null);
+        g.drawString("Click to continue", Constant.ELEMENT_SIZE * 3, Constant.ELEMENT_SIZE * 12 + 17);
     }
 }

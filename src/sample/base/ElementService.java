@@ -1,8 +1,5 @@
 package sample.base;
 
-import sample.auxiliary.Constant;
-import sample.auxiliary.ElementBean;
-import sample.content.enemy.Enemy;
 import sample.content.player.Player;
 import sample.content.substance.*;
 
@@ -10,7 +7,6 @@ import java.awt.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public abstract class ElementService<T extends BaseElement> extends BaseService<T> {
-    private Player player;
     public final <S extends BaseElement> void action(Player player, ElementService<S>... services) {
         this.getElementList().forEach(element -> {
             if(element.remove(player)) {
