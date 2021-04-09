@@ -13,10 +13,10 @@ import sample.base.ITankCross;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-@IElement(width = Constant.ELEMENT_SIZE * 2, height = Constant.ELEMENT_SIZE * 2)
+@IElement(width = Constant.ELEMENT_SIZE * 2, height = Constant.ELEMENT_SIZE * 2, defense = 1000)
 public class TankBoom extends BaseElement implements ITankCross, IBulletCross {
 
-    private Animation animation;
+    private final Animation animation;
 
     public TankBoom(int x, int y) {
         super(x, y);

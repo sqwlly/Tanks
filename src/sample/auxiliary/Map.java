@@ -7,7 +7,6 @@ import sample.content.substance.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -17,9 +16,14 @@ public class Map {
     private IDraw[][] cells; //先暂时放着吧
     private Queue<Enemy> enemies;
     private String[] enemyType;
+    private final static int EAGLE_X = 6 * Constant.ELEMENT_SIZE, EAGLE_Y = 12 * Constant.ELEMENT_SIZE;
 
     public int getSumReward() {
         return sumReward;
+    }
+
+    public void addSumReward(int score) {
+        sumReward += score;
     }
 
     private int sumReward;
@@ -45,7 +49,8 @@ public class Map {
     }
 
     public void loadMap(Player player) {
-        ElementBean.Substance.getService().add(new Home(6 * Constant.ELEMENT_SIZE, 12 * Constant.ELEMENT_SIZE));
+
+        ElementBean.Substance.getService().add(new Home(EAGLE_X, EAGLE_Y));
         enemyInit();
         playerInit(player);
         for(int i = 0; i < height; ++i) {
@@ -59,10 +64,9 @@ public class Map {
         player.setX(4 * Constant.ELEMENT_SIZE);
         player.setY(12 * Constant.ELEMENT_SIZE);
         player.setBorn(new Born(player.getX(), player.getY()));
-        player.setInvincible(new Invincible(player.getX(), player.getY()));
+        player.beInvincible();
         ElementBean.Player.getService().add(player);
         ElementBean.Substance.getService().add(player.getBorn());
-        ElementBean.Substance.getService().add(player.getInvincible());
     }
 
     public void getEntity(int type, int x, int y) {

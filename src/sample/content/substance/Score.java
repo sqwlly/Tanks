@@ -18,8 +18,9 @@ import java.util.List;
 
 @IElement
 public class Score extends BaseElement implements IBulletCross, ITankCross {
-    private int type;
+    private final int type;
     private final List<Animation> animations = new ArrayList<>();
+
     public Score(int x, int y, int type) {
         super(x, y);
         SpriteSheet sheet = new SpriteSheet(TextureAtlas.cut(27 * Constant.ELEMENT_SIZE, 5 * Constant.ELEMENT_SIZE,
@@ -37,7 +38,7 @@ public class Score extends BaseElement implements IBulletCross, ITankCross {
     @Override
     public void drawImage(Graphics g) {
         if(animations.get(type).hasPlayed(5)) {
-            ElementBean.Substance.getService().remove(this);
+            die();
             return;
         }
         animations.get(type).update();

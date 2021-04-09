@@ -15,7 +15,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-@IElement
+@IElement(defense = 1000)
 public class BulletBoom extends BaseElement implements IBulletCross {
 
     private Animation animation;

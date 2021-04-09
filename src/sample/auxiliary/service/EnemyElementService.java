@@ -21,8 +21,9 @@ public class EnemyElementService extends ElementService {
         if(myself == other) return false;
         if(myself.intersects(other)) {
             if (other instanceof Bullet) {
-                ((Bullet) other).boom();
-                myself.subHp();
+                other.die();
+                int subValue = (int) ((double) myself.getDefense().getValue() / myself.getHp().getValue() * other.getAttack().getValue());
+                myself.getHp().subtract(subValue);
                 return true;
             }
             if(myself instanceof Tank && other instanceof Tank) {
@@ -30,7 +31,12 @@ public class EnemyElementService extends ElementService {
                 ((Tank) other).stay();
             }
             if(myself instanceof Bullet) {
-                ((Bullet) myself).boom();
+                myself.die();
+                //如果玩家不处于无敌状态
+                if(!((Player) other).getInvincible().alive()) {
+                    other.getHp().subtract();
+                }
+                System.out.println(other.getHp().getValue());
                 //如果敌人子弹击中玩家，那么想要玩家爆炸消失，就return true.
             }
         }

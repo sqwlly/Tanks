@@ -29,7 +29,9 @@ public class Player extends Tank{
     private Born born;
 
     public void addLevel() {
-        level++;
+        if(level + 1 < 4) {
+            level++;
+        };
     }
 
     public void initLevel() {
@@ -38,10 +40,6 @@ public class Player extends Tank{
 
     public void setBorn(Born born) {
         this.born = born;
-    }
-
-    public void setInvincible(Invincible invincible) {
-        this.invincible = invincible;
     }
 
     public Player(int x, int y) {
@@ -95,6 +93,12 @@ public class Player extends Tank{
         }
     }
 
+    //无敌状态
+    public void beInvincible() {
+        invincible = new Invincible(x, y);
+        ElementBean.Substance.getService().add(invincible);
+    }
+
     public Invincible getInvincible() {
         return invincible;
     }
@@ -127,7 +131,9 @@ public class Player extends Tank{
                 ty = y + height / 2 - 3;
                 break;
         }
-        ElementBean.Player.getService().add(new Bullet(tx, ty, direction, this));
+        Bullet bullet = new Bullet(tx, ty, direction, this);
+        bullet.setLevel(level);
+        ElementBean.Player.getService().add(bullet);
     }
 
     @Override
@@ -135,27 +141,27 @@ public class Player extends Tank{
         oldX = x;
         oldY = y;
         if (Keys.UP.use()) {
-            if (y - speed > 0) {
-                y = y - speed;
+            if (y - speed.getValue() > 0) {
+                y = y - speed.getValue();
             }
             this.direction = Direction.UP;
         } else if (Keys.DOWN.use()) {
-            if (y + speed < Constant.FRAME_HEIGHT - height * 2 + 3) {
-                y = y + speed;
+            if (y + speed.getValue() < Constant.FRAME_HEIGHT - height * 2 + 3) {
+                y = y + speed.getValue();
             } else {
                 y = Constant.FRAME_HEIGHT - height * 2 + 3;
             }
             this.direction = Direction.DOWN;
         } else if (Keys.LEFT.use()) {
-            if (this.x - speed > 0) {
-                x = x - speed;
+            if (this.x - speed.getValue() > 0) {
+                x = x - speed.getValue();
             }else{
                 x = 0;
             }
             this.direction = Direction.LEFT;
         } else if (Keys.RIGHT.use()) {
-            if (this.x + width + speed < Constant.GAME_WIDTH) {
-                x = x + speed;
+            if (this.x + width + speed.getValue() < Constant.GAME_WIDTH) {
+                x = x + speed.getValue();
             } else {
                 x = Constant.GAME_WIDTH - width;
             }
@@ -166,8 +172,6 @@ public class Player extends Tank{
     @Override
     public void drawImage(Graphics g) {
         g.drawImage(sprite.get(level).get(direction).getSprite(), x, y, width, height, null);
-//        g.drawImage(sprites.get(direction).getSprite(), x, y, width, height, null);
-//        sprites.get(direction).update();
         sprite.get(level).get(direction).update();
     }
 }

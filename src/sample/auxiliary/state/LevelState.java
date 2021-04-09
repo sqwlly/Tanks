@@ -1,10 +1,9 @@
 package sample.auxiliary.state;
 
 import sample.auxiliary.*;
-import sample.auxiliary.service.EnemyElementService;
-import sample.auxiliary.service.SubstanceElementService;
-import sample.base.ElementService;
 import sample.content.player.Player;
+import sample.content.substance.props.Prop;
+import sample.content.substance.props.Props;
 
 import javax.swing.*;
 import java.awt.*;
@@ -48,13 +47,21 @@ public class LevelState extends GameState implements ActionListener {
         progress.store();
     }
 
+    public void generateProps() {
+        Props p = Props.values()[CommonUtils.nextInt(0, Props.values().length)];
+//        Props p = Props.Star;
+        int tx = CommonUtils.nextInt(0, Constant.GAME_WIDTH - 34);
+        int ty = CommonUtils.nextInt(0, Constant.GAME_HEIGHT - 34);
+        new Prop(tx, ty, p);
+    }
+
     public void action(Player player) {
 //        System.out.println(player.getScore());
-        if (player.getScore() >= 100 && finishTime == 0) {
+        if (player.getScore() >= map.getSumReward() && finishTime == 0) {
             finishTime = System.currentTimeMillis();
         }
         //清除完所有坦克即可进入下一关
-        if(player.getScore() >= 100 && System.currentTimeMillis() - finishTime > 3500) {
+        if(player.getScore() >= map.getSumReward() && System.currentTimeMillis() - finishTime > 3500) {
             player.initScore();
             gsm.setGameState(STATE.COUNT);
             setLevel_ID(Level_ID + 1);

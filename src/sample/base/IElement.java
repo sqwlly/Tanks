@@ -20,4 +20,8 @@ public @interface IElement {
     int hp() default 50;//血量
 
     int speed() default 3;//速度
+
+    int attack() default 0; //攻击力
+
+    int defense() default 50; //防御力
 }

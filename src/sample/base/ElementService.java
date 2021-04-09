@@ -1,7 +1,9 @@
 package sample.base;
 
+import sample.auxiliary.Progress;
 import sample.content.player.Player;
 import sample.content.substance.*;
+import sample.content.substance.props.Prop;
 
 import java.awt.*;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -9,6 +11,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public abstract class ElementService<T extends BaseElement> extends BaseService<T> {
     public final <S extends BaseElement> void action(Player player, ElementService<S>... services) {
         this.getElementList().forEach(element -> {
+            if(!element.alive()) {
+                this.remove(element);
+            }
+
             if(element.remove(player)) {
                 this.remove(element);
                 return;
@@ -16,7 +22,8 @@ public abstract class ElementService<T extends BaseElement> extends BaseService<
 
             if(element instanceof Home) {
                 if(!element.alive()) {
-                    player.subHp();
+                    player.die();
+                    Progress.getInstance().set("hearts", "0");
                 }
             }
 
@@ -36,12 +43,14 @@ public abstract class ElementService<T extends BaseElement> extends BaseService<
                         //相交处理 处理结束之后是否把对方从对方的元素列表中移除
                         boolean removeOther = this.intersectsHandle(element, serviceElement);
                         if (removeOther) {
-//                            serviceElement.remove(serviceElement);
-//                            System.out.println("remove");
                             service.remove(serviceElement);
                         }
                     }
                 });
+            }
+            //停止状态不能做行动
+            if (element.isStop()) {
+                return;
             }
             //动作
             element.action();

@@ -30,13 +30,6 @@ public class GameStateManager implements IDraw {
         player = new Player(4 * Constant.ELEMENT_SIZE, 12 * Constant.ELEMENT_SIZE);
         setGameState(STATE.LEVEL);
         action();
-        //playerInit();
-    }
-
-    public void playerInit() {
-        ElementBean.Player.getService().add(player);
-        ElementBean.Substance.getService().add(player.getBorn());
-        ElementBean.Substance.getService().add(player.getInvincible());
     }
 
     public void mouseClicked(MouseEvent e){
@@ -50,6 +43,11 @@ public class GameStateManager implements IDraw {
                 this.wholeAction(player);
                 if(gameState instanceof LevelState) {
                     ((LevelState) gameState).action(player);
+                }
+            });
+            CommonUtils.task(15000, () -> {
+                if(gameState instanceof LevelState) {
+                    ((LevelState) gameState).generateProps();
                 }
             });
             //按时间周期生成敌方坦克

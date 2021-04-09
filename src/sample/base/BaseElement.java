@@ -2,6 +2,7 @@ package sample.base;
 
 import sample.auxiliary.Constant;
 import sample.auxiliary.Direction;
+import sample.content.common.Attribute;
 import sample.content.player.Player;
 
 import java.awt.*;
@@ -9,9 +10,22 @@ import java.awt.*;
 public abstract class BaseElement implements IDraw{
     protected int x, y;
     protected int width, height;
-    protected int speed;
-    protected int hp;
+//    protected int speed;
     protected Direction direction;
+
+
+    public Attribute getAttack() {
+        return attack;
+    }
+
+    public Attribute getDefense() {
+        return defense;
+    }
+
+    protected Attribute hp;
+    protected Attribute attack;
+    protected Attribute defense;
+    protected Attribute speed;
 
     public BaseElement() {
         this.width = Constant.ELEMENT_SIZE;
@@ -19,26 +33,40 @@ public abstract class BaseElement implements IDraw{
         this.direction = Direction.LEFT;
     }
 
-    public float getSpeed() {
-        return speed;
+    public int getSpeed() {
+        return speed.getValue();
     }
 
     public void setSpeed(int speed) {
-        this.speed = speed;
+        this.speed.setValue(speed);
     }
+
+    protected boolean stop;
 
     public BaseElement(int x, int y) {
         IElement ann = this.getClass().getAnnotation(IElement.class);
         this.x = x;
         this.y = y;
-        this.speed = ann.speed();
         this.width = ann.width();
         this.height = ann.height();
         this.direction = ann.direction();
-        this.hp = ann.hp();
+        this.hp = new Attribute(ann.hp());
+        this.attack = new Attribute(ann.attack());
+        this.defense = new Attribute(ann.defense());
+        this.speed = new Attribute(ann.speed());
+        this.stop = false;
+    }
+
+    public boolean isStop() {
+        return stop;
+    }
+
+    public void setStop(boolean stop) {
+        this.stop = stop;
     }
 
     public void action() {
+
     }
 
 //    protected void move() {
@@ -81,7 +109,7 @@ public abstract class BaseElement implements IDraw{
      * @return void
      */
     public boolean encounterSide() {
-        if(x - speed <= 0 || x + speed >= Constant.GAME_WIDTH || y - speed <= 0 || y  + speed >= Constant.FRAME_HEIGHT) {
+        if(x - speed.getValue() <= 0 || x + speed.getValue() >= Constant.GAME_WIDTH || y - speed.getValue() <= 0 || y  + speed.getValue() >= Constant.FRAME_HEIGHT) {
             return true;
         }
         return false;
@@ -106,23 +134,15 @@ public abstract class BaseElement implements IDraw{
     }
 
     public void die() {
-        this.hp = 0;
+        this.hp.setValue(0);
     }
 
-    public void setHp(int hp) {
-        this.hp = hp;
-    }
-
-    public int getHp() {
+    public Attribute getHp() {
         return hp;
     }
 
-    public void subHp() {
-        hp -= 50;
-    }
-
     public boolean alive() {
-        return hp > 0;
+        return hp.getValue() > 0;
     }
 
     public int getX() {

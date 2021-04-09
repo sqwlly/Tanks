@@ -19,7 +19,7 @@ import java.awt.image.BufferedImage;
 @IElement
 public class Invincible extends BaseElement implements IBulletCross, ITankCross {
 
-    private Animation animation;
+    private final Animation animation;
 
     public Invincible(int x, int y) {
         super(x, y);
@@ -39,10 +39,11 @@ public class Invincible extends BaseElement implements IBulletCross, ITankCross 
 
     @Override
     public void drawImage(Graphics g) {
-        if(animation.hasPlayed(50)) {
+        if(animation.hasPlayed(150)) {
+            die();
             return;
         }
-        g.drawImage(animation.getSprite(), x, y, Constant.ELEMENT_SIZE - 3, Constant.ELEMENT_SIZE - 3, null);
+        g.drawImage(animation.getSprite(), x, y, Constant.ELEMENT_SIZE - 2, Constant.ELEMENT_SIZE - 2, null);
         animation.update();
     }
 }

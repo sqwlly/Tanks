@@ -7,29 +7,21 @@ import sample.auxiliary.graphics.Sprite;
 import sample.auxiliary.graphics.SpriteSheet;
 import sample.auxiliary.graphics.TextureAtlas;
 import sample.base.*;
+import sample.content.common.Attribute;
 
 import java.awt.*;
 import java.util.HashMap;
 
-@IElement(width = 9, height = 10, speed = 6)
+@IElement(width = 9, height = 10, speed = 5, attack = 51)
 public class Bullet extends BaseElement implements IMovable {
 
-    private HashMap<Direction, Sprite> spriteMap;
+    private final HashMap<Direction, Sprite> spriteMap;
 
-    private boolean destroy_Steel;
-
-    public boolean isDestroy_Steel() {
-        return destroy_Steel;
-    }
-
-    public void setDestroy_Steel(boolean destroy_Steel) {
-        this.destroy_Steel = destroy_Steel;
-    }
-
-    private Tank from;
+    private final Tank from;
 
     public Bullet(int x, int y, Direction direction, Tank from) {
         super(x, y);
+        attack = new Attribute(51);
         this.from = from;
         this.direction = direction;
         spriteMap = new HashMap<>();
@@ -39,7 +31,18 @@ public class Bullet extends BaseElement implements IMovable {
         spriteMap.put(Direction.DOWN, new Sprite(sheet, 1, 1));
         spriteMap.put(Direction.LEFT, new Sprite(sheet, 1, 2));
         spriteMap.put(Direction.RIGHT, new Sprite(sheet, 1, 3));
-        destroy_Steel = false;
+        this.getHp().setSubBaseValue(100);
+    }
+
+    public void setLevel(int level) {
+        if(level >= 1) {
+            speed.setValue(speed.getValue() * 3 / 2);
+        }
+        if(level == 2) {
+            attack.add(51);
+        }else if(level == 3) {
+            attack.add(101);
+        }
     }
 
     @Override
@@ -50,18 +53,23 @@ public class Bullet extends BaseElement implements IMovable {
     @Override
     public void move() {
         if(direction.up()) {
-            this.y -= speed;
+            this.y -= speed.getValue();
         }else if(direction.down()) {
-            this.y += speed;
+            this.y += speed.getValue();
         }else if(direction.right()) {
-            this.x += speed;
+            this.x += speed.getValue();
         }else if(direction.left()) {
-            this.x -= speed;
+            this.x -= speed.getValue();
         }
     }
 
+    @Override
+    public void die() {
+        this.hp.setValue(0);
+        boom();
+    }
+
     public void boom() {
-        die();
         ElementBean.Substance.getService().add(new BulletBoom(x - 17 + 5, y - 17 + 5));
         if(!from.fireAble()) {
             from.bulletNumAdd();
@@ -72,6 +80,7 @@ public class Bullet extends BaseElement implements IMovable {
     public boolean remove(BaseElement element) {
         if(!alive() || encounterSide()) {
             boom();
+//            System.out.println("bullet remove");
             return true;
         }
         return super.remove(element);

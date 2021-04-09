@@ -6,6 +6,7 @@ import sample.auxiliary.graphics.SpriteSheet;
 import sample.auxiliary.graphics.TextureAtlas;
 import sample.base.BaseElement;
 import sample.base.IElement;
+import sample.content.common.Attribute;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -13,8 +14,14 @@ import java.util.List;
 
 @IElement(width = Constant.ELEMENT_SIZE / 2, height = Constant.ELEMENT_SIZE / 2)
 public class Tile extends BaseElement {
-    
+
+    private Attribute defense;
     private int type;
+
+    public Attribute getDefense() {
+        return defense;
+    }
+
     private int[] state = new int[4];
     private int[][] sie;
     private SpriteSheet sheet;
@@ -24,6 +31,7 @@ public class Tile extends BaseElement {
     public Tile(int x, int y, int type) {
         super(x, y);
         this.type = type;
+        defense = new Attribute(50);
         sheet = new SpriteSheet(TextureAtlas.cut(4 * Constant.ELEMENT_SIZE, 5 * Constant.ELEMENT_SIZE,
                 15 * Constant.ELEMENT_SIZE, Constant.ELEMENT_SIZE), Constant.ELEMENT_SIZE, Constant.ELEMENT_SIZE);
         for(int i = 0; i < sheet.getSpriteCount(); ++i) {

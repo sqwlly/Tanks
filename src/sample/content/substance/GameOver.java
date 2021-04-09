@@ -34,6 +34,6 @@ public class GameOver extends BaseElement implements IMovable, ITankCross, IBull
         if(y <= Constant.FRAME_HEIGHT / 2 - height) {
             return;
         }
-        y -= speed;
+        y -= speed.getValue();
     }
 }

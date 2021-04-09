@@ -12,9 +12,9 @@ import sample.base.ITankCross;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-@IElement
+@IElement(defense = 1000)
 public class Born extends BaseElement implements IBulletCross, ITankCross {
-    private Animation animation;
+    private final Animation animation;
 
     public Born(int x, int y) {
         super(x, y);
@@ -30,7 +30,10 @@ public class Born extends BaseElement implements IBulletCross, ITankCross {
 
     @Override
     public void drawImage(Graphics g) {
-        if(animation.hasPlayed(5)) return;
+        if(animation.hasPlayed(5)) {
+            die();
+            return;
+        }
         g.drawImage(animation.getSprite(), x, y, null);
         animation.update();
     }

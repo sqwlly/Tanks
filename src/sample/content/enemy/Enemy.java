@@ -54,6 +54,9 @@ public class Enemy extends Tank {
         }
         bulletNumInit();
         born = new Born(x, y);
+        if(type == 3) {
+            hp.setValue(hp.getValue() * 4);
+        }
     }
 
     public int getReward() {
@@ -111,26 +114,26 @@ public class Enemy extends Tank {
         oldY = y;
 
         if (direction.up()) {
-            if (y - speed >= 0) {
-                this.y -= speed;
+            if (y - speed.getValue() >= 0) {
+                this.y -= speed.getValue();
             }else{
                 y = 0;
             }
         } else if (direction.down()) {
-            if (y + speed + height * 2 <= Constant.FRAME_HEIGHT + 3) {
-                this.y += speed;
+            if (y + speed.getValue() + height * 2 <= Constant.FRAME_HEIGHT + 3) {
+                this.y += speed.getValue();
             } else {
                 y = Constant.FRAME_HEIGHT - height * 2 + 3;
             }
         } else if (direction.right()) {
-            if (x + speed + width <= Constant.GAME_WIDTH) {
-                this.x += speed;
+            if (x + speed.getValue() + width <= Constant.GAME_WIDTH) {
+                this.x += speed.getValue();
             }else{
                 x = Constant.GAME_WIDTH - width;
             }
         } else if (direction.left()) {
-            if (x - speed >= 0) {
-                this.x -= speed;
+            if (x - speed.getValue() >= 0) {
+                this.x -= speed.getValue();
             }else{
                 this.x = 0;
             }

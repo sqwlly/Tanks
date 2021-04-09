@@ -15,8 +15,8 @@ public class Attribute {
         this.value = value;
         this.maxValue = maxValue;
         this.minValue = 0;
-        this.addBaseValue = 1;
-        this.subBaseValue = 1;
+        this.addBaseValue = 10;
+        this.subBaseValue = 10;
     }
 
     public boolean health() {

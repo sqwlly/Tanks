@@ -1,16 +1,12 @@
 package sample.base;
 
-import sample.auxiliary.Constant;
 import sample.auxiliary.ElementBean;
 import sample.auxiliary.Progress;
 import sample.content.enemy.Enemy;
 import sample.content.player.Player;
 import sample.content.substance.Born;
-import sample.content.substance.Bullet;
 import sample.content.substance.Score;
 import sample.content.substance.TankBoom;
-
-import java.util.List;
 
 public abstract class Tank extends BaseElement implements IMovable{
     protected Born born;

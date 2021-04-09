@@ -8,13 +8,15 @@ import sample.base.BaseElement;
 import sample.base.IBulletCross;
 import sample.base.IElement;
 import sample.base.ITankCross;
+import sample.content.common.Attribute;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-@IElement(width = Constant.ELEMENT_SIZE / 2 + 2, height = Constant.ELEMENT_SIZE / 2 + 2)
+@IElement(width = Constant.ELEMENT_SIZE / 2 + 2, height = Constant.ELEMENT_SIZE / 2 + 2, defense = 150, hp = 150)
 public class Grass extends BaseElement implements IBulletCross, ITankCross {
-    private Sprite sprite;
+    private final Sprite sprite;
+
     public Grass(int x, int y) {
         super(x, y);
         sprite = new Sprite(new SpriteSheet(TextureAtlas.cut(4 * Constant.ELEMENT_SIZE, 7 * Constant.ELEMENT_SIZE,
