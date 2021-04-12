@@ -8,6 +8,7 @@ import sample.auxiliary.graphics.Animation;
 import sample.auxiliary.graphics.SpriteSheet;
 import sample.auxiliary.graphics.TextureAtlas;
 import sample.base.*;
+import sample.content.common.Tank;
 import sample.content.substance.Born;
 import sample.content.substance.Bullet;
 
@@ -24,7 +25,7 @@ public class Enemy extends Tank {
     }
 
     private int type;
-    private Born born;
+    private final Born born;
     private final List<HashMap<Direction, Animation>> sprites;
     public final static int[] REWARD = {100,200,300,400};
     private int step;

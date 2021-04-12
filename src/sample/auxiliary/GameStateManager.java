@@ -28,7 +28,7 @@ public class GameStateManager implements IDraw {
     public GameStateManager() {
         progress = Progress.getInstance();
         player = new Player(4 * Constant.ELEMENT_SIZE, 12 * Constant.ELEMENT_SIZE);
-        setGameState(STATE.LEVEL);
+        setGameState(STATE.MENU);
         action();
     }
 
@@ -37,26 +37,27 @@ public class GameStateManager implements IDraw {
     }
 
     public void action() {
-        if (gameState instanceof LevelState) {
-            //刷新动作内容
-            CommonUtils.task(20, () -> {
-                this.wholeAction(player);
-                if(gameState instanceof LevelState) {
-                    ((LevelState) gameState).action(player);
-                }
-            });
-            CommonUtils.task(15000, () -> {
-                if(gameState instanceof LevelState) {
-                    ((LevelState) gameState).generateProps();
-                }
-            });
-            //按时间周期生成敌方坦克
-            CommonUtils.task(10000, () -> {
-                if (gameState instanceof LevelState) {
-                    ((LevelState) gameState).map.enemyBorn();
-                }
-            });
-        }
+        CommonUtils.task(100, () -> {
+            gameState.stateAction();
+        });
+        //刷新动作内容
+        CommonUtils.task(20, () -> {
+            this.wholeAction(player);
+            if (gameState instanceof LevelState) {
+                ((LevelState) gameState).action(player);
+            }
+        });
+        CommonUtils.task(20000, () -> {
+            if (gameState instanceof LevelState) {
+                ((LevelState) gameState).generateProps();
+            }
+        });
+        //按时间周期生成敌方坦克
+        CommonUtils.task(7000, () -> {
+            if (gameState instanceof LevelState) {
+                ((LevelState) gameState).map.enemyBorn();
+            }
+        });
     }
 
     public void wholeAction(Player player) {
@@ -82,9 +83,10 @@ public class GameStateManager implements IDraw {
                 gameState = new SettleScoreState(this);
                 break;
             case MENU:
-                gameState = new MenuState();
+                gameState = new MenuState(this);
                 break;
         }
+        gameState.init();
     }
 
     @Override

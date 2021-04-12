@@ -1,5 +1,6 @@
 package sample.auxiliary;
 
+import sample.base.BaseElement;
 import sample.base.IDraw;
 import sample.content.enemy.Enemy;
 import sample.content.player.Player;
@@ -16,6 +17,12 @@ public class Map {
     private IDraw[][] cells; //先暂时放着吧
     private Queue<Enemy> enemies;
     private String[] enemyType;
+
+    public Home getHome() {
+        return home;
+    }
+
+    private Home home;
     private final static int EAGLE_X = 6 * Constant.ELEMENT_SIZE, EAGLE_Y = 12 * Constant.ELEMENT_SIZE;
 
     public int getSumReward() {
@@ -49,8 +56,8 @@ public class Map {
     }
 
     public void loadMap(Player player) {
-
-        ElementBean.Substance.getService().add(new Home(EAGLE_X, EAGLE_Y));
+        home = new Home(EAGLE_X, EAGLE_Y);
+        ElementBean.Substance.getService().add(home);
         enemyInit();
         playerInit(player);
         for(int i = 0; i < height; ++i) {
@@ -102,7 +109,7 @@ public class Map {
     }
 
     public void enemyBorn() {
-        for (int i = 0; i < 2; ++i) {
+        for (int i = 0; i < 1; ++i) {
             if (!enemies.isEmpty()) {
                 Enemy enemy = enemies.poll();
                 ElementBean.Enemy.getService().add(enemy);

@@ -1,14 +1,16 @@
-package sample.base;
+package sample.content.common;
 
 import sample.auxiliary.ElementBean;
 import sample.auxiliary.Progress;
+import sample.base.BaseElement;
+import sample.base.IMovable;
 import sample.content.enemy.Enemy;
 import sample.content.player.Player;
 import sample.content.substance.Born;
 import sample.content.substance.Score;
 import sample.content.substance.TankBoom;
 
-public abstract class Tank extends BaseElement implements IMovable{
+public abstract class Tank extends BaseElement implements IMovable {
     protected Born born;
     protected int oldX, oldY;
     protected int bulletNum;
@@ -42,6 +44,8 @@ public abstract class Tank extends BaseElement implements IMovable{
                 ElementBean.Substance.getService().add(new Score(x + width * 2, y, type));
                 //单例模式进行分数和击杀计算
                 int cnt = Integer.parseInt(Progress.getInstance().get("killed" + (type + 1))) + 1;
+                int rest = Integer.parseInt(Progress.getInstance().get("restEnemy")) - 1;
+                Progress.getInstance().set("restEnemy", rest + "");
                 Progress.getInstance().set("killed" + (type + 1), cnt + "");
                 Progress.getInstance().set("currentScore", ((Player) element).getScore() + "");
             }

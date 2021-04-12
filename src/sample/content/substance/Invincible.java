@@ -16,7 +16,7 @@ import java.awt.image.BufferedImage;
 /**
  * @Description 此类可以让坦克处于无敌状态
  */
-@IElement
+@IElement(defense = 1000)
 public class Invincible extends BaseElement implements IBulletCross, ITankCross {
 
     private final Animation animation;
@@ -28,7 +28,7 @@ public class Invincible extends BaseElement implements IBulletCross, ITankCross 
                 Constant.ELEMENT_SIZE * 3, Constant.ELEMENT_SIZE), Constant.ELEMENT_SIZE, Constant.ELEMENT_SIZE);
         act[0] = sheet.getSprite(0);
         act[1] = sheet.getSprite(2);
-        animation = new Animation(act, 20);
+        animation = new Animation(act, 15);
         animation.start();
     }
 
@@ -38,8 +38,16 @@ public class Invincible extends BaseElement implements IBulletCross, ITankCross 
     }
 
     @Override
+    public boolean remove(BaseElement element) {
+        if(element instanceof Player && (!element.alive())) {
+            return true;
+        }
+        return super.remove(element);
+    }
+
+    @Override
     public void drawImage(Graphics g) {
-        if(animation.hasPlayed(150)) {
+        if(animation.hasPlayed(500)) {
             die();
             return;
         }

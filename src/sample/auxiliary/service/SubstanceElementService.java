@@ -1,17 +1,20 @@
 package sample.auxiliary.service;
 
+import javafx.util.Pair;
 import sample.auxiliary.ElementBean;
 import sample.auxiliary.Progress;
 import sample.base.*;
+import sample.content.common.Tank;
 import sample.content.player.Player;
-import sample.content.substance.Bullet;
-import sample.content.substance.Home;
-import sample.content.substance.Score;
-import sample.content.substance.Steel;
+import sample.content.substance.*;
 import sample.content.substance.props.Prop;
 import sample.content.substance.props.Props;
 
+import java.util.ArrayList;
+
 public class SubstanceElementService extends ElementService {
+
+
 
     @Override
     public void init() {
@@ -65,6 +68,12 @@ public class SubstanceElementService extends ElementService {
                         ElementBean.Enemy.getService().getElementList().forEach(e -> {
                             ((BaseElement) e).die();
                         });
+                    }else{
+                        ElementBean.Player.getService().getElementList().forEach(e -> {
+                            if(e instanceof Player) {
+                                ((Player) e).die();
+                            }
+                        });
                     }
                     break;
                 case Tank:
@@ -81,10 +90,48 @@ public class SubstanceElementService extends ElementService {
                     }
                     break;
                 case Iron_cap:
-                    ((Player) other).beInvincible();
+                    if(other instanceof  Player) {
+                        ((Player) other).beInvincible();
+                    }
                     break;
                 case Spade:
-
+                    //too long!
+                    //先把eagle周围的墙壁坐标添加进list
+                    ArrayList<Pair<Integer, Integer>> loc = new ArrayList<>();
+                    for(int i = 0; i < 4; ++i) {
+                        loc.add(new Pair<>(11 + i, 23));
+                    }
+                    for(int i = 0; i < 2; ++i) {
+                        for(int j = 0; j < 2; ++j) {
+                            loc.add(new Pair<>(11 + j * 3, 24 + i));
+                        }
+                    }
+                    if(other instanceof Player) {
+                        this.getElementList().forEach(e -> {
+                            BaseElement element = (BaseElement) e;
+                            //将eagle周围墙壁清除
+                            for(Pair<Integer, Integer> pair : loc) {
+                                if(pair.getKey() == element.getX() / 17 && pair.getValue() == element.getY() / 17) {
+                                    this.remove(element);
+                                }
+                            }
+                        });
+                        //替换为钢铁墙壁
+                        for(Pair<Integer, Integer> pair : loc) {
+                            this.add(new Steel(pair.getKey() * 17, pair.getValue() * 17));
+                            //System.out.println(pair.getKey() + " " + pair.getValue());
+                        }
+                    }else{
+                        //清除eagle周围墙壁
+                        this.getElementList().forEach(e -> {
+                            BaseElement element = (BaseElement) e;
+                            for(Pair<Integer, Integer> pair : loc) {
+                                if(pair.getKey() == element.getX() / 17 && pair.getValue() == element.getY() / 17) {
+                                    this.remove(element);
+                                }
+                            }
+                        });
+                    }
                     break;
             }
             //只有玩家才能得分
@@ -93,6 +140,7 @@ public class SubstanceElementService extends ElementService {
                 ElementBean.Substance.getService().add(new Score(myself.getX() + 50, myself.getY(), 4));
             }
             //吃到道具之后就要将其移除
+            if(other instanceof  Player)
             this.remove(myself);
         }
 

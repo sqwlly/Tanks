@@ -13,7 +13,7 @@ import java.awt.*;
 @IElement
 public class Home extends BaseElement {
 
-    private Sprite alive, dead;
+    private final Sprite alive, dead;
 
     private GameOver gameOver;
     public Home(int x, int y) {
@@ -37,6 +37,7 @@ public class Home extends BaseElement {
         if(alive()) {
             alive.render(g, x, y);
         }else{
+            this.defense.setValue(1000);
             dead.render(g, x, y);
         }
     }

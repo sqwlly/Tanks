@@ -9,7 +9,14 @@ public enum Keys {
     DOWN(KeyEvent.VK_S),
     LEFT(KeyEvent.VK_A),
     RIGHT(KeyEvent.VK_D),
+    PLAY2_UP(KeyEvent.VK_UP),
+    PLAY2_DOWN(KeyEvent.VK_DOWN),
+    PLAY2_LEFT(KeyEvent.VK_LEFT),
+    PLAY2_RIGHT(KeyEvent.VK_RIGHT),
+    ZERO(KeyEvent.VK_0),
+    ENTER(KeyEvent.VK_ENTER),
     SPACE(KeyEvent.VK_SPACE);
+
     private int keyValue;
     private static Set<Integer> keySet = new HashSet<>();//按键
     Keys(int keyValue) {

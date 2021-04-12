@@ -8,6 +8,7 @@ import sample.auxiliary.graphics.SpriteSheet;
 import sample.auxiliary.graphics.TextureAtlas;
 import sample.base.*;
 import sample.content.common.Attribute;
+import sample.content.common.Tank;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -36,7 +37,7 @@ public class Bullet extends BaseElement implements IMovable {
 
     public void setLevel(int level) {
         if(level >= 1) {
-            speed.setValue(speed.getValue() * 3 / 2);
+            speed.setValue(speed.getValue() * 2);
         }
         if(level == 2) {
             attack.add(51);

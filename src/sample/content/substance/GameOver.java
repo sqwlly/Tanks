@@ -8,12 +8,12 @@ import sample.base.*;
 
 import java.awt.*;
 
-@IElement(speed = 1, width = Constant.ELEMENT_SIZE * 2)
+@IElement(speed = 1, width = Constant.ELEMENT_SIZE * 2, defense = 1000)
 public class GameOver extends BaseElement implements IMovable, ITankCross, IBulletCross {
-    private Sprite sprite;
+    private final Sprite sprite;
 
     public GameOver() {
-        super(Constant.ELEMENT_SIZE * 6 - Constant.ELEMENT_SIZE / 2, Constant.ELEMENT_SIZE * 13);
+        super(Constant.ELEMENT_SIZE * 6 - Constant.ELEMENT_SIZE * 1, Constant.ELEMENT_SIZE * 13);
         SpriteSheet sheet = new SpriteSheet(TextureAtlas.cut(4 * Constant.ELEMENT_SIZE, 4 * Constant.ELEMENT_SIZE,
                 Constant.ELEMENT_SIZE * 2, Constant.ELEMENT_SIZE), Constant.ELEMENT_SIZE * 2, Constant.ELEMENT_SIZE);
         sprite = new Sprite(sheet, 1, 0);
@@ -26,7 +26,7 @@ public class GameOver extends BaseElement implements IMovable, ITankCross, IBull
 
     @Override
     public void drawImage(Graphics g) {
-        sprite.render(g, x, y);
+        sprite.render(g, x, y, Constant.ELEMENT_SIZE * 4, Constant.ELEMENT_SIZE * 2);
     }
 
     @Override

@@ -5,10 +5,10 @@ import sample.auxiliary.Direction;
 import sample.auxiliary.ElementBean;
 import sample.auxiliary.Keys;
 import sample.auxiliary.graphics.Animation;
-import sample.auxiliary.graphics.Sprite;
 import sample.auxiliary.graphics.SpriteSheet;
 import sample.auxiliary.graphics.TextureAtlas;
 import sample.base.*;
+import sample.content.common.Tank;
 import sample.content.substance.*;
 
 import java.awt.*;
@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @IElement(width = Constant.ELEMENT_SIZE - 2, height = Constant.ELEMENT_SIZE - 2, speed = 2)
-public class Player extends Tank{
+public class Player extends Tank {
     private final static int size = Constant.ELEMENT_SIZE;
 
     private final static float scale = 1f;
@@ -95,6 +95,7 @@ public class Player extends Tank{
 
     //无敌状态
     public void beInvincible() {
+        ElementBean.Substance.getService().remove(invincible);
         invincible = new Invincible(x, y);
         ElementBean.Substance.getService().add(invincible);
     }

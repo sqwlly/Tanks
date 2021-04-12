@@ -28,24 +28,15 @@ public class SettleScoreState extends GameState {
     private int levelID;
     private int levelLineWidth;
 
-    private Font font;
-
-
     public SettleScoreState(GameStateManager gsm) {
         this.gsm = gsm;
         pr = Progress.getInstance();
-        init();
         SpriteSheet sheet = new SpriteSheet(TextureAtlas.cut(0, Constant.ELEMENT_SIZE * 2,
                 Constant.ELEMENT_SIZE * 32, Constant.ELEMENT_SIZE), Constant.ELEMENT_SIZE, Constant.ELEMENT_SIZE);
         for(int i = 0; i < 4; ++i) {
             sprites.add(new Sprite(sheet, 1, i * 8));
         }
         levelID = Integer.parseInt(pr.get("levelToPlay"));
-        try {
-            font = Font.createFont(Font.TRUETYPE_FONT, ResourceLoader.loadFontStream("joystix.ttf")).deriveFont(20f);
-        } catch (FontFormatException | IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -57,6 +48,11 @@ public class SettleScoreState extends GameState {
     @Override
     public void mouseClicked(MouseEvent e) {
         gsm.setGameState(STATE.STAGE);
+    }
+
+    @Override
+    public void stateAction() {
+
     }
 
     @Override
