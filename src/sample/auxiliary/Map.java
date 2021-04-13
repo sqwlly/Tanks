@@ -18,12 +18,16 @@ public class Map {
     private Queue<Enemy> enemies;
     private String[] enemyType;
 
+    public Player getPlayer() {
+        return player;
+    }
+
+    private Player player;
     public Home getHome() {
         return home;
     }
 
     private Home home;
-    private final static int EAGLE_X = 6 * Constant.ELEMENT_SIZE, EAGLE_Y = 12 * Constant.ELEMENT_SIZE;
 
     public int getSumReward() {
         return sumReward;
@@ -35,7 +39,10 @@ public class Map {
 
     private int sumReward;
 
-    public Map(String file, Player player) {
+    //player是独立于map之外的，因为进入下一关player的状态不变，是同一个player
+    public Map(String file, Player player, Home home) {
+        this.home = home;
+        this.player = player;
         BufferedReader br = ResourceLoader.loadMapConfig(file);
         String delimiters = "";
         try {
@@ -49,14 +56,14 @@ public class Map {
                     map[i][j] = Integer.parseInt(msg[j]);
                 }
             }
-            loadMap(player);
+            loadMap();
         }catch (IOException ignored) {
 
         }
     }
 
-    public void loadMap(Player player) {
-        home = new Home(EAGLE_X, EAGLE_Y);
+    public void loadMap() {
+     //   home = new Home(EAGLE_X, EAGLE_Y);
         ElementBean.Substance.getService().add(home);
         enemyInit();
         playerInit(player);
@@ -101,7 +108,7 @@ public class Map {
             //随机产生横坐标，并且保证当前坐标没有障碍物（即为空0）
             do {
                 x = CommonUtils.nextInt(0, 24);
-                System.out.println(x + "," + 0 + " = " + getCell(0, x));
+//                System.out.println(x + "," + 0 + " = " + getCell(0, x));
             } while (getCell(0, x) != 0 || getCell(1, x) != 0);
             enemies.add(new Enemy(x / 2 * Constant.ELEMENT_SIZE, 0, Integer.parseInt(s) - 1));
         }

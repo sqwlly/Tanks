@@ -30,9 +30,12 @@ public class SubstanceElementService extends ElementService {
         if(other instanceof Bullet) {
             //如果可移动物体的攻击力大于当前物体的防御力，就要减少生命值
             if(other.getAttack().getValue() > myself.getDefense().getValue()) {
+                if(myself instanceof Home) {
+                    myself.getDefense().setValue(1000);
+                }
                 int subValue = (int) ((double) myself.getDefense().getValue() / myself.getHp().getValue() * other.getAttack().getValue());
                 myself.getHp().subtract(subValue);
-            }else if(myself instanceof IBulletCross) {
+            }else if(myself instanceof IBulletCross || myself instanceof Home) {
                 return false;
             }
 

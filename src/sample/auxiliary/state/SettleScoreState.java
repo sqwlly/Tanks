@@ -23,13 +23,13 @@ public class SettleScoreState extends GameState {
 
     private Progress pr;
     private final List<Sprite> sprites = new ArrayList<>();
-    private BufferedImage coin;
 
     private int levelID;
     private int levelLineWidth;
 
     public SettleScoreState(GameStateManager gsm) {
         this.gsm = gsm;
+        init();
         pr = Progress.getInstance();
         SpriteSheet sheet = new SpriteSheet(TextureAtlas.cut(0, Constant.ELEMENT_SIZE * 2,
                 Constant.ELEMENT_SIZE * 32, Constant.ELEMENT_SIZE), Constant.ELEMENT_SIZE, Constant.ELEMENT_SIZE);
@@ -41,8 +41,8 @@ public class SettleScoreState extends GameState {
 
     @Override
     public void init() {
-        levelLineWidth = (int)((Constant.FRAME_WIDTH / (double)Integer.parseInt(pr.get("xpLevelMaxScore")))
-                *(double) Integer.parseInt(pr.get("xp")));
+//        levelLineWidth = (int)((Constant.FRAME_WIDTH / (double)Integer.parseInt(pr.get("xpLevelMaxScore")))
+//                *(double) Integer.parseInt(pr.get("xp")));
     }
 
     @Override

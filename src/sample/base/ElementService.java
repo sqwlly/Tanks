@@ -1,5 +1,6 @@
 package sample.base;
 
+import sample.auxiliary.Constant;
 import sample.auxiliary.Progress;
 import sample.content.player.Player;
 import sample.content.substance.*;
@@ -19,13 +20,13 @@ public abstract class ElementService<T extends BaseElement> extends BaseService<
                 this.remove(element);
                 return;
             }
-
-            if(element instanceof Home) {
-                if(!element.alive()) {
-                    player.die();
-                    Progress.getInstance().set("hearts", "0");
-                }
-            }
+//
+//            if(element instanceof Home) {
+////                System.out.println(element.getHp().getValue());
+//                if(!element.alive()) {
+//
+//                }
+//            }
 
             //前置操作
             if (!element.beforeActionJudge()) {

@@ -16,6 +16,7 @@ public class StageState extends GameState{
     private long time = System.nanoTime();
     public StageState(GameStateManager gsm) {
         this.gsm = gsm;
+        init();
     }
 
     @Override

@@ -34,6 +34,10 @@ public class Player extends Tank {
         };
     }
 
+    public void born() {
+        this.hp.setValue(50);
+    }
+
     public void initLevel() {
         level = 0;
     }
@@ -64,7 +68,6 @@ public class Player extends Tank {
         }
         initLevel();
         born = new Born(x, y);
-        invincible = new Invincible(x, y);
         bulletNumInit();
     }
 

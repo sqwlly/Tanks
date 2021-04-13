@@ -49,6 +49,9 @@ public abstract class Tank extends BaseElement implements IMovable {
                 Progress.getInstance().set("killed" + (type + 1), cnt + "");
                 Progress.getInstance().set("currentScore", ((Player) element).getScore() + "");
             }
+            if(this instanceof Player) {
+                System.out.println(this.hp.getValue());
+            }
             //将坦克爆炸元素加入绘画列表
             ElementBean.Substance.getService().add(new TankBoom(x - width / 2, y - height / 2));
             return true;

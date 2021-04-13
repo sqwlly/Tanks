@@ -10,7 +10,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class GameFrame extends JFrame {
+public class GameFrame extends JFrame{
+
+    private int FPS = 30;
+    private int targetTime = 1000 / FPS;
+    private Thread thread;
+    private boolean running;
 
     public GameFrame() {
         this.setTitle("Tanks");
@@ -33,6 +38,7 @@ public class GameFrame extends JFrame {
         GamePanel panel = new GamePanel(gsm);
         this.add(panel);
         this.setVisible(true);
+
         CommonUtils.task(5, () -> {
             panel.repaint();
         });
@@ -55,6 +61,7 @@ public class GameFrame extends JFrame {
                 gsm.mouseClicked(e);
             }
         });
+
     }
 
     public static void main(String[] args) {

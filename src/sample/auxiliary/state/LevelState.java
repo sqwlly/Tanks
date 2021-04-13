@@ -1,6 +1,9 @@
 package sample.auxiliary.state;
 
 import sample.auxiliary.*;
+import sample.auxiliary.service.EnemyElementService;
+import sample.auxiliary.service.SubstanceElementService;
+import sample.base.ElementService;
 import sample.content.player.Player;
 import sample.content.substance.EnemyIcon;
 import sample.content.substance.P;
@@ -8,18 +11,28 @@ import sample.content.substance.PlayerIcon;
 import sample.content.substance.props.Prop;
 import sample.content.substance.props.Props;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.Stack;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class LevelState extends GameState implements ActionListener {
     private int Level_ID;
-    public Map map;
-    private Timer timer = new Timer(2500, this);
+    private boolean init;
+
+    public boolean isInit() {
+        return init;
+    }
+
+    public Map getMap() {
+        return map;
+    }
+
+    private Map map;
+    private Timer timer = new Timer();
     private long finishTime;
     private PlayerIcon playerIcon;
     private Stack<EnemyIcon> enemyIcons;
@@ -27,10 +40,18 @@ public class LevelState extends GameState implements ActionListener {
     public LevelState(GameStateManager gsm) {
         ElementBean.init();
         this.gsm = gsm;
-        timer.start();
+        init = false;
+        init();
+        action();
     }
 
     public void init() {
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                action();
+            }
+        };
         progress = Progress.getInstance();
         progress.set("restEnemy", "20");
         progress.set("currentScore", 0 + "");
@@ -51,12 +72,24 @@ public class LevelState extends GameState implements ActionListener {
         }
         p_image = new P(tx + 5, Constant.ELEMENT_SIZE * 10 - 17, 1);
         playerIcon = new PlayerIcon(tx - 3, Constant.ELEMENT_SIZE * 10 + 4);
-        map = new Map("/levels/Level_" + Level_ID, gsm.getPlayer());
+        gsm.getPlayer().born();
+        gsm.getHome().born();
+        map = new Map("/levels/Level_" + Level_ID, gsm.getPlayer(), gsm.getHome());
+        timer.schedule(timerTask, 0, 20);
+
+        init = true;
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if(!map.getHome().alive()) {
+        System.out.println(map.getHome().getHp().getValue());
+        if(!map.getHome().getHp().health()) {
+            //timer.cancel();
+            try {
+                Thread.sleep(200);
+            }catch (InterruptedException e1) {
+                e1.printStackTrace();
+            }
             gsm.setGameState(STATE.MENU);
         }
         System.out.println("level clicked");
@@ -64,6 +97,17 @@ public class LevelState extends GameState implements ActionListener {
 
     @Override
     public void stateAction() {
+    }
+
+    public void wholeAction() {
+        //玩家
+        ElementService playerService = (ElementService) ElementBean.Player.getService();
+        playerService.action(map.getPlayer());
+        ElementService substanceService = (SubstanceElementService) ElementBean.Substance.getService();
+        ElementService enemyService = (EnemyElementService) ElementBean.Enemy.getService();
+        enemyService.action(map.getPlayer(), playerService);
+        substanceService.action(map.getPlayer(), enemyService);
+        substanceService.action(map.getPlayer(), playerService);
     }
 
     public void reduceEnemy() {
@@ -83,9 +127,15 @@ public class LevelState extends GameState implements ActionListener {
         new Prop(tx, ty, p);
     }
 
-    public void action(Player player) {
-        if(map == null) return; //这一句写的很烂
-
+    public void action() {
+        if(!init) return;
+        //if(map == null) return; //这一句写的很烂，删了似乎会有Bug
+        if(!map.getHome().getHp().health() && gsm.getPlayer().alive()) {
+            map.getPlayer().die();
+            System.out.println("boom");
+            timer.cancel();
+            Progress.getInstance().set("hearts", "0");
+        }
         int restEnemy = Integer.parseInt(progress.get("restEnemy"));
         while (enemyIcons.size() - restEnemy > 0) {
             reduceEnemy();
@@ -95,12 +145,12 @@ public class LevelState extends GameState implements ActionListener {
 
         }
 //        System.out.println(player.getScore());
-        if (player.getScore() >= map.getSumReward() && finishTime == 0) {
+        if (map.getPlayer().getScore() >= map.getSumReward() && finishTime == 0) {
             finishTime = System.currentTimeMillis();
         }
         //清除完所有坦克即可进入下一关
-        if(player.getScore() >= map.getSumReward() && System.currentTimeMillis() - finishTime > 3500) {
-            player.initScore();
+        if(map.getPlayer().getScore() >= map.getSumReward() && System.currentTimeMillis() - finishTime > 3500) {
+            map.getPlayer().initScore();
             gsm.setGameState(STATE.COUNT);
             setLevel_ID(Level_ID + 1);
         }
