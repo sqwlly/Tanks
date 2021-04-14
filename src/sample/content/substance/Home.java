@@ -2,6 +2,7 @@ package sample.content.substance;
 
 import sample.auxiliary.Constant;
 import sample.auxiliary.ElementBean;
+import sample.auxiliary.Progress;
 import sample.auxiliary.graphics.Sprite;
 import sample.auxiliary.graphics.SpriteSheet;
 import sample.auxiliary.graphics.TextureAtlas;
@@ -34,8 +35,15 @@ public class Home extends BaseElement {
     }
 
     @Override
+    public void die() {
+        ElementBean.Substance.getService().add(new TankBoom(x, y));
+        this.hp.setValue(50);
+    }
+
+    @Override
     public void action() {
-        if(!hp.health() && gameOver == null) {
+        int hearts = Integer.parseInt(Progress.getInstance().get("hearts"));
+        if((!hp.health() || hearts < 0) && gameOver == null) {
             gameOver = new GameOver();
             ElementBean.Substance.getService().add(gameOver);
         }

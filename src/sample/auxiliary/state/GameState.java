@@ -10,7 +10,7 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 
 public abstract class GameState implements IDraw {
-    protected Progress progress;
+    protected Progress progress = Progress.getInstance();
     protected GameStateManager gsm;
     protected static Font font;
 

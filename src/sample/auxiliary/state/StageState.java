@@ -12,17 +12,20 @@ import java.io.InputStream;
 
 public class StageState extends GameState{
     private GameStateManager gsm;
-    private Progress pr;
     private long time = System.nanoTime();
+    private boolean choose;
+    private int level_Id;
+
     public StageState(GameStateManager gsm) {
         this.gsm = gsm;
         init();
+        choose = true; //temp
     }
 
     @Override
     public void init() {
-        pr = Progress.getInstance();
         time = System.currentTimeMillis();
+        level_Id = Integer.parseInt(progress.get("levelToPlay"));
     }
 
     @Override
@@ -37,7 +40,15 @@ public class StageState extends GameState{
     @Override
     public void stateAction() {
         if(Keys.ENTER.use()) {
-            gsm.setGameState(STATE.LEVEL);
+            choose = false;
+            progress.set("levelToPlay", level_Id + "");
+        }
+        if(choose) {
+            if(Keys.PLAY2_UP.use() && level_Id + 1 <= 18) {
+                level_Id++;
+            }else if(Keys.PLAY2_DOWN.use() && level_Id - 1 > 0) {
+                level_Id--;
+            }
         }
     }
 
@@ -47,9 +58,9 @@ public class StageState extends GameState{
         g.fillRect(0, 0, Constant.FRAME_WIDTH, Constant.FRAME_HEIGHT);
         g.setFont(font);
         g.setColor(Color.BLACK);
-        g.drawString("STAGE " + pr.get("levelToPlay"), Constant.FRAME_WIDTH / 2 - Constant.ELEMENT_SIZE * 2 + 10, Constant.FRAME_HEIGHT / 2 - 17);
+        g.drawString("STAGE " + level_Id, Constant.FRAME_WIDTH / 2 - Constant.ELEMENT_SIZE * 2 + 10, Constant.FRAME_HEIGHT / 2 - 17);
         //让STAGE页面停留2.5秒钟
-        if(System.currentTimeMillis() - time > 2000) {
+        if(System.currentTimeMillis() - time > 2000 && !choose) {
             gsm.setGameState(STATE.LEVEL);
         }
     }

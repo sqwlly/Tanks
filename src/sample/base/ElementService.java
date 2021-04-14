@@ -1,10 +1,6 @@
 package sample.base;
 
-import sample.auxiliary.Constant;
-import sample.auxiliary.Progress;
 import sample.content.player.Player;
-import sample.content.substance.*;
-import sample.content.substance.props.Prop;
 
 import java.awt.*;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -12,21 +8,13 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public abstract class ElementService<T extends BaseElement> extends BaseService<T> {
     public final <S extends BaseElement> void action(Player player, ElementService<S>... services) {
         this.getElementList().forEach(element -> {
-            if(!element.alive()) {
-                this.remove(element);
-            }
-
             if(element.remove(player)) {
+                if(element instanceof Player) {
+                    System.out.println("player");
+                }
                 this.remove(element);
                 return;
             }
-//
-//            if(element instanceof Home) {
-////                System.out.println(element.getHp().getValue());
-//                if(!element.alive()) {
-//
-//                }
-//            }
 
             //前置操作
             if (!element.beforeActionJudge()) {
@@ -53,7 +41,6 @@ public abstract class ElementService<T extends BaseElement> extends BaseService<
             if (element.isStop()) {
                 return;
             }
-            //动作
             element.action();
         });
     }

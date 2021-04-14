@@ -43,6 +43,10 @@ public class Map {
     public Map(String file, Player player, Home home) {
         this.home = home;
         this.player = player;
+        init(file);
+    }
+
+    public void init(String file) {
         BufferedReader br = ResourceLoader.loadMapConfig(file);
         String delimiters = "";
         try {
@@ -63,24 +67,13 @@ public class Map {
     }
 
     public void loadMap() {
-     //   home = new Home(EAGLE_X, EAGLE_Y);
-        ElementBean.Substance.getService().add(home);
         enemyInit();
-        playerInit(player);
+        ElementBean.Substance.getService().add(home);
         for(int i = 0; i < height; ++i) {
             for(int j = 0; j < width; ++j) {
                 getEntity(map[i][j], j * Constant.ELEMENT_SIZE / 2, i * Constant.ELEMENT_SIZE / 2);
             }
         }
-    }
-
-    public void playerInit(Player player) {
-        player.setX(4 * Constant.ELEMENT_SIZE);
-        player.setY(12 * Constant.ELEMENT_SIZE);
-        player.setBorn(new Born(player.getX(), player.getY()));
-        player.beInvincible();
-        ElementBean.Player.getService().add(player);
-        ElementBean.Substance.getService().add(player.getBorn());
     }
 
     public void getEntity(int type, int x, int y) {

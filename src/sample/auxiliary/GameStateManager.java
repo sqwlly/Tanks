@@ -15,7 +15,7 @@ public class GameStateManager implements IDraw {
     private final static int EAGLE_X = 6 * Constant.ELEMENT_SIZE, EAGLE_Y = 12 * Constant.ELEMENT_SIZE;
 
     private GameState gameState;
-    private Progress progress;
+    private Progress progress = Progress.getInstance();
     private Player player;
 
     public Home getHome() {
@@ -63,6 +63,9 @@ public class GameStateManager implements IDraw {
         CommonUtils.task(7000, () -> {
             if (gameState instanceof LevelState) {
                 ((LevelState) gameState).getMap().enemyBorn();
+            }
+            if(gameState instanceof LevelState) {
+                ((LevelState) gameState).reduceEnemyIcon();
             }
         });
     }

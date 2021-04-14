@@ -2,8 +2,10 @@ package sample.base;
 
 import sample.auxiliary.Constant;
 import sample.auxiliary.Direction;
+import sample.auxiliary.ElementBean;
 import sample.content.common.Attribute;
 import sample.content.player.Player;
+import sample.content.substance.TankBoom;
 
 import java.awt.*;
 

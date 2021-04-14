@@ -15,6 +15,11 @@ import java.awt.image.BufferedImage;
 @IElement(defense = 1000)
 public class Born extends BaseElement implements IBulletCross, ITankCross {
     private final Animation animation;
+    private boolean complete;
+
+    public boolean isComplete() {
+        return complete;
+    }
 
     public Born(int x, int y) {
         super(x, y);
@@ -26,11 +31,13 @@ public class Born extends BaseElement implements IBulletCross, ITankCross {
         }
         animation = new Animation(act, 60);
         animation.start();
+        complete = false;
     }
 
     @Override
     public void drawImage(Graphics g) {
         if(animation.hasPlayed(5)) {
+            complete = true;
             die();
             return;
         }

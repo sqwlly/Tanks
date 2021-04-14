@@ -4,7 +4,6 @@ import sample.auxiliary.*;
 import sample.auxiliary.service.EnemyElementService;
 import sample.auxiliary.service.SubstanceElementService;
 import sample.base.ElementService;
-import sample.content.player.Player;
 import sample.content.substance.EnemyIcon;
 import sample.content.substance.P;
 import sample.content.substance.PlayerIcon;
@@ -76,7 +75,6 @@ public class LevelState extends GameState implements ActionListener {
         gsm.getHome().born();
         map = new Map("/levels/Level_" + Level_ID, gsm.getPlayer(), gsm.getHome());
         timer.schedule(timerTask, 0, 20);
-
         init = true;
     }
 
@@ -110,7 +108,7 @@ public class LevelState extends GameState implements ActionListener {
         substanceService.action(map.getPlayer(), playerService);
     }
 
-    public void reduceEnemy() {
+    public void reduceEnemyIcon() {
         enemyIcons.pop();
     }
 
@@ -129,21 +127,19 @@ public class LevelState extends GameState implements ActionListener {
 
     public void action() {
         if(!init) return;
-        //if(map == null) return; //这一句写的很烂，删了似乎会有Bug
-        if(!map.getHome().getHp().health() && gsm.getPlayer().alive()) {
-            map.getPlayer().die();
-            System.out.println("boom");
-            timer.cancel();
-            Progress.getInstance().set("hearts", "0");
+        int hearts = Integer.parseInt(Progress.getInstance().get("hearts"));
+        if(hearts < 0) {
+            map.getHome().die();
         }
-        int restEnemy = Integer.parseInt(progress.get("restEnemy"));
-        while (enemyIcons.size() - restEnemy > 0) {
-            reduceEnemy();
-        }
-        int hearts = Integer.parseInt(progress.get("hearts"));
-        if(hearts > 0) {
 
+        if(!map.getHome().getHp().health()) {
+            if(map.getPlayer().alive()) {
+                map.getPlayer().die();
+            }
+            Progress.getInstance().set("hearts", "0");
+            timer.cancel();
         }
+
 //        System.out.println(player.getScore());
         if (map.getPlayer().getScore() >= map.getSumReward() && finishTime == 0) {
             finishTime = System.currentTimeMillis();

@@ -1,5 +1,6 @@
 package sample.auxiliary.service;
 
+import sample.auxiliary.ElementBean;
 import sample.base.BaseElement;
 import sample.base.ElementService;
 import sample.content.common.Tank;
@@ -31,10 +32,10 @@ public class EnemyElementService extends ElementService {
                 myself.die();
                 //如果玩家不处于无敌状态
                 if(!((Player) other).getInvincible().alive()) {
-                    other.getHp().subtract();
+                    int subValue = (int) ((double) other.getDefense().getValue() / other.getHp().getValue() * myself.getAttack().getValue());
+                    other.getHp().subtract(subValue);
                 }
-                System.out.println(other.getHp().getValue());
-                //如果敌人子弹击中玩家，那么想要玩家爆炸消失，就return true.
+                //System.out.println(other.getHp().getValue());
             }
         }
         return super.intersectsHandle(myself, other);

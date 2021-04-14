@@ -47,7 +47,7 @@ public class Invincible extends BaseElement implements IBulletCross, ITankCross 
 
     @Override
     public void drawImage(Graphics g) {
-        if(animation.hasPlayed(500)) {
+        if(animation.hasPlayed(200)) {
             die();
             return;
         }

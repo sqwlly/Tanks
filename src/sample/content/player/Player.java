@@ -1,9 +1,6 @@
 package sample.content.player;
 
-import sample.auxiliary.Constant;
-import sample.auxiliary.Direction;
-import sample.auxiliary.ElementBean;
-import sample.auxiliary.Keys;
+import sample.auxiliary.*;
 import sample.auxiliary.graphics.Animation;
 import sample.auxiliary.graphics.SpriteSheet;
 import sample.auxiliary.graphics.TextureAtlas;
@@ -35,15 +32,20 @@ public class Player extends Tank {
     }
 
     public void born() {
+        ElementBean.Player.getService().init();
+        this.setX(4 * 34);
+        this.setY(12 * 34);
         this.hp.setValue(50);
+        this.setDirection(Direction.UP);
+        initLevel();
+        born = new Born(x, y);
+        ElementBean.Substance.getService().add(born);
+        ElementBean.Player.getService().add(this);
+        beInvincible();
     }
 
     public void initLevel() {
         level = 0;
-    }
-
-    public void setBorn(Born born) {
-        this.born = born;
     }
 
     public Player(int x, int y) {
@@ -66,9 +68,9 @@ public class Player extends Tank {
             //将一种形态的四个方向animation加入sprite列表，随后可以通过level来分别取得不同形态
             sprite.add(sprites);
         }
-        initLevel();
         born = new Born(x, y);
         bulletNumInit();
+        born();
     }
 
     public void beHurt() {
@@ -89,10 +91,19 @@ public class Player extends Tank {
 
     @Override
     public void action() {
-        move();
-        invincible.movedByPlayer(this);
-        if (Keys.SPACE.use()) {
-            shoot();
+        if(alive()) {
+            move();
+            invincible.movedByPlayer(this);
+            if (Keys.SPACE.use()) {
+                shoot();
+            }
+        }else{
+            int hearts = Integer.parseInt(Progress.getInstance().get("hearts"));
+            if(hearts > 0) {
+                hearts--;
+                Progress.getInstance().set("hearts", hearts + "");
+                born();
+            }
         }
     }
 
