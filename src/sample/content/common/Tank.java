@@ -23,6 +23,12 @@ public abstract class Tank extends BaseElement implements IMovable {
         bulletNum = 1;
     }
 
+    @Override
+    public void die() {
+        super.die();
+        ElementBean.Substance.getService().add(new TankBoom(x - width / 2, y - height / 2));
+    }
+
     public Tank(int x, int y) {
         super(x, y);
         born = new Born(x, y);
@@ -50,12 +56,7 @@ public abstract class Tank extends BaseElement implements IMovable {
                 Progress.getInstance().set("currentScore", ((Player) element).getScore() + "");
             }
             //将坦克爆炸元素加入绘画列表
-            ElementBean.Substance.getService().add(new TankBoom(x - width / 2, y - height / 2));
-            if(this instanceof Player) {
-                return false;
-                //System.out.println(this.hp.getValue());
-            }
-
+            die();
             return true;
         }
         return super.remove(element);

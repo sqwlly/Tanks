@@ -18,7 +18,9 @@ import java.util.List;
 public class Player extends Tank {
     private final static int size = Constant.ELEMENT_SIZE;
 
+    //暂时先不用
     private final static float scale = 1f;
+
     private int score;
     private int level;
     private final List<HashMap<Direction, Animation>> sprite = new ArrayList<>();
@@ -29,18 +31,18 @@ public class Player extends Tank {
         if(level + 1 < 4) {
             level++;
         };
+        if(level == 3) {
+            this.hp.setValue(100);
+        }
     }
 
     public void born() {
-        ElementBean.Player.getService().init();
         this.setX(4 * 34);
         this.setY(12 * 34);
         this.hp.setValue(50);
         this.setDirection(Direction.UP);
-        initLevel();
         born = new Born(x, y);
         ElementBean.Substance.getService().add(born);
-        ElementBean.Player.getService().add(this);
         beInvincible();
     }
 
@@ -91,19 +93,10 @@ public class Player extends Tank {
 
     @Override
     public void action() {
-        if(alive()) {
-            move();
-            invincible.movedByPlayer(this);
-            if (Keys.SPACE.use()) {
-                shoot();
-            }
-        }else{
-            int hearts = Integer.parseInt(Progress.getInstance().get("hearts"));
-            if(hearts > 0) {
-                hearts--;
-                Progress.getInstance().set("hearts", hearts + "");
-                born();
-            }
+        move();
+        invincible.movedByPlayer(this);
+        if (Keys.SPACE.use()) {
+            shoot();
         }
     }
 
@@ -116,10 +109,6 @@ public class Player extends Tank {
 
     public Invincible getInvincible() {
         return invincible;
-    }
-
-    public Born getBorn() {
-        return born;
     }
 
     @Override

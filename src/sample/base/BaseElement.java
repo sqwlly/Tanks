@@ -95,16 +95,7 @@ public abstract class BaseElement implements IDraw{
     public boolean beforeActionJudge() {
         return true;
     }
-    
-    /**
-     * @Description 遇到玩家处理 结束之后是否移除
-     * @Param [player]
-     * @return boolean
-     */
-    public boolean encounterPlayer(Player player) {
-        return false;
-    }
-    
+
     /**
      * @Description 遇到边界或者墙面 结束之后是否移除
      * @Param []

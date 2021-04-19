@@ -32,7 +32,7 @@ public class LevelState extends GameState implements ActionListener {
 
     private Map map;
     private Timer timer = new Timer();
-    private long finishTime;
+    private long finishTime, bornTime;
     private PlayerIcon playerIcon;
     private Stack<EnemyIcon> enemyIcons;
     private P p_image;
@@ -72,6 +72,7 @@ public class LevelState extends GameState implements ActionListener {
         p_image = new P(tx + 5, Constant.ELEMENT_SIZE * 10 - 17, 1);
         playerIcon = new PlayerIcon(tx - 3, Constant.ELEMENT_SIZE * 10 + 4);
         gsm.getPlayer().born();
+        ElementBean.Player.getService().add(gsm.getPlayer());
         gsm.getHome().born();
         map = new Map("/levels/Level_" + Level_ID, gsm.getPlayer(), gsm.getHome());
         timer.schedule(timerTask, 0, 20);
@@ -109,7 +110,9 @@ public class LevelState extends GameState implements ActionListener {
     }
 
     public void reduceEnemyIcon() {
-        enemyIcons.pop();
+        if(enemyIcons.size() > 0) {
+            enemyIcons.pop();
+        }
     }
 
     public void setLevel_ID(int level_ID) {
@@ -119,7 +122,7 @@ public class LevelState extends GameState implements ActionListener {
 
     public void generateProps() {
         Props p = Props.values()[CommonUtils.nextInt(0, Props.values().length)];
-//        Props p = Props.Spade;
+//        Props p = Props.Gun;
         int tx = CommonUtils.nextInt(0, Constant.GAME_WIDTH - 34);
         int ty = CommonUtils.nextInt(0, Constant.GAME_HEIGHT - 34);
         new Prop(tx, ty, p);
@@ -131,10 +134,26 @@ public class LevelState extends GameState implements ActionListener {
         if(hearts < 0) {
             map.getHome().die();
         }
+        if(!map.getPlayer().alive() && bornTime == 0) {
+            bornTime = System.currentTimeMillis();
+        }
+        //ok, problem solved, use a bornTime var!
+        if(!map.getPlayer().alive() && System.currentTimeMillis() - bornTime > 1500) {
+            if(hearts > 0) {
+                map.getPlayer().born();
+                map.getPlayer().initLevel();
+                bornTime = 0;
+                ElementBean.Player.getService().add(gsm.getPlayer());
+            }
+            hearts--;
+            System.out.println(hearts);
+            Progress.getInstance().set("hearts", hearts + "");
 
+        }
         if(!map.getHome().getHp().health()) {
             if(map.getPlayer().alive()) {
                 map.getPlayer().die();
+                System.out.println("player die");
             }
             Progress.getInstance().set("hearts", "0");
             timer.cancel();

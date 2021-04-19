@@ -9,9 +9,6 @@ public abstract class ElementService<T extends BaseElement> extends BaseService<
     public final <S extends BaseElement> void action(Player player, ElementService<S>... services) {
         this.getElementList().forEach(element -> {
             if(element.remove(player)) {
-                if(element instanceof Player) {
-                    System.out.println("player");
-                }
                 this.remove(element);
                 return;
             }

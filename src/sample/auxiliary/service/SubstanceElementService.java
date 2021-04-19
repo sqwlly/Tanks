@@ -5,6 +5,7 @@ import sample.auxiliary.ElementBean;
 import sample.auxiliary.Progress;
 import sample.base.*;
 import sample.content.common.Tank;
+import sample.content.enemy.Enemy;
 import sample.content.player.Player;
 import sample.content.substance.*;
 import sample.content.substance.props.Prop;
@@ -57,6 +58,9 @@ public class SubstanceElementService extends ElementService {
                 case Star:
                     if(other instanceof Player) {
                         ((Player) other).addLevel();
+                    }else{
+                        //我知道这里或许可以改进的，两句基本一样的代码。。。改成Tank.addLevel()或许就可以了，但是太懒了，因为玩家和npc坦克等级并不一致
+                        ((Enemy) other).addLevel();
                     }
                     break;
                 case StopWatch:
@@ -90,15 +94,21 @@ public class SubstanceElementService extends ElementService {
                         for(int i = 0; i < 3; ++i) {
                             ((Player) other).addLevel();
                         }
+                    }else{
+                        //直接变成最终形态！
+                        ((Enemy) other).setType(3);
                     }
                     break;
                 case Iron_cap:
                     if(other instanceof  Player) {
                         ((Player) other).beInvincible();
+                    }else{
+                        //加血不变相相当于加防御力嘛~
+                        other.getHp().add(50);
                     }
                     break;
                 case Spade:
-                    //too long!
+                    //写的有点冗余，暂时想不到啥好办法
                     //先把eagle周围的墙壁坐标添加进list
                     ArrayList<Pair<Integer, Integer>> loc = new ArrayList<>();
                     for(int i = 0; i < 4; ++i) {
@@ -143,7 +153,6 @@ public class SubstanceElementService extends ElementService {
                 ElementBean.Substance.getService().add(new Score(myself.getX() + 50, myself.getY(), 4));
             }
             //吃到道具之后就要将其移除
-            if(other instanceof  Player)
             this.remove(myself);
         }
 

@@ -15,8 +15,7 @@ public class GameStateManager implements IDraw {
     private final static int EAGLE_X = 6 * Constant.ELEMENT_SIZE, EAGLE_Y = 12 * Constant.ELEMENT_SIZE;
 
     private GameState gameState;
-    private Progress progress = Progress.getInstance();
-    private Player player;
+    private final Player player;
 
     public Home getHome() {
         return home;
@@ -26,7 +25,6 @@ public class GameStateManager implements IDraw {
     public GameStateManager() {
         player = new Player(4 * 34, 12 * 34);
         home = new Home(EAGLE_X, EAGLE_Y);
-        progress = Progress.getInstance();
         setGameState(STATE.MENU);
         action();
     }
@@ -49,11 +47,9 @@ public class GameStateManager implements IDraw {
                     ((LevelState) gameState).isInit()) {
                 ((LevelState) gameState).wholeAction();
             }
-//            if (gameState instanceof LevelState) {
-//                ((LevelState) gameState).action();
-//            }
-
         });
+
+        //按周期生成道具
         CommonUtils.task(20000, () -> {
             if (gameState instanceof LevelState) {
                 ((LevelState) gameState).generateProps();

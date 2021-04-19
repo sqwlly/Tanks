@@ -2,13 +2,8 @@ package sample.auxiliary.state;
 
 import sample.auxiliary.*;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
 public class StageState extends GameState{
     private GameStateManager gsm;
@@ -42,6 +37,7 @@ public class StageState extends GameState{
         if(Keys.ENTER.use()) {
             choose = false;
             progress.set("levelToPlay", level_Id + "");
+            progress.store();
         }
         if(choose) {
             if(Keys.PLAY2_UP.use() && level_Id + 1 <= 18) {

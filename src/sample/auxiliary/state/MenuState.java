@@ -6,13 +6,11 @@ import sample.auxiliary.graphics.SpriteSheet;
 import sample.auxiliary.graphics.TextureAtlas;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
 public class MenuState extends GameState {
-    private BufferedImage title = ResourceLoader.loadImage("images/title.png");
+    private final BufferedImage title = ResourceLoader.loadImage("images/title.png");
     private Animation tank;
     private static final int CHOICE_TOP_Y = Constant.ELEMENT_SIZE * 7 - 24;
     private int ch_x, ch_y;
@@ -20,12 +18,16 @@ public class MenuState extends GameState {
 
     public MenuState(GameStateManager gsm) {
         this.gsm = gsm;
-        progress.set("hearts", "1");
+        progress.set("hearts", "2");
         init();
     }
 
     @Override
     public void init() {
+        //迫不得已将这两句话写到这里
+        ElementBean.init();
+        gsm.getPlayer().initLevel();
+
         progress = Progress.getInstance();
         SpriteSheet sheet = new SpriteSheet(TextureAtlas.cut(2 * Constant.ELEMENT_SIZE, 0, Constant.ELEMENT_SIZE * 2, Constant.ELEMENT_SIZE),
                 Constant.ELEMENT_SIZE, Constant.ELEMENT_SIZE);

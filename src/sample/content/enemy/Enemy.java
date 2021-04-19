@@ -20,20 +20,16 @@ import java.util.List;
 
 @IElement(width = Constant.ELEMENT_SIZE - 2, height = Constant.ELEMENT_SIZE - 2, speed = 2)
 public class Enemy extends Tank {
-    public int getType() {
-        return type;
-    }
-
     private int type;
     private final Born born;
     private final List<HashMap<Direction, Animation>> sprites;
     public final static int[] REWARD = {100,200,300,400};
     private int step;
-    private Animation animation;
+    private int level;
 
     public Enemy(int x, int y, int type) {
         super(x, y);
-        this.type = type;
+        setType(type);
         this.direction = Direction.DOWN;
         sprites = new ArrayList<>();
         SpriteSheet sheet = new SpriteSheet(TextureAtlas.cut(0, 2 * Constant.ELEMENT_SIZE,
@@ -47,16 +43,34 @@ public class Enemy extends Tank {
                 for(int j = 0; j < 2; ++j) {
                     act[j] = sheet.getSprite(c++);
                 }
-                animation = new Animation(act, 50);
+                Animation animation = new Animation(act, 50);
                 animation.start();
                 spriteMap.put(d, animation);
             }
             sprites.add(spriteMap);
         }
+        level = 0;
         bulletNumInit();
         born = new Born(x, y);
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
         if(type == 3) {
             hp.setValue(hp.getValue() * 4);
+        }else if(type == 2) {
+            hp.setValue(hp.getValue() * 2);
+        }
+    }
+
+
+    public void addLevel() {
+        if(level + 2 < 2) {
+            level += 2;
         }
     }
 
@@ -91,12 +105,9 @@ public class Enemy extends Tank {
                 ty = y + height / 2 - 3;
                 break;
         }
-        ElementBean.Enemy.getService().add(new Bullet(tx, ty, direction, this));
-    }
-
-    @Override
-    public void die() {
-        super.die();
+        Bullet bullet = new Bullet(tx, ty, direction, this);
+        bullet.setLevel(level);
+        ElementBean.Enemy.getService().add(bullet);
     }
 
     @Override
