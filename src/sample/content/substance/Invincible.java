@@ -20,9 +20,10 @@ import java.awt.image.BufferedImage;
 public class Invincible extends BaseElement implements IBulletCross, ITankCross {
 
     private final Animation animation;
-
-    public Invincible(int x, int y) {
+    private Born born;
+    public Invincible(int x, int y, Born born) {
         super(x, y);
+        this.born = born;
         BufferedImage[] act = new BufferedImage[3];
         SpriteSheet sheet = new SpriteSheet(TextureAtlas.cut(13 * Constant.ELEMENT_SIZE, 7 * Constant.ELEMENT_SIZE,
                 Constant.ELEMENT_SIZE * 3, Constant.ELEMENT_SIZE), Constant.ELEMENT_SIZE, Constant.ELEMENT_SIZE);
@@ -47,6 +48,7 @@ public class Invincible extends BaseElement implements IBulletCross, ITankCross 
 
     @Override
     public void drawImage(Graphics g) {
+        if(!born.isComplete()) return;
         if(animation.hasPlayed(200)) {
             die();
             return;

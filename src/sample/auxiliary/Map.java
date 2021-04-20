@@ -1,6 +1,5 @@
 package sample.auxiliary;
 
-import sample.base.BaseElement;
 import sample.base.IDraw;
 import sample.content.enemy.Enemy;
 import sample.content.player.Player;
@@ -78,15 +77,19 @@ public class Map {
 
     public void getEntity(int type, int x, int y) {
         switch (type) {
+            //钢铁
             case 1:
                 ElementBean.Substance.getService().add(new Steel(x, y));
                 break;
+            //砖瓦
             case 2:
                 ElementBean.Substance.getService().add(new Tile(x, y, 1));
                 break;
+            //草丛
             case 3:
                 ElementBean.Substance.getService().add(new Grass(x, y));
                 break;
+            //河流
             case 5:
                 ElementBean.Substance.getService().add(new Water(x, y));
                 break;
@@ -102,7 +105,7 @@ public class Map {
             do {
                 x = CommonUtils.nextInt(0, 24);
 //                System.out.println(x + "," + 0 + " = " + getCell(0, x));
-            } while (getCell(0, x) != 0 || getCell(1, x) != 0);
+            } while (getCell(x, 0) != 0 || getCell(x, 1) != 0);
             enemies.add(new Enemy(x / 2 * Constant.ELEMENT_SIZE, 0, Integer.parseInt(s) - 1));
         }
 
@@ -119,7 +122,7 @@ public class Map {
     }
 
     public int getCell(int x, int y) {
-        return map[x][y];
+        return map[y][x];
     }
 
     public int[] getRow(int i) {

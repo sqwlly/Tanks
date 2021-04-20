@@ -54,7 +54,7 @@ public class StageState extends GameState{
         g.fillRect(0, 0, Constant.FRAME_WIDTH, Constant.FRAME_HEIGHT);
         g.setFont(font);
         g.setColor(Color.BLACK);
-        g.drawString("STAGE " + level_Id, Constant.FRAME_WIDTH / 2 - Constant.ELEMENT_SIZE * 2 + 10, Constant.FRAME_HEIGHT / 2 - 17);
+        g.drawString("STAGE " + level_Id, Constant.FRAME_WIDTH / 2 - Constant.ELEMENT_SIZE * 2, Constant.FRAME_HEIGHT / 2 - 17);
         //让STAGE页面停留2.5秒钟
         if(System.currentTimeMillis() - time > 2000 && !choose) {
             gsm.setGameState(STATE.LEVEL);

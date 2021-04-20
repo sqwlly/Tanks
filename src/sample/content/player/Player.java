@@ -25,7 +25,6 @@ public class Player extends Tank {
     private int level;
     private final List<HashMap<Direction, Animation>> sprite = new ArrayList<>();
     private Invincible invincible;
-    private Born born;
 
     public void addLevel() {
         if(level + 1 < 4) {
@@ -75,10 +74,6 @@ public class Player extends Tank {
         born();
     }
 
-    public void beHurt() {
-
-    }
-
     public void initScore() {
         score = 0;
     }
@@ -93,17 +88,19 @@ public class Player extends Tank {
 
     @Override
     public void action() {
-        move();
-        invincible.movedByPlayer(this);
-        if (Keys.SPACE.use()) {
-            shoot();
+        if(born.isComplete()) {
+            move();
+            invincible.movedByPlayer(this);
+            if (Keys.SPACE.use()) {
+                shoot();
+            }
         }
     }
 
     //无敌状态
     public void beInvincible() {
         ElementBean.Substance.getService().remove(invincible);
-        invincible = new Invincible(x, y);
+        invincible = new Invincible(x, y, born);
         ElementBean.Substance.getService().add(invincible);
     }
 
@@ -175,6 +172,7 @@ public class Player extends Tank {
 
     @Override
     public void drawImage(Graphics g) {
+        if(!born.isComplete()) return;
         g.drawImage(sprite.get(level).get(direction).getSprite(), x, y, width, height, null);
         sprite.get(level).get(direction).update();
     }

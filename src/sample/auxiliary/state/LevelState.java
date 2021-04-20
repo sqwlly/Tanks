@@ -4,6 +4,9 @@ import sample.auxiliary.*;
 import sample.auxiliary.service.EnemyElementService;
 import sample.auxiliary.service.SubstanceElementService;
 import sample.base.ElementService;
+import sample.content.common.Tank;
+import sample.content.enemy.Enemy;
+import sample.content.enemy.EnemyState;
 import sample.content.substance.EnemyIcon;
 import sample.content.substance.P;
 import sample.content.substance.PlayerIcon;
@@ -36,6 +39,9 @@ public class LevelState extends GameState implements ActionListener {
     private PlayerIcon playerIcon;
     private Stack<EnemyIcon> enemyIcons;
     private P p_image;
+
+    private EnemyState enemyState;
+
     public LevelState(GameStateManager gsm) {
         ElementBean.init();
         this.gsm = gsm;
@@ -77,6 +83,7 @@ public class LevelState extends GameState implements ActionListener {
         map = new Map("/levels/Level_" + Level_ID, gsm.getPlayer(), gsm.getHome());
         timer.schedule(timerTask, 0, 20);
         init = true;
+        enemyState = new EnemyState(map);
     }
 
     @Override
@@ -96,6 +103,11 @@ public class LevelState extends GameState implements ActionListener {
 
     @Override
     public void stateAction() {
+        ElementBean.Enemy.getService().getElementList().forEach(e -> {
+            if(e instanceof Tank) {
+                enemyState.bfs((Enemy) e);
+            }
+        });
     }
 
     public void wholeAction() {
@@ -157,14 +169,20 @@ public class LevelState extends GameState implements ActionListener {
             }
             Progress.getInstance().set("hearts", "0");
             timer.cancel();
+            try {
+                Thread.sleep(1000);
+            }catch (Exception ignored) {
+
+            }
+            //gsm.setGameState(STATE.COUNT);
         }
 
 //        System.out.println(player.getScore());
-        if (map.getPlayer().getScore() >= map.getSumReward() && finishTime == 0) {
+        if (map.getPlayer().getScore() >= map.getSumReward() && ElementBean.Enemy.getService().getElementList().size() == 0 && finishTime == 0) {
             finishTime = System.currentTimeMillis();
         }
         //清除完所有坦克即可进入下一关
-        if(map.getPlayer().getScore() >= map.getSumReward() && System.currentTimeMillis() - finishTime > 3500) {
+        if(map.getPlayer().getScore() >= map.getSumReward() && ElementBean.Enemy.getService().getElementList().size() == 0 && System.currentTimeMillis() - finishTime > 4000) {
             map.getPlayer().initScore();
             gsm.setGameState(STATE.COUNT);
             setLevel_ID(Level_ID + 1);

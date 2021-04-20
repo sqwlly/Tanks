@@ -1,6 +1,5 @@
 package sample.auxiliary.service;
 
-import sample.auxiliary.ElementBean;
 import sample.base.BaseElement;
 import sample.base.ElementService;
 import sample.content.common.Tank;

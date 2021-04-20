@@ -21,14 +21,14 @@ import java.util.List;
 @IElement(width = Constant.ELEMENT_SIZE - 2, height = Constant.ELEMENT_SIZE - 2, speed = 2)
 public class Enemy extends Tank {
     private int type;
-    private final Born born;
     private final List<HashMap<Direction, Animation>> sprites;
     public final static int[] REWARD = {100,200,300,400};
     private int step;
     private int level;
-
+    private boolean go;
     public Enemy(int x, int y, int type) {
         super(x, y);
+        level = 0;
         setType(type);
         this.direction = Direction.DOWN;
         sprites = new ArrayList<>();
@@ -49,9 +49,9 @@ public class Enemy extends Tank {
             }
             sprites.add(spriteMap);
         }
-        level = 0;
         bulletNumInit();
         born = new Born(x, y);
+        go = true;
     }
 
     public int getType() {
@@ -63,7 +63,10 @@ public class Enemy extends Tank {
         if(type == 3) {
             hp.setValue(hp.getValue() * 4);
         }else if(type == 2) {
+            level = 1;
             hp.setValue(hp.getValue() * 2);
+        }else if(type == 1) {
+            this.speed.setValue(this.getSpeed() + 1);
         }
     }
 
@@ -117,7 +120,9 @@ public class Enemy extends Tank {
 
     @Override
     public void action() {
-        move();
+        if(born.isComplete()) {
+            move();
+        }
     }
 
     @Override
@@ -155,13 +160,14 @@ public class Enemy extends Tank {
         if (step <= 0) {
             int r = CommonUtils.nextInt(0, 4);
             direction = Direction.values()[r];
-            step = CommonUtils.nextInt(0, 50) + 30;
+            step = CommonUtils.nextInt(0, 50) + 10;
             shoot();
         }
     }
 
     @Override
     public void drawImage(Graphics g) {
+        if(!born.isComplete()) return;
         sprites.get(type).get(direction).update();
         g.drawImage(sprites.get(type).get(direction).getSprite(), x, y, width, height, null);
     }

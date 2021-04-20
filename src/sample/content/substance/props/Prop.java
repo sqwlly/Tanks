@@ -44,19 +44,13 @@ public class Prop extends BaseElement implements IBulletCross {
         return prop;
     }
 
-    public void action() {
-        if(this.getProp() == Props.Spade) {
-
-        }
-    }
-
     @Override
     public void drawImage(Graphics g) {
-        if(nearDis.hasPlayed(30)) {
+        if(nearDis.hasPlayed(20)) {
             die();
             return;
         }
-        if(animation.hasPlayed(40)) {
+        if(animation.hasPlayed(30)) {
             //快要消失时闪烁状态
             g.drawImage(nearDis.getSprite(), x, y, width, height, null);
             nearDis.update();

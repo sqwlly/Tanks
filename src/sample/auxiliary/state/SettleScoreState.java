@@ -27,7 +27,7 @@ public class SettleScoreState extends GameState {
     private final int[] killedNum = new int[6];
     private int total_killed = 0;
     private final boolean[] complete = new boolean[6];
-
+    private boolean init;
     public SettleScoreState(GameStateManager gsm) {
         this.gsm = gsm;
         init();
@@ -57,6 +57,12 @@ public class SettleScoreState extends GameState {
         }
         progress.set("highScore", highScore + "");
         progress.store();
+        try {
+            Thread.sleep(1500);
+        }catch (Exception ignored) {
+
+        }
+        init = true;
     }
 
     @Override
@@ -71,6 +77,7 @@ public class SettleScoreState extends GameState {
 
     @Override
     public void drawImage(Graphics g) {
+        if(!init) return;
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, Constant.FRAME_WIDTH, Constant.FRAME_HEIGHT);
 
@@ -91,10 +98,11 @@ public class SettleScoreState extends GameState {
         g.setColor(Color.WHITE);
         for (int i = 0; i < 4; i++) {
             int ty = Constant.ELEMENT_SIZE * 5 + i * (Constant.ELEMENT_SIZE + 10) + 10;
-            g.drawString(Integer.parseInt(progress.get("killed" + (i + 1))) * (i + 1) + (Integer.parseInt(progress.get("killed" + (i + 1))) == 0 ? "" : "00"),
+            int killed_i = Integer.parseInt(progress.get("killed" + (i + 1)));
+
+            g.drawString(killedNum[i + 1] * (i + 1) + (Integer.parseInt(progress.get("killed" + (i + 1))) == 0 ? "" : "00"),
                     tx, ty);
             g.drawString("PTS", tx + Constant.ELEMENT_SIZE * 3, ty);
-            int killed_i = Integer.parseInt(progress.get("killed" + (i + 1)));
             g.drawString(killedNum[i + 1] + "", tx + Constant.ELEMENT_SIZE * 6, ty);
             //如果前一个(上一行)数字已经完毕并且当前数字加一不会超限
             if(complete[i] && killedNum[i + 1] + 1 <= killed_i) {
@@ -115,7 +123,7 @@ public class SettleScoreState extends GameState {
 
             try {
                 //让数字动起来~
-                Thread.sleep(30);
+                Thread.sleep(50);
             }catch (Exception ignored) {
 
             }

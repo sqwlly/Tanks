@@ -1,10 +1,8 @@
 package sample.auxiliary;
 
-import sample.auxiliary.service.EnemyElementService;
-import sample.auxiliary.service.SubstanceElementService;
 import sample.auxiliary.state.*;
-import sample.base.ElementService;
 import sample.base.IDraw;
+import sample.content.common.Tank;
 import sample.content.player.Player;
 import sample.content.substance.Home;
 
@@ -56,12 +54,16 @@ public class GameStateManager implements IDraw {
             }
         });
         //按时间周期生成敌方坦克
-        CommonUtils.task(7000, () -> {
-            if (gameState instanceof LevelState) {
-                ((LevelState) gameState).getMap().enemyBorn();
-            }
-            if(gameState instanceof LevelState) {
-                ((LevelState) gameState).reduceEnemyIcon();
+        CommonUtils.task(5500, () -> {
+            int cnt = (int) ElementBean.Enemy.getService().getElementList().stream().filter(e -> e instanceof Tank).count();
+            //为了减小游戏难度，场上敌方坦克数量不能超过四个
+            if(cnt < 4) {
+                if (gameState instanceof LevelState) {
+                    ((LevelState) gameState).getMap().enemyBorn();
+                }
+                if (gameState instanceof LevelState) {
+                    ((LevelState) gameState).reduceEnemyIcon();
+                }
             }
         });
     }
