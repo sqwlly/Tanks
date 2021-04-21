@@ -3,6 +3,7 @@ package sample.auxiliary;
 import sample.base.IDraw;
 import sample.content.enemy.Enemy;
 import sample.content.player.Player;
+import sample.content.player.Player_II;
 import sample.content.substance.*;
 
 import java.io.BufferedReader;
@@ -16,18 +17,7 @@ public class Map {
     private IDraw[][] cells; //先暂时放着吧
     private Queue<Enemy> enemies;
     private String[] enemyType;
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    private Player player;
-    public Home getHome() {
-        return home;
-    }
-
-    private Home home;
-
+    private GameStateManager gsm;
     public int getSumReward() {
         return sumReward;
     }
@@ -39,9 +29,8 @@ public class Map {
     private int sumReward;
 
     //player是独立于map之外的，因为进入下一关player的状态不变，是同一个player
-    public Map(String file, Player player, Home home) {
-        this.home = home;
-        this.player = player;
+    public Map(String file, GameStateManager gsm) {
+        this.gsm = gsm;
         init(file);
     }
 
@@ -67,7 +56,7 @@ public class Map {
 
     public void loadMap() {
         enemyInit();
-        ElementBean.Substance.getService().add(home);
+        ElementBean.Substance.getService().add(gsm.getHome());
         for(int i = 0; i < height; ++i) {
             for(int j = 0; j < width; ++j) {
                 getEntity(map[i][j], j * Constant.ELEMENT_SIZE / 2, i * Constant.ELEMENT_SIZE / 2);

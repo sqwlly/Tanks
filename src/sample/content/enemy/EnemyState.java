@@ -35,13 +35,13 @@ public class EnemyState {
 
     public EnemyState(Map map) {
         this.map = map;
-        this.home = map.getHome();
     }
 
     public void dfs() {
     }
 
     public void bfs(Enemy enemy) {
+        if(home == null) return;
         System.out.println("start bfs");
         int width = 26, height = 26;
         boolean[][] vis = new boolean[width][height];
@@ -89,7 +89,7 @@ public class EnemyState {
                 if(dis[x][y] == dis[tx][ty] + 1) {
                     directions.add(d[i]);
                 //    System.out.println("cell : " +map.getCell(tx, ty));
-                 //   ElementBean.Substance.getService().add(new Grass(tx * cellW, ty * cellW));
+//                    ElementBean.Substance.getService().add(new Grass(tx * cellW, ty * cellW));
                     System.out.println(tx + " " + ty + " " + d[i].toString());
                     x = tx;
                     y = ty;
@@ -99,11 +99,11 @@ public class EnemyState {
 //            System.out.println(x + " " + y + " -> " + dx + " " + dy);
         }
         System.out.println("end bfs");
-        try{
-            Thread.sleep(100 * 10000);
-        }catch (Exception e) {
-
-        }
+//        try{
+//            Thread.sleep(100 * 10000);
+//        }catch (Exception e) {
+//
+//        }
     }
 
 //    private boolean detectTarget() {

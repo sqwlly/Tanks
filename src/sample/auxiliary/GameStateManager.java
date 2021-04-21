@@ -4,16 +4,22 @@ import sample.auxiliary.state.*;
 import sample.base.IDraw;
 import sample.content.common.Tank;
 import sample.content.player.Player;
+import sample.content.player.Player_II;
 import sample.content.substance.Home;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 public class GameStateManager implements IDraw {
     private final static int EAGLE_X = 6 * Constant.ELEMENT_SIZE, EAGLE_Y = 12 * Constant.ELEMENT_SIZE;
 
     private GameState gameState;
-    private final Player player;
+    private final ArrayList<Player> players = new ArrayList<>();
+
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
 
     public Home getHome() {
         return home;
@@ -21,7 +27,8 @@ public class GameStateManager implements IDraw {
 
     private Home home;
     public GameStateManager() {
-        player = new Player(4 * 34, 12 * 34);
+        players.add(new Player(4 * 34, 12 * 34));
+        players.add(new Player_II(8 * 34, 12 * 34));
         home = new Home(EAGLE_X, EAGLE_Y);
         setGameState(STATE.MENU);
         action();
@@ -31,12 +38,12 @@ public class GameStateManager implements IDraw {
         gameState.mouseClicked(e);
     }
 
-    public Player getPlayer() {
-        return player;
+    public Player getPlayer(int i) {
+        return players.get(i);
     }
 
     public void action() {
-        CommonUtils.task(130, () -> {
+        CommonUtils.task(120, () -> {
             gameState.stateAction();
         });
         //刷新动作内容

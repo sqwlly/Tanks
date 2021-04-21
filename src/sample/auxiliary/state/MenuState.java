@@ -4,6 +4,7 @@ import sample.auxiliary.*;
 import sample.auxiliary.graphics.Animation;
 import sample.auxiliary.graphics.SpriteSheet;
 import sample.auxiliary.graphics.TextureAtlas;
+import sample.content.player.Player;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -26,7 +27,9 @@ public class MenuState extends GameState {
     public void init() {
         //迫不得已将这两句话写到这里
         ElementBean.init();
-        gsm.getPlayer().initLevel();
+        for(Player player : gsm.getPlayers()) {
+            player.initLevel();
+        }
 
         progress = Progress.getInstance();
         SpriteSheet sheet = new SpriteSheet(TextureAtlas.cut(2 * Constant.ELEMENT_SIZE, 0, Constant.ELEMENT_SIZE * 2, Constant.ELEMENT_SIZE),
@@ -49,15 +52,20 @@ public class MenuState extends GameState {
     @Override
     public void stateAction() {
         if(Keys.PLAY2_UP.use()) {
+            System.out.println("up");
             ch_y = Math.max(ch_y - Constant.ELEMENT_SIZE, CHOICE_TOP_Y);
         }
         if(Keys.PLAY2_DOWN.use()) {
+
+            System.out.println("down");
             ch_y = Math.min(ch_y + Constant.ELEMENT_SIZE, CHOICE_TOP_Y + Constant.ELEMENT_SIZE * 2);
         }
         if(Keys.ENTER.use()) {
-            if(ch_y == choices_y[0] || ch_y == choices_y[1]) {
+            if(ch_y == choices_y[0]) {
                 gsm.setGameState(STATE.STAGE);
-            }else{
+            }else if(ch_y == choices_y[1]){
+                gsm.setGameState(STATE.STAGE);
+            }else if(ch_y == choices_y[2]){
                 //Construction留空
             }
         }

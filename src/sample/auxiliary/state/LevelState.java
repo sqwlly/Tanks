@@ -7,6 +7,7 @@ import sample.base.ElementService;
 import sample.content.common.Tank;
 import sample.content.enemy.Enemy;
 import sample.content.enemy.EnemyState;
+import sample.content.player.Player;
 import sample.content.substance.EnemyIcon;
 import sample.content.substance.P;
 import sample.content.substance.PlayerIcon;
@@ -77,10 +78,12 @@ public class LevelState extends GameState implements ActionListener {
         }
         p_image = new P(tx + 5, Constant.ELEMENT_SIZE * 10 - 17, 1);
         playerIcon = new PlayerIcon(tx - 3, Constant.ELEMENT_SIZE * 10 + 4);
-        gsm.getPlayer().born();
-        ElementBean.Player.getService().add(gsm.getPlayer());
+        for(Player player : gsm.getPlayers()) {
+            player.born();
+            ElementBean.Player.getService().add(player);
+        }
         gsm.getHome().born();
-        map = new Map("/levels/Level_" + Level_ID, gsm.getPlayer(), gsm.getHome());
+        map = new Map("/levels/Level_" + Level_ID, gsm);
         timer.schedule(timerTask, 0, 20);
         init = true;
         enemyState = new EnemyState(map);
@@ -88,9 +91,7 @@ public class LevelState extends GameState implements ActionListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        System.out.println(map.getHome().getHp().getValue());
-        if(!map.getHome().getHp().health()) {
-            //timer.cancel();
+        if(!gsm.getHome().getHp().health()) {
             try {
                 Thread.sleep(200);
             }catch (InterruptedException e1) {
@@ -113,12 +114,12 @@ public class LevelState extends GameState implements ActionListener {
     public void wholeAction() {
         //玩家
         ElementService playerService = (ElementService) ElementBean.Player.getService();
-        playerService.action(map.getPlayer());
+        playerService.action(gsm);
         ElementService substanceService = (SubstanceElementService) ElementBean.Substance.getService();
         ElementService enemyService = (EnemyElementService) ElementBean.Enemy.getService();
-        enemyService.action(map.getPlayer(), playerService);
-        substanceService.action(map.getPlayer(), enemyService);
-        substanceService.action(map.getPlayer(), playerService);
+        enemyService.action(gsm, playerService);
+        substanceService.action(gsm, enemyService);
+        substanceService.action(gsm, playerService);
     }
 
     public void reduceEnemyIcon() {
@@ -144,49 +145,52 @@ public class LevelState extends GameState implements ActionListener {
         if(!init) return;
         int hearts = Integer.parseInt(Progress.getInstance().get("hearts"));
         if(hearts < 0) {
-            map.getHome().die();
+            gsm.getHome().die();
         }
-        if(!map.getPlayer().alive() && bornTime == 0) {
-            bornTime = System.currentTimeMillis();
-        }
-        //ok, problem solved, use a bornTime var!
-        if(!map.getPlayer().alive() && System.currentTimeMillis() - bornTime > 1500) {
-            if(hearts > 0) {
-                map.getPlayer().born();
-                map.getPlayer().initLevel();
-                bornTime = 0;
-                ElementBean.Player.getService().add(gsm.getPlayer());
+        for(Player player : gsm.getPlayers()) {
+            if(!player.alive() && bornTime == 0) {
+                bornTime = System.currentTimeMillis();
             }
-            hearts--;
-            System.out.println(hearts);
-            Progress.getInstance().set("hearts", hearts + "");
-
-        }
-        if(!map.getHome().getHp().health()) {
-            if(map.getPlayer().alive()) {
-                map.getPlayer().die();
-                System.out.println("player die");
-            }
-            Progress.getInstance().set("hearts", "0");
-            timer.cancel();
-            try {
-                Thread.sleep(1000);
-            }catch (Exception ignored) {
+            //ok, problem solved, use a bornTime var!
+            if(!player.alive() && System.currentTimeMillis() - bornTime > 1500) {
+                if(hearts > 0) {
+                    player.born();
+                    player.initLevel();
+                    bornTime = 0;
+                    ElementBean.Player.getService().add(player);
+                }
+                hearts--;
+                System.out.println(hearts);
+                Progress.getInstance().set("hearts", hearts + "");
 
             }
-            //gsm.setGameState(STATE.COUNT);
-        }
+            if(!gsm.getHome().getHp().health()) {
+                if(player.alive()) {
+                    player.die();
+                    System.out.println("player die");
+                }
+                Progress.getInstance().set("hearts", "0");
+                timer.cancel();
+                try {
+                    Thread.sleep(1000);
+                }catch (Exception ignored) {
+
+                }
+                //gsm.setGameState(STATE.COUNT);
+            }
 
 //        System.out.println(player.getScore());
-        if (map.getPlayer().getScore() >= map.getSumReward() && ElementBean.Enemy.getService().getElementList().size() == 0 && finishTime == 0) {
-            finishTime = System.currentTimeMillis();
+            if (player.getScore() >= map.getSumReward() && ElementBean.Enemy.getService().getElementList().size() == 0 && finishTime == 0) {
+                finishTime = System.currentTimeMillis();
+            }
+            //清除完所有坦克即可进入下一关
+            if(player.getScore() >= map.getSumReward() && ElementBean.Enemy.getService().getElementList().size() == 0 && System.currentTimeMillis() - finishTime > 4000) {
+                player.initScore();
+                gsm.setGameState(STATE.COUNT);
+                setLevel_ID(Level_ID + 1);
+            }
         }
-        //清除完所有坦克即可进入下一关
-        if(map.getPlayer().getScore() >= map.getSumReward() && ElementBean.Enemy.getService().getElementList().size() == 0 && System.currentTimeMillis() - finishTime > 4000) {
-            map.getPlayer().initScore();
-            gsm.setGameState(STATE.COUNT);
-            setLevel_ID(Level_ID + 1);
-        }
+
     }
 
     @Override

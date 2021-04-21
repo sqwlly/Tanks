@@ -16,15 +16,16 @@ import java.util.List;
 
 @IElement(width = Constant.ELEMENT_SIZE - 2, height = Constant.ELEMENT_SIZE - 2, speed = 2)
 public class Player extends Tank {
-    private final static int size = Constant.ELEMENT_SIZE;
+    public final static int size = Constant.ELEMENT_SIZE;
 
     //暂时先不用
     private final static float scale = 1f;
 
-    private int score;
-    private int level;
+    protected int score;
+    protected int level;
     private final List<HashMap<Direction, Animation>> sprite = new ArrayList<>();
-    private Invincible invincible;
+
+    protected Invincible invincible;
 
     public void addLevel() {
         if(level + 1 < 4) {
@@ -51,6 +52,13 @@ public class Player extends Tank {
 
     public Player(int x, int y) {
         super(x, y);
+        animationInit();
+        born = new Born(x, y);
+        born();
+        bulletNumInit();
+    }
+
+    protected void animationInit() {
         int c = 0;
         BufferedImage[] act = new BufferedImage[2];
         SpriteSheet sheet = new SpriteSheet(TextureAtlas.cut(0, 0, size * 32, size), size, size);
@@ -69,9 +77,6 @@ public class Player extends Tank {
             //将一种形态的四个方向animation加入sprite列表，随后可以通过level来分别取得不同形态
             sprite.add(sprites);
         }
-        born = new Born(x, y);
-        bulletNumInit();
-        born();
     }
 
     public void initScore() {
@@ -142,23 +147,13 @@ public class Player extends Tank {
         oldX = x;
         oldY = y;
         if (Keys.UP.use()) {
-            if (y - speed.getValue() > 0) {
-                y = y - speed.getValue();
-            }
+            y = Math.max(y - speed.getValue(), 0);
             this.direction = Direction.UP;
         } else if (Keys.DOWN.use()) {
-            if (y + speed.getValue() < Constant.FRAME_HEIGHT - height * 2 + 3) {
-                y = y + speed.getValue();
-            } else {
-                y = Constant.FRAME_HEIGHT - height * 2 + 3;
-            }
+            y = Math.min(y + speed.getValue(), Constant.FRAME_HEIGHT - height * 2 + 3);
             this.direction = Direction.DOWN;
         } else if (Keys.LEFT.use()) {
-            if (this.x - speed.getValue() > 0) {
-                x = x - speed.getValue();
-            }else{
-                x = 0;
-            }
+            x = Math.max(this.x - speed.getValue(), 0);
             this.direction = Direction.LEFT;
         } else if (Keys.RIGHT.use()) {
             if (this.x + width + speed.getValue() < Constant.GAME_WIDTH) {

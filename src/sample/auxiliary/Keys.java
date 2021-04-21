@@ -13,7 +13,7 @@ public enum Keys {
     PLAY2_DOWN(KeyEvent.VK_DOWN),
     PLAY2_LEFT(KeyEvent.VK_LEFT),
     PLAY2_RIGHT(KeyEvent.VK_RIGHT),
-    ZERO(KeyEvent.VK_0),
+    ZERO(KeyEvent.VK_NUMPAD0),
     ENTER(KeyEvent.VK_ENTER),
     SPACE(KeyEvent.VK_SPACE);
 

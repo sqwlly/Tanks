@@ -1,16 +1,19 @@
 package sample.base;
 
+import sample.auxiliary.GameStateManager;
 import sample.content.player.Player;
 
 import java.awt.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public abstract class ElementService<T extends BaseElement> extends BaseService<T> {
-    public final <S extends BaseElement> void action(Player player, ElementService<S>... services) {
+    public final <S extends BaseElement> void action(GameStateManager gsm, ElementService<S>... services) {
         this.getElementList().forEach(element -> {
-            if(element.remove(player)) {
-                this.remove(element);
-                return;
+            for(Player player : gsm.getPlayers()) {
+                if(element.remove(player)) {
+                    this.remove(element);
+                    return;
+                }
             }
 
             //前置操作
