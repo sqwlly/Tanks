@@ -15,6 +15,7 @@ public enum Keys {
     PLAY2_RIGHT(KeyEvent.VK_RIGHT),
     ZERO(KeyEvent.VK_NUMPAD0),
     ENTER(KeyEvent.VK_ENTER),
+    BACKSPACE(KeyEvent.VK_BACK_SPACE),
     SPACE(KeyEvent.VK_SPACE);
 
     private int keyValue;

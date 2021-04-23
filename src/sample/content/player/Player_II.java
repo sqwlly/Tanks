@@ -28,7 +28,6 @@ public class Player_II extends Player{
             move();
             invincible.movedByPlayer(this);
             if (Keys.ZERO.use()) {
-                System.out.println("player2 shoot");
                 shoot();
             }
         }
@@ -67,10 +66,7 @@ public class Player_II extends Player{
     @Override
     protected void animationInit() {
         int c = 0;
-        if(sprite == null) {
-            sprite = new ArrayList<>();
-        }
-
+        sprite = new ArrayList<>();
         BufferedImage[] act = new BufferedImage[2];
         SpriteSheet sheet = new SpriteSheet(TextureAtlas.cut(0, size, size * 32, size), size, size);
         for(int i = 0; i < 4; ++i) {

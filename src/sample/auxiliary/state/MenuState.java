@@ -19,7 +19,7 @@ public class MenuState extends GameState {
 
     public MenuState(GameStateManager gsm) {
         this.gsm = gsm;
-        progress.set("hearts", "2");
+        progress.set("hearts", "4");
         init();
     }
 
@@ -52,21 +52,21 @@ public class MenuState extends GameState {
     @Override
     public void stateAction() {
         if(Keys.PLAY2_UP.use()) {
-            System.out.println("up");
             ch_y = Math.max(ch_y - Constant.ELEMENT_SIZE, CHOICE_TOP_Y);
         }
         if(Keys.PLAY2_DOWN.use()) {
-
-            System.out.println("down");
             ch_y = Math.min(ch_y + Constant.ELEMENT_SIZE, CHOICE_TOP_Y + Constant.ELEMENT_SIZE * 2);
         }
         if(Keys.ENTER.use()) {
             if(ch_y == choices_y[0]) {
+                progress.set("playerNum", "1");
+                progress.set("hearts", "2");
                 gsm.setGameState(STATE.STAGE);
             }else if(ch_y == choices_y[1]){
+                progress.set("playerNum", "2");
                 gsm.setGameState(STATE.STAGE);
             }else if(ch_y == choices_y[2]){
-                //Construction留空
+                gsm.setGameState(STATE.CONSTRUCTION);
             }
         }
     }

@@ -1,9 +1,6 @@
 package sample.auxiliary.state;
 
-import sample.auxiliary.Constant;
-import sample.auxiliary.GameStateManager;
-import sample.auxiliary.Progress;
-import sample.auxiliary.ResourceLoader;
+import sample.auxiliary.*;
 import sample.auxiliary.graphics.Sprite;
 import sample.auxiliary.graphics.SpriteSheet;
 import sample.auxiliary.graphics.TextureAtlas;
@@ -72,7 +69,9 @@ public class SettleScoreState extends GameState {
 
     @Override
     public void stateAction() {
-
+        if(Keys.ENTER.use()) {
+            gsm.setGameState(STATE.STAGE);
+        }
     }
 
     @Override

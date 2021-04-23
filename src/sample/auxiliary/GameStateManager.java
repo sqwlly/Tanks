@@ -30,6 +30,7 @@ public class GameStateManager implements IDraw {
         players.add(new Player(4 * 34, 12 * 34));
         players.add(new Player_II(8 * 34, 12 * 34));
         home = new Home(EAGLE_X, EAGLE_Y);
+//        setGameState(STATE.CONSTRUCTION);
         setGameState(STATE.MENU);
         action();
     }
@@ -38,13 +39,12 @@ public class GameStateManager implements IDraw {
         gameState.mouseClicked(e);
     }
 
-    public Player getPlayer(int i) {
-        return players.get(i);
-    }
-
     public void action() {
         CommonUtils.task(120, () -> {
             gameState.stateAction();
+//            if(gameState instanceof Construction) {
+//                gameState.stateAction();
+//            }
         });
         //刷新动作内容
         CommonUtils.task(20, () -> {
@@ -55,13 +55,13 @@ public class GameStateManager implements IDraw {
         });
 
         //按周期生成道具
-        CommonUtils.task(20000, () -> {
+        CommonUtils.task(15000, () -> {
             if (gameState instanceof LevelState) {
                 ((LevelState) gameState).generateProps();
             }
         });
         //按时间周期生成敌方坦克
-        CommonUtils.task(5500, () -> {
+        CommonUtils.task(5200, () -> {
             int cnt = (int) ElementBean.Enemy.getService().getElementList().stream().filter(e -> e instanceof Tank).count();
             //为了减小游戏难度，场上敌方坦克数量不能超过四个
             if(cnt < 4) {
@@ -89,6 +89,8 @@ public class GameStateManager implements IDraw {
             case MENU:
                 gameState = new MenuState(this);
                 break;
+            case CONSTRUCTION:
+                gameState = new Construction(this);
         }
     }
 

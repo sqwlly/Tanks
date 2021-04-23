@@ -29,6 +29,17 @@ public class ResourceLoader {
         return bufferedReader;
     }
 
+    public static BufferedWriter writeFile(String fileName) {
+        BufferedWriter bufferedWriter = null;
+        try {
+            bufferedWriter = new BufferedWriter(new FileWriter(PATH + fileName));
+
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bufferedWriter;
+    }
+
     public static InputStream loadFontStream(String fileName) {
         InputStream stream = null;
         try {

@@ -21,6 +21,15 @@ public class Player extends Tank {
     //暂时先不用
     private final static float scale = 1f;
 
+    public long getBornTime() {
+        return bornTime;
+    }
+
+    public void setBornTime(long bornTime) {
+        this.bornTime = bornTime;
+    }
+
+    protected long bornTime;
     protected int score;
     protected int level;
     private final List<HashMap<Direction, Animation>> sprite = new ArrayList<>();
@@ -37,13 +46,18 @@ public class Player extends Tank {
     }
 
     public void born() {
-        this.setX(4 * 34);
+        if(this instanceof Player_II) {
+            this.setX(8 * 34);
+        }else {
+            this.setX(4 * 34);
+        }
         this.setY(12 * 34);
         this.hp.setValue(50);
         this.setDirection(Direction.UP);
         born = new Born(x, y);
         ElementBean.Substance.getService().add(born);
         beInvincible();
+        bulletNumInit();
     }
 
     public void initLevel() {
@@ -55,7 +69,7 @@ public class Player extends Tank {
         animationInit();
         born = new Born(x, y);
         born();
-        bulletNumInit();
+        //bulletNumInit();
     }
 
     protected void animationInit() {
