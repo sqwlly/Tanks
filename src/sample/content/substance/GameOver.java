@@ -1,6 +1,7 @@
 package sample.content.substance;
 
 import sample.auxiliary.Constant;
+import sample.auxiliary.audio.Audio;
 import sample.auxiliary.graphics.Sprite;
 import sample.auxiliary.graphics.SpriteSheet;
 import sample.auxiliary.graphics.TextureAtlas;
@@ -17,6 +18,7 @@ public class GameOver extends BaseElement implements IMovable, ITankCross, IBull
         SpriteSheet sheet = new SpriteSheet(TextureAtlas.cut(4 * Constant.ELEMENT_SIZE, 4 * Constant.ELEMENT_SIZE,
                 Constant.ELEMENT_SIZE * 2, Constant.ELEMENT_SIZE), Constant.ELEMENT_SIZE * 2, Constant.ELEMENT_SIZE);
         sprite = new Sprite(sheet, 1, 0);
+        Audio.gama_over.play();
     }
 
     @Override

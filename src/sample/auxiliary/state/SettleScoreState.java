@@ -1,6 +1,7 @@
 package sample.auxiliary.state;
 
 import sample.auxiliary.*;
+import sample.auxiliary.audio.Audio;
 import sample.auxiliary.graphics.Sprite;
 import sample.auxiliary.graphics.SpriteSheet;
 import sample.auxiliary.graphics.TextureAtlas;
@@ -121,8 +122,9 @@ public class SettleScoreState extends GameState {
             sprites.get(i).render(g, tx + Constant.ELEMENT_SIZE * 8, ty - 25);
 
             try {
+                Audio.total_score_tick.play();
                 //让数字动起来~
-                Thread.sleep(50);
+                Thread.sleep(1);
             }catch (Exception ignored) {
 
             }

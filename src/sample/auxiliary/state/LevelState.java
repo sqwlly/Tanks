@@ -1,6 +1,8 @@
 package sample.auxiliary.state;
 
 import sample.auxiliary.*;
+import sample.auxiliary.audio.Audio;
+import sample.auxiliary.audio.MediaPlayer;
 import sample.auxiliary.service.EnemyElementService;
 import sample.auxiliary.service.SubstanceElementService;
 import sample.base.ElementService;
@@ -83,6 +85,7 @@ public class LevelState extends GameState implements ActionListener {
         for(Player player : gsm.getPlayers()) {
             if(playerNum <= 0) break;
             playerNum--;
+            System.out.println(playerNum);
             player.born();
             player.setBornTime(0);
             player.initScore();
@@ -93,6 +96,7 @@ public class LevelState extends GameState implements ActionListener {
         timer.schedule(timerTask, 0, 20);
         init = true;
         enemyState = new EnemyState(map);
+        Audio.stage_start.play();
     }
 
     @Override
@@ -141,8 +145,8 @@ public class LevelState extends GameState implements ActionListener {
     }
 
     public void generateProps() {
-        Props p = Props.values()[CommonUtils.nextInt(0, Props.values().length)];
-//        Props p = Props.Gun;
+//        Props p = Props.values()[CommonUtils.nextInt(0, Props.values().length)];
+        Props p = Props.Bomb;
         int tx = CommonUtils.nextInt(0, Constant.GAME_WIDTH - 34);
         int ty = CommonUtils.nextInt(0, Constant.GAME_HEIGHT - 34);
         new Prop(tx, ty, p);
@@ -150,12 +154,15 @@ public class LevelState extends GameState implements ActionListener {
 
     public void action() {
         if(!init) return;
+
         int hearts = Integer.parseInt(Progress.getInstance().get("hearts"));
         if(hearts < 0) {
             gsm.getHome().die();
         }
+
         for(Player player : gsm.getPlayers()) {
             if(!player.alive() && player.getBornTime() == 0) {
+                System.out.println("player die");
                 player.setBornTime(System.currentTimeMillis());
             }
             //ok, problem solved, use a bornTime var!
@@ -166,41 +173,48 @@ public class LevelState extends GameState implements ActionListener {
                     player.initLevel();
                     player.setBornTime(0);
                     ElementBean.Player.getService().add(player);
+                    hearts--;
                 }
-                hearts--;
                 System.out.println(hearts);
                 Progress.getInstance().set("hearts", hearts + "");
 
             }
-            //老鹰没了玩家也得die
-            if(!gsm.getHome().getHp().health()) {
-                if(player.alive()) {
-                    player.die();
-                    System.out.println("player die");
-                }
-                Progress.getInstance().set("hearts", "0");
-                timer.cancel();
-                try {
-                    Thread.sleep(1000);
-                }catch (Exception ignored) {
+            ElementBean.Player.getService().getElementList().forEach(e -> {
+                //必须是服务列表里的player
+                if(e == player) {
+                    //老鹰没了玩家也得die
+                    if(!gsm.getHome().getHp().health()) {
+                        if(player.alive()) {
+                            player.die();
+                            System.out.println("player die");
+                        }
+                        Progress.getInstance().set("hearts", "0");
 
+                        //gsm.setGameState(STATE.COUNT);
+                    }
                 }
-                //gsm.setGameState(STATE.COUNT);
-            }
+            });
 
-//        System.out.println(player.getScore());
-            if (player.getScore() >= map.getSumReward() && ElementBean.Enemy.getService().getElementList().size() == 0 && finishTime == 0) {
+            int restEnemy = Integer.parseInt(progress.get("restEnemy"));
+            if (player.getScore() >= map.getSumReward() && restEnemy == 0 && finishTime == 0) {
                 finishTime = System.currentTimeMillis();
             }
             //清除完所有坦克即可进入下一关
-            if(player.getScore() >= map.getSumReward() && ElementBean.Enemy.getService().getElementList().size() == 0 && System.currentTimeMillis() - finishTime > 4000) {
+            if(player.getScore() >= map.getSumReward() && restEnemy == 0 && System.currentTimeMillis() - finishTime > 2000) {
                 System.out.println(player.getScore() + " " + map.getSumReward());
                 player.initScore();
                 gsm.setGameState(STATE.COUNT);
                 setLevel_ID(Level_ID + 1);
             }
         }
+        if(!gsm.getHome().getHp().health()) {
+            timer.cancel();
+            try {
+                Thread.sleep(1000);
+            } catch (Exception ignored) {
 
+            }
+        }
     }
 
     @Override

@@ -1,5 +1,6 @@
 package sample.auxiliary.service;
 
+import sample.auxiliary.Direction;
 import sample.base.BaseElement;
 import sample.base.ElementService;
 import sample.content.common.Tank;
@@ -26,6 +27,43 @@ public class EnemyElementService extends ElementService {
             if(myself instanceof Tank && other instanceof Tank) {
                 ((Tank) myself).stay();
                 ((Tank) other).stay();
+
+                //啊，杀了我吧！
+//                boolean stay = false;
+//                switch (myself.getDirection()) {
+//                    case LEFT:
+//                        if(other.getDirection() == Direction.RIGHT) {
+//                            stay = true;
+//                        }else if(other.getDirection() == Direction.UP || other.getDirection() == Direction.DOWN) {
+//                            ((Tank) other).stay();
+//                        }
+//                        break;
+//                    case RIGHT:
+//                        if(other.getDirection() == Direction.LEFT) {
+//                            stay = true;
+//                        }else if(other.getDirection() == Direction.UP || other.getDirection() == Direction.DOWN) {
+//                            ((Tank) other).stay();
+//                        }
+//                        break;
+//                    case UP:
+//                        if(other.getDirection() == Direction.DOWN) {
+//                            stay = true;
+//                        }else if(other.getDirection() == Direction.LEFT || other.getDirection() == Direction.RIGHT) {
+//                            ((Tank) other).stay();
+//                        }
+//                        break;
+//                    case DOWN:
+//                        if(other.getDirection() == Direction.UP) {
+//                            stay = true;
+//                        }else if(other.getDirection() == Direction.LEFT || other.getDirection() == Direction.RIGHT) {
+//                            ((Tank) other).stay();
+//                        }
+//                        break;
+//                }
+//                if(stay) {
+//                    ((Tank) myself).stay();
+//                    ((Tank) other).stay();
+//                }
             }
             if(myself instanceof Bullet) {
                 myself.die();

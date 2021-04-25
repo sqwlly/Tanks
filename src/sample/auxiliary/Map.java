@@ -44,7 +44,7 @@ public class Map {
                 String s = br.readLine();;
                 if(s == null) break;
                 String[] msg = s.split(delimiters);
-                System.out.println(s + "  " + msg.length);
+//                System.out.println(s + "  " + msg.length);
                 for(int j = 0; j < WIDTH && j < msg.length; ++j) {
                     map[i][j] = Integer.parseInt(msg[j]);
                 }

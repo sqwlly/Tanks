@@ -2,6 +2,8 @@ package sample.content.substance;
 
 import sample.auxiliary.Constant;
 import sample.auxiliary.ElementBean;
+import sample.auxiliary.audio.Audio;
+import sample.auxiliary.audio.MediaPlayer;
 import sample.auxiliary.graphics.Animation;
 import sample.auxiliary.graphics.SpriteSheet;
 import sample.auxiliary.graphics.TextureAtlas;
@@ -29,6 +31,7 @@ public class TankBoom extends BaseElement implements ITankCross, IBulletCross {
         }
         animation = new Animation(act, 75);
         animation.start();
+        Audio.explosion_2.play();
     }
 
     @Override

@@ -40,7 +40,7 @@ public class GameStateManager implements IDraw {
     }
 
     public void action() {
-        CommonUtils.task(120, () -> {
+        CommonUtils.task(80, () -> {
             gameState.stateAction();
 //            if(gameState instanceof Construction) {
 //                gameState.stateAction();

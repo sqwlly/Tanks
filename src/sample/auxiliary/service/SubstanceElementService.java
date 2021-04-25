@@ -3,6 +3,7 @@ package sample.auxiliary.service;
 import javafx.util.Pair;
 import sample.auxiliary.ElementBean;
 import sample.auxiliary.Progress;
+import sample.auxiliary.audio.Audio;
 import sample.base.*;
 import sample.content.common.Tank;
 import sample.content.enemy.Enemy;
@@ -39,7 +40,10 @@ public class SubstanceElementService extends ElementService {
             }else if(myself instanceof IBulletCross || myself instanceof Home) {
                 return false;
             }
-
+            //玩家子弹击中钢铁播放音效
+            if(myself instanceof Steel && ((Bullet) other).getFrom() instanceof Player) {
+                Audio.bullet_hit_steel.play();
+            }
             other.die(); //why??
             if(!myself.alive() && !(myself instanceof Home)) {
                 this.remove(myself);
@@ -54,10 +58,12 @@ public class SubstanceElementService extends ElementService {
         //坦克吃到道具
         if(myself instanceof Prop && other instanceof Tank) {
             Props props = ((Prop) myself).getProp();
+            Audio.get_bonus.play();
             switch (props) {
                 case Star:
                     if(other instanceof Player) {
                         ((Player) other).addLevel();
+                        Audio.star.play();
                     }else{
                         //我知道这里或许可以改进的，两句基本一样的代码。。。改成Tank.addLevel()或许就可以了，但是太懒了，因为玩家和npc坦克等级并不一致
                         ((Enemy) other).addLevel();
@@ -75,6 +81,8 @@ public class SubstanceElementService extends ElementService {
                         ElementBean.Enemy.getService().getElementList().forEach(e -> {
                             ((BaseElement) e).die();
                         });
+                        //不知道为啥会报错啊。。。
+                        Audio.bonus_grenade.play();
                     }else{
                         ElementBean.Player.getService().getElementList().forEach(e -> {
                             if(e instanceof Player) {
@@ -82,11 +90,13 @@ public class SubstanceElementService extends ElementService {
                             }
                         });
                     }
+
                     break;
                 case Tank:
                     if(other instanceof Player) {
                         int hearts = Integer.parseInt(Progress.getInstance().get("hearts")) + 1;
                         Progress.getInstance().set("hearts", hearts + "");
+                        Audio.bonus_life.play();
                     }
                     break;
                 case Gun:

@@ -18,7 +18,7 @@ public class Bullet extends BaseElement implements IMovable {
 
     private final HashMap<Direction, Sprite> spriteMap;
 
-    private final Tank from;
+    private Tank from;
 
     public Bullet(int x, int y, Direction direction, Tank from) {
         super(x, y);
@@ -44,6 +44,10 @@ public class Bullet extends BaseElement implements IMovable {
         }else if(level == 3) {
             attack.add(101);
         }
+    }
+
+    public Tank getFrom() {
+        return from;
     }
 
     @Override

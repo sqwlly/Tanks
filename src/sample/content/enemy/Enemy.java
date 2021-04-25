@@ -36,7 +36,7 @@ public class Enemy extends Tank {
                 Constant.ELEMENT_SIZE * 32, Constant.ELEMENT_SIZE),
                 Constant.ELEMENT_SIZE, Constant.ELEMENT_SIZE);
         int c = 0;
-        for(int i = 0; i < 4; ++i) {
+        for(int i = 0; i < 3; ++i) {
             HashMap<Direction, Animation> spriteMap = new HashMap<>();
             BufferedImage[] act = new BufferedImage[2];
             for(Direction d : Direction.values()) {
@@ -49,6 +49,25 @@ public class Enemy extends Tank {
             }
             sprites.add(spriteMap);
         }
+        sheet = new SpriteSheet(TextureAtlas.cut(24 * Constant.ELEMENT_SIZE, 0,
+                8 * Constant.ELEMENT_SIZE, Constant.ELEMENT_SIZE * 4), Constant.ELEMENT_SIZE, Constant.ELEMENT_SIZE);
+        HashMap<Direction, Animation> spriteMap = new HashMap<>();
+        int k = 0;
+        for(Direction d : Direction.values()) {
+            BufferedImage[] act = new BufferedImage[4];
+            c = 0;
+            for(int i = 0; i < 2; ++i) {
+                //0 4 -> 1 5
+                //i i+4 -> i+1 i+4
+                act[c++] = sheet.getSprite(k + i + 8);
+                act[c++] = sheet.getSprite(k + i + 16);
+            }
+            k += 2;
+            Animation animation = new Animation(act, 10);
+            animation.start();
+            spriteMap.put(d, animation);
+        }
+        sprites.add(spriteMap);
         bulletNumInit();
         born = new Born(x, y);
         go = true;
@@ -60,11 +79,11 @@ public class Enemy extends Tank {
 
     public void setType(int type) {
         this.type = type;
-        if(type == 3) {
-            hp.setValue(hp.getValue() * 4);
+        if(type == 3 || type == 4) {
+            hp.setValue(hp.getValue() * 2);
+            speed.setValue(1);
         }else if(type == 2) {
             level = 1;
-            hp.setValue(hp.getValue() * 2);
         }else if(type == 1) {
             this.speed.setValue(this.getSpeed() + 1);
         }
@@ -163,6 +182,7 @@ public class Enemy extends Tank {
             step = CommonUtils.nextInt(0, 50) + 10;
             shoot();
         }
+//        Audio.enemy_move.play();
     }
 
     @Override

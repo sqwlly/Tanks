@@ -1,6 +1,8 @@
 package sample.auxiliary.state;
 
 import sample.auxiliary.*;
+import sample.auxiliary.audio.Audio;
+import sample.auxiliary.audio.MediaPlayer;
 import sample.auxiliary.graphics.Animation;
 import sample.auxiliary.graphics.SpriteSheet;
 import sample.auxiliary.graphics.TextureAtlas;
@@ -30,6 +32,7 @@ public class MenuState extends GameState {
         for(Player player : gsm.getPlayers()) {
             player.initLevel();
         }
+        gsm.getHome().born();
 
         progress = Progress.getInstance();
         SpriteSheet sheet = new SpriteSheet(TextureAtlas.cut(2 * Constant.ELEMENT_SIZE, 0, Constant.ELEMENT_SIZE * 2, Constant.ELEMENT_SIZE),
@@ -42,6 +45,7 @@ public class MenuState extends GameState {
         for(int i = 0; i < choices_y.length; ++i) {
             choices_y[i] = CHOICE_TOP_Y + Constant.ELEMENT_SIZE * i;
         }
+//        new MediaPlayer(Audio.menu.getUrl()).start();
     }
 
     @Override
@@ -68,6 +72,7 @@ public class MenuState extends GameState {
             }else if(ch_y == choices_y[2]){
                 gsm.setGameState(STATE.CONSTRUCTION);
             }
+            progress.store();
         }
     }
 

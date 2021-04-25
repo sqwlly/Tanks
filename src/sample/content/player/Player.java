@@ -1,6 +1,8 @@
 package sample.content.player;
 
 import sample.auxiliary.*;
+import sample.auxiliary.audio.Audio;
+import sample.auxiliary.audio.MediaPlayer;
 import sample.auxiliary.graphics.Animation;
 import sample.auxiliary.graphics.SpriteSheet;
 import sample.auxiliary.graphics.TextureAtlas;
@@ -154,6 +156,7 @@ public class Player extends Tank {
         Bullet bullet = new Bullet(tx, ty, direction, this);
         bullet.setLevel(level);
         ElementBean.Player.getService().add(bullet);
+        Audio.bullet_shot.play();
     }
 
     @Override
@@ -177,6 +180,7 @@ public class Player extends Tank {
             }
             this.direction = Direction.RIGHT;
         }
+//        Audio.player_move.play();
     }
 
     @Override

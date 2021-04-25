@@ -1,6 +1,8 @@
 package sample.content.substance;
 
 import sample.auxiliary.Constant;
+import sample.auxiliary.audio.Audio;
+import sample.auxiliary.audio.MediaPlayer;
 import sample.auxiliary.graphics.Animation;
 import sample.auxiliary.graphics.SpriteSheet;
 import sample.auxiliary.graphics.TextureAtlas;
@@ -32,6 +34,7 @@ public class Born extends BaseElement implements IBulletCross, ITankCross {
         animation = new Animation(act, 60);
         animation.start();
         complete = false;
+//        new MediaPlayer(Audio.powerup_appear.getUrl());
     }
 
     @Override

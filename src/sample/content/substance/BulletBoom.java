@@ -2,6 +2,8 @@ package sample.content.substance;
 
 import sample.auxiliary.Constant;
 import sample.auxiliary.ElementBean;
+import sample.auxiliary.audio.Audio;
+import sample.auxiliary.audio.MediaPlayer;
 import sample.auxiliary.graphics.Animation;
 import sample.auxiliary.graphics.Sprite;
 import sample.auxiliary.graphics.SpriteSheet;
