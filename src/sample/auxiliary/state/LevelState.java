@@ -2,13 +2,14 @@ package sample.auxiliary.state;
 
 import sample.auxiliary.*;
 import sample.auxiliary.audio.Audio;
-import sample.auxiliary.audio.MediaPlayer;
 import sample.auxiliary.service.EnemyElementService;
 import sample.auxiliary.service.SubstanceElementService;
 import sample.base.ElementService;
 import sample.content.common.Tank;
 import sample.content.enemy.Enemy;
+import sample.content.enemy.EnemyMode;
 import sample.content.enemy.EnemyState;
+import sample.content.enemy.IntelligentAI;
 import sample.content.player.Player;
 import sample.content.substance.EnemyIcon;
 import sample.content.substance.P;
@@ -43,7 +44,7 @@ public class LevelState extends GameState implements ActionListener {
     private Stack<EnemyIcon> enemyIcons;
     private P p_image;
 
-    private EnemyState enemyState;
+    private IntelligentAI intelligentAI;
 
     public LevelState(GameStateManager gsm) {
         ElementBean.init();
@@ -95,7 +96,7 @@ public class LevelState extends GameState implements ActionListener {
         map = new Map("/levels/Level_" + Level_ID, gsm);
         timer.schedule(timerTask, 0, 20);
         init = true;
-        enemyState = new EnemyState(map);
+        intelligentAI = new IntelligentAI(map, gsm);
         Audio.stage_start.play();
     }
 
@@ -116,7 +117,9 @@ public class LevelState extends GameState implements ActionListener {
     public void stateAction() {
         ElementBean.Enemy.getService().getElementList().forEach(e -> {
             if(e instanceof Tank) {
-                enemyState.bfs((Enemy) e);
+                intelligentAI.bfs((Enemy) e);
+                ((Enemy) e).getEnemyState().setPath(intelligentAI.getPath());
+                ((Enemy) e).setEnemyMode(EnemyMode.INTELLIGENT);
             }
         });
         Level_ID = Integer.parseInt(progress.get("levelToPlay"));
@@ -145,8 +148,8 @@ public class LevelState extends GameState implements ActionListener {
     }
 
     public void generateProps() {
-//        Props p = Props.values()[CommonUtils.nextInt(0, Props.values().length)];
-        Props p = Props.Bomb;
+        Props p = Props.values()[CommonUtils.nextInt(0, Props.values().length)];
+//        Props p = Props.Bomb;
         int tx = CommonUtils.nextInt(0, Constant.GAME_WIDTH - 34);
         int ty = CommonUtils.nextInt(0, Constant.GAME_HEIGHT - 34);
         new Prop(tx, ty, p);
@@ -174,6 +177,8 @@ public class LevelState extends GameState implements ActionListener {
                     player.setBornTime(0);
                     ElementBean.Player.getService().add(player);
                     hearts--;
+                }else{
+                    gsm.getHome().die();
                 }
                 System.out.println(hearts);
                 Progress.getInstance().set("hearts", hearts + "");
@@ -209,11 +214,6 @@ public class LevelState extends GameState implements ActionListener {
         }
         if(!gsm.getHome().getHp().health()) {
             timer.cancel();
-            try {
-                Thread.sleep(1000);
-            } catch (Exception ignored) {
-
-            }
         }
     }
 

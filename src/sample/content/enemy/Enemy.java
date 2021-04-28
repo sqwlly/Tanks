@@ -23,11 +23,42 @@ public class Enemy extends Tank {
     private int type;
     private final List<HashMap<Direction, Animation>> sprites;
     public final static int[] REWARD = {100,200,300,400};
+
+    public int getStep() {
+        return step;
+    }
+
+    public void stepReduce() {
+        step--;
+    }
+
+    public void setStep(int step) {
+        this.step = step;
+    }
+
     private int step;
     private int level;
-    private boolean go;
+
+    public EnemyState getEnemyState() {
+        return enemyState;
+    }
+
+    private EnemyState enemyState;
+
+    public void setEnemyMode(EnemyMode enemyMode) {
+        this.enemyMode = enemyMode;
+    }
+
+    private EnemyMode enemyMode;
+
+    public EnemyMode getEnemyMode() {
+        return enemyMode;
+    }
+
     public Enemy(int x, int y, int type) {
         super(x, y);
+        step = 0;
+        enemyState = new EnemyState(this);
         level = 0;
         setType(type);
         this.direction = Direction.DOWN;
@@ -70,7 +101,7 @@ public class Enemy extends Tank {
         sprites.add(spriteMap);
         bulletNumInit();
         born = new Born(x, y);
-        go = true;
+        enemyMode = EnemyMode.SIMPLE;
     }
 
     public int getType() {
@@ -89,6 +120,11 @@ public class Enemy extends Tank {
         }
     }
 
+    @Override
+    public void stay() {
+        super.stay();
+//        shoot();
+    }
 
     public void addLevel() {
         if(level + 2 < 2) {
@@ -133,14 +169,24 @@ public class Enemy extends Tank {
     }
 
     @Override
+    public boolean beforeActionJudge() {
+        if(!born.isComplete()) {
+            return false;
+        }
+        return super.beforeActionJudge();
+    }
+
+    @Override
     public boolean alive() {
         return super.alive();
     }
 
     @Override
     public void action() {
-        if(born.isComplete()) {
-            move();
+        if(enemyMode == EnemyMode.SIMPLE) {
+            enemyState.simpleRandomMove();
+        }else if(enemyMode == EnemyMode.INTELLIGENT){
+            enemyState.AI();
         }
     }
 
@@ -174,14 +220,14 @@ public class Enemy extends Tank {
                 this.x = 0;
             }
         }
-
-        step--;
-        if (step <= 0) {
-            int r = CommonUtils.nextInt(0, 4);
-            direction = Direction.values()[r];
-            step = CommonUtils.nextInt(0, 50) + 10;
-            shoot();
-        }
+//
+//        step--;
+//        if (step <= 0) {
+//            int r = CommonUtils.nextInt(0, 4);
+//            direction = Direction.values()[r];
+//            step = CommonUtils.nextInt(0, 50) + 10;
+//            shoot();
+//        }
 //        Audio.enemy_move.play();
     }
 

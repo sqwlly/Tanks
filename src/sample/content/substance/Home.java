@@ -27,14 +27,6 @@ public class Home extends BaseElement {
     }
 
     @Override
-    public boolean beforeActionJudge() {
-        if(!hp.health()) {
-            return false;
-        }
-        return super.beforeActionJudge();
-    }
-
-    @Override
     public void die() {
         ElementBean.Substance.getService().add(new TankBoom(x, y));
         this.hp.setValue(50);

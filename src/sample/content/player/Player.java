@@ -109,12 +109,10 @@ public class Player extends Tank {
 
     @Override
     public void action() {
-        if(born.isComplete()) {
-            move();
-            invincible.movedByPlayer(this);
-            if (Keys.SPACE.use()) {
-                shoot();
-            }
+        move();
+        invincible.movedByPlayer(this);
+        if (Keys.SPACE.use()) {
+            shoot();
         }
     }
 
@@ -181,6 +179,14 @@ public class Player extends Tank {
             this.direction = Direction.RIGHT;
         }
 //        Audio.player_move.play();
+    }
+
+    @Override
+    public boolean beforeActionJudge() {
+        if(!born.isComplete()) {
+            return false;
+        }
+        return super.beforeActionJudge();
     }
 
     @Override

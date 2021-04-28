@@ -7,13 +7,8 @@ import sample.auxiliary.graphics.SpriteSheet;
 import sample.auxiliary.graphics.TextureAtlas;
 import sample.content.substance.Arrow;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -107,6 +102,7 @@ public class SettleScoreState extends GameState {
             //如果前一个(上一行)数字已经完毕并且当前数字加一不会超限
             if(complete[i] && killedNum[i + 1] + 1 <= killed_i) {
                 killedNum[i + 1]++;
+                Audio.total_score_tick.play();
             }
             //如果数字加到上限
             if(killedNum[i + 1] >= killed_i){
@@ -122,9 +118,8 @@ public class SettleScoreState extends GameState {
             sprites.get(i).render(g, tx + Constant.ELEMENT_SIZE * 8, ty - 25);
 
             try {
-                Audio.total_score_tick.play();
                 //让数字动起来~
-                Thread.sleep(1);
+                Thread.sleep(30);
             }catch (Exception ignored) {
 
             }

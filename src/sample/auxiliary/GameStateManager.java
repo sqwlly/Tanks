@@ -30,7 +30,7 @@ public class GameStateManager implements IDraw {
         players.add(new Player(4 * 34, 12 * 34));
         players.add(new Player_II(8 * 34, 12 * 34));
         home = new Home(EAGLE_X, EAGLE_Y);
-//        setGameState(STATE.CONSTRUCTION);
+//        setGameState(STATE.COUNT);
         setGameState(STATE.MENU);
         action();
     }
@@ -42,9 +42,6 @@ public class GameStateManager implements IDraw {
     public void action() {
         CommonUtils.task(80, () -> {
             gameState.stateAction();
-//            if(gameState instanceof Construction) {
-//                gameState.stateAction();
-//            }
         });
         //刷新动作内容
         CommonUtils.task(20, () -> {

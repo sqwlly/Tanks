@@ -104,6 +104,7 @@ public class SubstanceElementService extends ElementService {
                         for(int i = 0; i < 3; ++i) {
                             ((Player) other).addLevel();
                         }
+                        Audio.star.play();
                     }else{
                         //直接变成最终形态！
                         ((Enemy) other).setType(3);
