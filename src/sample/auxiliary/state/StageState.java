@@ -15,6 +15,11 @@ public class StageState extends GameState{
         this.gsm = gsm;
         init();
         choose = true; //temp
+        try {
+            Thread.sleep(100);
+        }catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -42,7 +47,7 @@ public class StageState extends GameState{
         if(choose) {
             if(Keys.PLAY2_UP.use() && level_Id + 1 <= 18) {
                 level_Id++;
-            }else if(Keys.PLAY2_DOWN.use() && level_Id - 1 > 0) {
+            }else if(Keys.PLAY2_DOWN.use() && level_Id - 1 >= 0) {
                 level_Id--;
             }
         }
@@ -55,7 +60,7 @@ public class StageState extends GameState{
         g.setFont(font);
         g.setColor(Color.BLACK);
         g.drawString("STAGE " + level_Id, Constant.FRAME_WIDTH / 2 - Constant.ELEMENT_SIZE * 2, Constant.FRAME_HEIGHT / 2 - 17);
-        //让STAGE页面停留2.5秒钟
+        //让STAGE页面停留2.0秒钟
         if(System.currentTimeMillis() - time > 2000 && !choose) {
             gsm.setGameState(STATE.LEVEL);
         }

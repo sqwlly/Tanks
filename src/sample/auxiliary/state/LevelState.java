@@ -115,13 +115,15 @@ public class LevelState extends GameState implements ActionListener {
 
     @Override
     public void stateAction() {
-        ElementBean.Enemy.getService().getElementList().forEach(e -> {
-            if(e instanceof Tank) {
-                intelligentAI.bfs((Enemy) e);
-                ((Enemy) e).getEnemyState().setPath(intelligentAI.getPath());
-                ((Enemy) e).setEnemyMode(EnemyMode.INTELLIGENT);
-            }
-        });
+        int restEnemy = Integer.parseInt(progress.get("restEnemy"));
+        if(restEnemy < 21) {
+            ElementBean.Enemy.getService().getElementList().forEach(e -> {
+                if (e instanceof Tank) {
+                    Enemy enemy = (Enemy) e;
+                    intelligentAI.bfs(enemy);
+                }
+            });
+        }
         Level_ID = Integer.parseInt(progress.get("levelToPlay"));
     }
 
@@ -209,7 +211,6 @@ public class LevelState extends GameState implements ActionListener {
                 System.out.println(player.getScore() + " " + map.getSumReward());
                 player.initScore();
                 gsm.setGameState(STATE.COUNT);
-                setLevel_ID(Level_ID + 1);
             }
         }
         if(!gsm.getHome().getHp().health()) {

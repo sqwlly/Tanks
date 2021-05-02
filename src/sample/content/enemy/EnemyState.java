@@ -2,36 +2,43 @@ package sample.content.enemy;
 
 import sample.auxiliary.*;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
 public class EnemyState {
 
-//    private LinkedList<Direction> path;
-    private LinkedList<IntelligentAI.Node> path;
+    private final LinkedList<IntelligentAI.Node> path;
 
-    private Enemy enemy;
+    private final Enemy enemy;
     public EnemyState(Enemy enemy) {
         this.enemy = enemy;
         path = new LinkedList<>();
     }
 
     public void setPath(LinkedList<IntelligentAI.Node> path) {
-        this.path = path;
+        this.path.clear();
+        this.path.addAll(path);
+        //以下的写法会bug，导致所有坦克都会按照一个路线走！
+//        this.path = path;
     }
 
     public void go(int step) {
-        enemy.stepReduce();
         for(int i = 0; i < step; ++i) {
             enemy.move();
+            enemy.stepReduce();
         }
     }
 
-    public void AI() {
-        if(path.size() > 0 && enemy.getStep() == 0) {
-            IntelligentAI.Node node = path.poll();
-            enemy.setDirection(node.dir);
-            enemy.setStep(node.step);
-            enemy.shoot();
+    public void AIMove() {
+        if(enemy.getStep() == 0) {
+            Iterator<IntelligentAI.Node> iterator = path.iterator();
+            if(iterator.hasNext()) {
+                IntelligentAI.Node node = iterator.next();
+                iterator.remove();
+                enemy.setDirection(node.dir);
+                enemy.setStep(node.step);
+                enemy.shoot();
+            }
         }
         go(1);
     }

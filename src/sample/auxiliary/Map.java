@@ -149,7 +149,7 @@ public class Map {
     }
 
     public void setCell(int x, int y, int value) {
-        map[x][y] = value;
+        map[y][x] = value;
     }
 
     public int[] getRow(int i) {

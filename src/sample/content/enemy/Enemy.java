@@ -38,6 +38,7 @@ public class Enemy extends Tank {
 
     private int step;
     private int level;
+    private int fire;
 
     public EnemyState getEnemyState() {
         return enemyState;
@@ -55,8 +56,18 @@ public class Enemy extends Tank {
         return enemyMode;
     }
 
+    public boolean fire() {
+        return fire >= 1 && fire <= 4;
+    }
+
+    public void randomFire() {
+        this.fire = CommonUtils.nextInt(0, step);
+    }
+
     public Enemy(int x, int y, int type) {
         super(x, y);
+        fire = CommonUtils.nextInt(0, step);
+
         step = 0;
         enemyState = new EnemyState(this);
         level = 0;
@@ -123,7 +134,14 @@ public class Enemy extends Tank {
     @Override
     public void stay() {
         super.stay();
-//        shoot();
+        int nxd = CommonUtils.nextInt(0, 12);
+        if(nxd == 11) {
+            int r = CommonUtils.nextInt(0, 4);
+            direction = Direction.values()[r];
+        }
+        if(enemyMode == EnemyMode.SIMPLE) {
+            step = CommonUtils.nextInt(0, 10) + 10;
+        }
     }
 
     public void addLevel() {
@@ -141,6 +159,9 @@ public class Enemy extends Tank {
     }
 
     public void shoot() {
+        randomFire();
+        if(!fire()) return;
+//        System.out.println("fire = " + fire);
         if(!fireAble()) return;
         bulletNum--;
         int tx = x + 17 - 3;
@@ -186,7 +207,7 @@ public class Enemy extends Tank {
         if(enemyMode == EnemyMode.SIMPLE) {
             enemyState.simpleRandomMove();
         }else if(enemyMode == EnemyMode.INTELLIGENT){
-            enemyState.AI();
+            enemyState.AIMove();
         }
     }
 

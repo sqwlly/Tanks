@@ -135,11 +135,11 @@ public class Player extends Tank {
         int ty = y + 17 - 3;
         switch (direction) {
             case UP:
-                tx = x + width / 2 - 3;
+                tx = x + width / 2 - 4;
                 ty = y - 10;
                 break;
             case DOWN:
-                tx = x + width / 2 - 3;
+                tx = x + width / 2 - 4;
                 ty = y + height;
                 break;
             case LEFT:

@@ -131,7 +131,7 @@ public class Construction extends GameState{
     public void save() {
         for(int i = 0; i < Map.HEIGHT; ++i) {
             for(int j = 0; j < Map.WIDTH; ++j) {
-                map.setCell(j, i, cells[i][j]);
+                map.setCell(i, j, cells[i][j]);
             }
         }
         map.writeFile();

@@ -11,6 +11,7 @@ import sample.auxiliary.graphics.TextureAtlas;
 import sample.base.BaseElement;
 import sample.base.IBulletCross;
 import sample.base.IElement;
+import sample.base.ITankCross;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -18,16 +19,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @IElement(defense = 1000)
-public class BulletBoom extends BaseElement implements IBulletCross {
+public class BulletBoom extends BaseElement implements IBulletCross, ITankCross {
 
-    private Animation animation;
-    private BufferedImage[] act;
-    private List<Sprite> sprites;
+    private final Animation animation;
 
     public BulletBoom(int x, int y) {
         super(x, y);
-        act = new BufferedImage[3];
-        sprites = new ArrayList<>();
+        BufferedImage[] act = new BufferedImage[3];
+        List<Sprite> sprites = new ArrayList<>();
         SpriteSheet sheet = new SpriteSheet(TextureAtlas.cut(20 * Constant.ELEMENT_SIZE, 4 * Constant.ELEMENT_SIZE,
                 Constant.ELEMENT_SIZE * 3, Constant.ELEMENT_SIZE), Constant.ELEMENT_SIZE, Constant.ELEMENT_SIZE);
         for(int i = 0; i < 3; ++i) {

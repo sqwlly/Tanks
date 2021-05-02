@@ -60,12 +60,16 @@ public class SettleScoreState extends GameState {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        levelID++;
+        progress.set("levelToPlay", levelID + "");
         gsm.setGameState(STATE.STAGE);
     }
 
     @Override
     public void stateAction() {
         if(Keys.ENTER.use()) {
+            levelID++;
+            progress.set("levelToPlay", levelID + "");
             gsm.setGameState(STATE.STAGE);
         }
     }

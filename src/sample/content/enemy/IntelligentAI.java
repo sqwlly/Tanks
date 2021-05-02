@@ -1,11 +1,9 @@
 package sample.content.enemy;
 
-import javafx.util.Pair;
 import sample.auxiliary.*;
 import sample.content.substance.Grass;
 import sample.content.substance.Home;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -20,24 +18,15 @@ public class IntelligentAI {
             this.dir = d;
         }
     }
-    private static int[][] dir = new int[][]{{0,-1}, {1,0}, {0, 1}, {-1, 0}};
-    private Direction[] d = new Direction[] {Direction.UP, Direction.RIGHT, Direction.DOWN, Direction.LEFT};
+    private static final int[][] dir = new int[][]{{0,-1}, {1,0}, {0, 1}, {-1, 0}};
+    private final Direction[] d = new Direction[] {Direction.UP, Direction.RIGHT, Direction.DOWN, Direction.LEFT};
 
-    public LinkedList<Direction> getDirections() {
-        return directions;
-    }
-
-    private LinkedList<Direction> directions = new LinkedList<>();
-    private LinkedList<Node> path = new LinkedList<>();
+    private final LinkedList<Node> path = new LinkedList<>();
     private final static int cellW = Constant.ELEMENT_SIZE / 2;
 
 
     private final Map map;
-    private Home home;
-
-    public LinkedList<Node> getPath() {
-        return path;
-    }
+    private final Home home;
 
     public IntelligentAI(Map map, GameStateManager gsm) {
         this.map = map;
@@ -46,10 +35,10 @@ public class IntelligentAI {
 
     private boolean ok(int tx, int ty) {
         int[][] cor = new int[][] {
-                {tx, ty}, {tx + 1, ty}, {tx, ty + 1}, {tx + 1, ty + 1}
+                {tx, ty}, {tx + 1, ty}, {tx, ty + 1}, {tx + 1, ty + 1},
         };
         for(int[] p : cor) {
-            if(p[0] >= 26 || p[1] >= 26) {
+            if(p[0] >= 26 || p[1] >= 26 || p[0] < 0 || p[1] < 0) {
                 continue;
             }
             int s = map.getCell(p[0], p[1]);
@@ -62,8 +51,8 @@ public class IntelligentAI {
 
     public void bfs(Enemy enemy) {
         if(home == null) return;
-        directions.clear();
-        System.out.println("start bfs");
+        path.clear();
+//        System.out.println("start bfs");
         int width = 26, height = 26;
         boolean[][] vis = new boolean[width][height];
         int[][] dis = new int[26][26];
@@ -74,7 +63,7 @@ public class IntelligentAI {
         }
         Queue<Node> nodes = new LinkedList<>();
         int sx = enemy.getX() / cellW, sy = enemy.getY() / cellW;
-        System.out.println("sx = " + sx + " | sy = " + sy);
+//        System.out.println("sx = " + sx + " | sy = " + sy);
         int dx = home.getX() / cellW, dy = home.getY() / cellW;
         nodes.add(new Node(dx, dy, 0, enemy.getDirection()));
         vis[dx][dy] = true;
@@ -94,7 +83,7 @@ public class IntelligentAI {
         }
 
         int x = sx, y = sy;
-        System.out.println(dx + " : " + dy);
+//        System.out.println(dx + " : " + dy);
         while (x != dx || y != dy) {
             for (int i = 0; i < 4; ++i) {
                 int tx = x + dir[i][0];
@@ -103,11 +92,15 @@ public class IntelligentAI {
                     continue;
                 }
                 if (dis[x][y] == dis[tx][ty] + 1) {
-                    path.add(new Node(tx, ty, 12, d[i]));
-                    directions.add(d[i]);
-                    System.out.println("cell : " + map.getCell(tx, ty));
-//                    ElementBean.Substance.getService().add(new Grass(tx * cellW, ty * cellW));
-                    System.out.println(tx + " " + ty + " " + d[i].toString());
+                    path.add(new Node(tx, ty, (int) Math.ceil((double) cellW / enemy.getSpeed()), d[i]));
+//                    path.add(new Node(tx, ty,  cellW / enemy.getSpeed(), d[i]));
+
+//                    System.out.println("cell : " + map.getCell(tx, ty));
+//                    if(map.getCell(tx, ty) == 0) {
+//                        map.setCell(tx, ty, 3);
+//                        ElementBean.Substance?.getService().add(new Grass(tx * cellW, ty * cellW));
+//                    }
+//                    System.out.println(tx + " " + ty + " " + d[i].toString());
                     x = tx;
                     y = ty;
                     break;
@@ -115,7 +108,10 @@ public class IntelligentAI {
             }
 //            System.out.println(x + " " + y + " -> " + dx + " " + dy);
         }
-        System.out.println("end bfs");
+        enemy.getEnemyState().setPath(path);
+        enemy.setEnemyMode(EnemyMode.INTELLIGENT);
+
+//        System.out.println("end bfs");
 //        t
 //        ry{
 //            Thread.sleep(100 * 10000);

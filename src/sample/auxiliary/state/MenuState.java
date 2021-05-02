@@ -64,7 +64,7 @@ public class MenuState extends GameState {
         if(Keys.ENTER.use()) {
             if(ch_y == choices_y[0]) {
                 progress.set("playerNum", "1");
-                progress.set("hearts", "0");
+                progress.set("hearts", "2");
                 gsm.setGameState(STATE.STAGE);
             }else if(ch_y == choices_y[1]){
                 progress.set("playerNum", "2");

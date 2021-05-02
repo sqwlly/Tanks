@@ -40,7 +40,7 @@ public class GameStateManager implements IDraw {
     }
 
     public void action() {
-        CommonUtils.task(80, () -> {
+        CommonUtils.task(100, () -> {
             gameState.stateAction();
         });
         //刷新动作内容
@@ -52,16 +52,17 @@ public class GameStateManager implements IDraw {
         });
 
         //按周期生成道具
-        CommonUtils.task(15000, () -> {
+        CommonUtils.task(13000, () -> {
             if (gameState instanceof LevelState) {
                 ((LevelState) gameState).generateProps();
             }
         });
         //按时间周期生成敌方坦克
-        CommonUtils.task(5200, () -> {
+        CommonUtils.task(4100, () -> {
             int cnt = (int) ElementBean.Enemy.getService().getElementList().stream().filter(e -> e instanceof Tank).count();
-            //为了减小游戏难度，场上敌方坦克数量不能超过四个
-            if(cnt < 4) {
+            //为了减小游戏难度，场上敌方坦克数量不能超过四个 * playerNum
+            int playerNum = Integer.parseInt(Progress.getInstance().get("playerNum"));
+            if(cnt < 4 * playerNum) {
                 if (gameState instanceof LevelState) {
                     ((LevelState) gameState).getMap().enemyBorn();
                 }
