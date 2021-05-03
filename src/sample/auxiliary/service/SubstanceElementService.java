@@ -15,7 +15,6 @@ import sample.content.substance.props.Props;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 public class SubstanceElementService extends ElementService {
 
@@ -34,11 +33,20 @@ public class SubstanceElementService extends ElementService {
         if (other instanceof Bullet) {
             //如果可移动物体的攻击力大于当前物体的防御力，就要减少生命值
             if (other.getAttack().getValue() > myself.getDefense().getValue()) {
-                if (myself instanceof Home) {
+                if (myself instanceof Home && !myself.getHp().health()) {
                     myself.getDefense().setValue(1000);
                 }
-                int subValue = (int) ((double) myself.getDefense().getValue() / myself.getHp().getValue() * other.getAttack().getValue());
+                if(myself instanceof IBulletCross) {
+                    myself.getDefense().setValue(0);
+                }
+                System.out.println("抵消 " + (double) myself.getDefense().getValue() / (myself.getHp().getMaxValue() + myself.getDefense().getValue()) + " " +
+                        myself.getHp().getMaxValue());
+
+                int subValue = (int) ((1 - (double) myself.getDefense().getValue() / myself.getHp().getMaxValue()) * other.getAttack().getValue());
+                System.out.println(subValue);
                 myself.getHp().subtract(subValue);
+                System.out.println("restHP: " + myself.getHp().getValue());
+
             } else if (myself instanceof IBulletCross || myself instanceof Home) {
                 return false;
             }

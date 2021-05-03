@@ -20,7 +20,7 @@ public class Steel extends BaseElement {
 
     public Steel(int x, int y) {
         super(x, y);
-        defense = new Attribute(100);
+        defense = new Attribute(50);
         BufferedImage[] act = new BufferedImage[4];
         SpriteSheet sheet = new SpriteSheet(TextureAtlas.cut(0, 6 * Constant.ELEMENT_SIZE,
                 Constant.ELEMENT_SIZE * 4, Constant.ELEMENT_SIZE), Constant.ELEMENT_SIZE, Constant.ELEMENT_SIZE);

@@ -13,7 +13,7 @@ import sample.content.common.Attribute;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-@IElement(width = Constant.ELEMENT_SIZE / 2 + 2, height = Constant.ELEMENT_SIZE / 2 + 2, defense = 150, hp = 150)
+@IElement(width = Constant.ELEMENT_SIZE / 2 + 2, height = Constant.ELEMENT_SIZE / 2 + 2, defense = 100, hp = 1)
 public class Grass extends BaseElement implements IBulletCross, ITankCross {
     private final Sprite sprite;
 

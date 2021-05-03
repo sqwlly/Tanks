@@ -12,27 +12,20 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@IElement(width = Constant.ELEMENT_SIZE / 2, height = Constant.ELEMENT_SIZE / 2)
+@IElement(width = Constant.ELEMENT_SIZE / 2, height = Constant.ELEMENT_SIZE / 2, defense = 0)
 public class Tile extends BaseElement {
 
-    private Attribute defense;
-    private int type;
-
-    public Attribute getDefense() {
-        return defense;
-    }
+    private final int type;
 
     private int[] state = new int[4];
     private int[][] sie;
-    private SpriteSheet sheet;
-    private List<Sprite> sprites = new ArrayList<>();
+    private final List<Sprite> sprites = new ArrayList<>();
 
 
     public Tile(int x, int y, int type) {
         super(x, y);
         this.type = type;
-        defense = new Attribute(50);
-        sheet = new SpriteSheet(TextureAtlas.cut(4 * Constant.ELEMENT_SIZE, 5 * Constant.ELEMENT_SIZE,
+        SpriteSheet sheet = new SpriteSheet(TextureAtlas.cut(4 * Constant.ELEMENT_SIZE, 5 * Constant.ELEMENT_SIZE,
                 15 * Constant.ELEMENT_SIZE, Constant.ELEMENT_SIZE), Constant.ELEMENT_SIZE, Constant.ELEMENT_SIZE);
         for(int i = 0; i < sheet.getSpriteCount(); ++i) {
             sprites.add(new Sprite(sheet, 1, i));
@@ -40,6 +33,7 @@ public class Tile extends BaseElement {
         //for(int i = 0; i < 4; ++i) state[i] = 1;
         state = new int[] {1,1,1,1};
         diversity();
+        System.out.println(defense.getValue());
     }
 
     /**

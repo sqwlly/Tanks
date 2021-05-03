@@ -2,6 +2,11 @@ package sample.content.common;
 
 public class Attribute {
     private int value; //初始值
+
+    public int getMaxValue() {
+        return maxValue;
+    }
+
     private int maxValue; //最大值
     private int minValue; //最小值
     private int addBaseValue; //增加的基数量
@@ -66,28 +71,24 @@ public class Attribute {
         this.maxValue += maxValue;
     }
 
-    public Attribute setValue(int value) {
+    public void setValue(int value) {
         this.value = value;
-        return this;
     }
 
-    public Attribute setMaxValue(int maxValue) {
-        return this;
+    public void setMaxValue(int maxValue) {
+        this.maxValue = maxValue;
     }
 
-    public Attribute setMinValue(int minValue) {
+    public void setMinValue(int minValue) {
         this.minValue = minValue;
-        return this;
     }
 
-    public Attribute setAddBaseValue(int addBaseValue) {
+    public void setAddBaseValue(int addBaseValue) {
         this.addBaseValue = addBaseValue;
-        return this;
     }
 
-    public Attribute setSubBaseValue(int subtractBaseValue) {
+    public void setSubBaseValue(int subtractBaseValue) {
         this.subBaseValue = subtractBaseValue;
-        return this;
     }
 
     /**
@@ -95,10 +96,9 @@ public class Attribute {
      * @Param [baseValue]
      * @return sample.content.common.Attribute
      */
-    public Attribute setSameBaseValue(int baseValue) {
+    public void setSameBaseValue(int baseValue) {
         this.addBaseValue = baseValue;
         this.subBaseValue = baseValue;
-        return this;
     }
 
     public int getValue() {

@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-@IElement(width = Constant.ELEMENT_SIZE - 2, height = Constant.ELEMENT_SIZE - 2, speed = 2)
+@IElement(width = Constant.ELEMENT_SIZE - 2, height = Constant.ELEMENT_SIZE - 2, speed = 2, defense = 51)
 public class Player extends Tank {
     public final static int size = Constant.ELEMENT_SIZE;
 
@@ -43,7 +43,9 @@ public class Player extends Tank {
             level++;
         };
         if(level == 3) {
-            this.hp.setValue(120);
+            //这种防御力和生命值可以抗50攻击力的子弹四下
+            this.defense.setValue(50);
+            this.hp.setValue(100);
         }
     }
 

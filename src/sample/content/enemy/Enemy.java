@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-@IElement(width = Constant.ELEMENT_SIZE - 2, height = Constant.ELEMENT_SIZE - 2, speed = 2)
+@IElement(width = Constant.ELEMENT_SIZE - 2, height = Constant.ELEMENT_SIZE - 2, speed = 2, defense = 0)
 public class Enemy extends Tank {
     private int type;
     private final List<HashMap<Direction, Animation>> sprites;
@@ -44,7 +44,7 @@ public class Enemy extends Tank {
         return enemyState;
     }
 
-    private EnemyState enemyState;
+    private final EnemyState enemyState;
 
     public void setEnemyMode(EnemyMode enemyMode) {
         this.enemyMode = enemyMode;
@@ -93,23 +93,26 @@ public class Enemy extends Tank {
         }
         sheet = new SpriteSheet(TextureAtlas.cut(24 * Constant.ELEMENT_SIZE, 0,
                 8 * Constant.ELEMENT_SIZE, Constant.ELEMENT_SIZE * 4), Constant.ELEMENT_SIZE, Constant.ELEMENT_SIZE);
-        HashMap<Direction, Animation> spriteMap = new HashMap<>();
-        int k = 0;
-        for(Direction d : Direction.values()) {
-            BufferedImage[] act = new BufferedImage[4];
-            c = 0;
-            for(int i = 0; i < 2; ++i) {
-                //0 4 -> 1 5
-                //i i+4 -> i+1 i+4
-                act[c++] = sheet.getSprite(k + i + 8);
-                act[c++] = sheet.getSprite(k + i + 16);
+        for(int s = 0; s < 3; ++s) {
+            HashMap<Direction, Animation> spriteMap = new HashMap<>();
+            int k = 0;
+            for(Direction d : Direction.values()) {
+                BufferedImage[] act = new BufferedImage[4];
+                c = 0;
+                for(int i = 0; i < 2; ++i) {
+                    //0 4 -> 1 5
+                    //i i+4 -> i+1 i+4
+                    act[c++] = sheet.getSprite(k + i + 8 * s);
+                    act[c++] = sheet.getSprite(k + i + 16);
+                }
+                k += 2;
+                Animation animation = new Animation(act, 10);
+                animation.start();
+                spriteMap.put(d, animation);
             }
-            k += 2;
-            Animation animation = new Animation(act, 10);
-            animation.start();
-            spriteMap.put(d, animation);
+            sprites.add(spriteMap);
         }
-        sprites.add(spriteMap);
+
         bulletNumInit();
         born = new Born(x, y);
         enemyMode = EnemyMode.SIMPLE;
@@ -120,9 +123,12 @@ public class Enemy extends Tank {
     }
 
     public void setType(int type) {
-        this.type = type;
-        if(type == 3 || type == 4) {
-            hp.setValue(hp.getValue() * 3);
+//        this.type = 4;
+        this.type = (type == 3 ? 4 : type);
+        if(type >= 3) {
+            defense.setValue(50);// 100 / 4 = 25; 25 = 0.5 * 50; 50 / 100 = 0.5
+            hp.setValue(100);
+            hp.setMaxValue(100);
             speed.setValue(1);
         }else if(type == 2) {
             level = 1;
@@ -151,6 +157,9 @@ public class Enemy extends Tank {
     }
 
     public int getReward() {
+        if(type >= REWARD.length) {
+            type = REWARD.length - 1;
+        }
         return REWARD[type];
     }
 
@@ -255,7 +264,7 @@ public class Enemy extends Tank {
     @Override
     public void drawImage(Graphics g) {
         if(!born.isComplete()) return;
-        sprites.get(type).get(direction).update();
-        g.drawImage(sprites.get(type).get(direction).getSprite(), x, y, width, height, null);
+        sprites.get(enemyState.getState()).get(direction).update();
+        g.drawImage(sprites.get(enemyState.getState()).get(direction).getSprite(), x, y, width, height, null);
     }
 }

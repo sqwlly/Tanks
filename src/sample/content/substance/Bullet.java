@@ -13,16 +13,15 @@ import sample.content.common.Tank;
 import java.awt.*;
 import java.util.HashMap;
 
-@IElement(width = 9, height = 10, speed = 5, attack = 51)
+@IElement(width = 9, height = 10, speed = 5, attack = 50)
 public class Bullet extends BaseElement implements IMovable {
 
     private final HashMap<Direction, Sprite> spriteMap;
 
-    private Tank from;
+    private final Tank from;
 
     public Bullet(int x, int y, Direction direction, Tank from) {
         super(x, y);
-        attack = new Attribute(51);
         this.from = from;
         this.direction = direction;
         spriteMap = new HashMap<>();
@@ -40,9 +39,9 @@ public class Bullet extends BaseElement implements IMovable {
             speed.setValue(speed.getValue() * 2);
         }
         if(level == 2) {
-            attack.add(51);
+            attack.add(50);
         }else if(level == 3) {
-            attack.add(101);
+            attack.add(100);
         }
     }
 

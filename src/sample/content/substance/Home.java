@@ -43,8 +43,9 @@ public class Home extends BaseElement {
 
     public void born() {
         this.gameOver = null;
-        this.defense.setValue(50);
+        this.defense.setValue(0);
         this.hp.setValue(100);
+        this.hp.setMaxValue(100);
     }
 
     @Override

@@ -52,7 +52,7 @@ public abstract class BaseElement implements IDraw{
         this.width = ann.width();
         this.height = ann.height();
         this.direction = ann.direction();
-        this.hp = new Attribute(ann.hp());
+        this.hp = new Attribute(ann.hp(), ann.hp());
         this.attack = new Attribute(ann.attack());
         this.defense = new Attribute(ann.defense());
         this.speed = new Attribute(ann.speed());

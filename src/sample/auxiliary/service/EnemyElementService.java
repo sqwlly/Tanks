@@ -1,9 +1,11 @@
 package sample.auxiliary.service;
 
 import sample.auxiliary.Direction;
+import sample.auxiliary.audio.Audio;
 import sample.base.BaseElement;
 import sample.base.ElementService;
 import sample.content.common.Tank;
+import sample.content.enemy.Enemy;
 import sample.content.player.Player;
 import sample.content.substance.Bullet;
 
@@ -20,8 +22,16 @@ public class EnemyElementService extends ElementService {
         if(myself.intersects(other)) {
             if (other instanceof Bullet) {
                 other.die();
-                int subValue = (int) ((double) myself.getDefense().getValue() / myself.getHp().getValue() * other.getAttack().getValue());
+//                System.out.println((double) myself.getDefense().getValue() / myself.getHp().getMaxValue() + " " +
+//                        myself.getHp().getMaxValue());
+                int subValue = (int) ((1 - (double) myself.getDefense().getValue() / myself.getHp().getMaxValue()) * other.getAttack().getValue());
+//                System.out.println("subValue: " + subValue);
                 myself.getHp().subtract(subValue);
+                System.out.println("restHP: " + myself.getHp().getValue());
+                if(myself instanceof Tank && ((Enemy) myself).getType() >= 3 && myself.alive()) {
+                    Audio.bullet_hit_steel.play();
+                }
+
                 return true;
             }
             if(myself instanceof Tank && other instanceof Tank) {

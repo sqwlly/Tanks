@@ -15,6 +15,18 @@ public class EnemyState {
         path = new LinkedList<>();
     }
 
+    public int getState() {
+        //这段代码写的有点烂，暂时就这样吧。
+        if (enemy.getHp().getValue() == enemy.getHp().getMaxValue()) {
+            return enemy.getType();
+        } else if (enemy.getHp().getValue() == 75 || enemy.getHp().getValue() == 50) {
+            return 3;
+        } else if (enemy.getHp().getValue() == 25) {
+            return 5;
+        }
+        return enemy.getType();
+    }
+
     public void setPath(LinkedList<IntelligentAI.Node> path) {
         this.path.clear();
         this.path.addAll(path);
@@ -31,14 +43,20 @@ public class EnemyState {
 
     public void AIMove() {
         if(enemy.getStep() == 0) {
-            Iterator<IntelligentAI.Node> iterator = path.iterator();
-            if(iterator.hasNext()) {
-                IntelligentAI.Node node = iterator.next();
-                iterator.remove();
+            if(path.size() > 0) {
+                IntelligentAI.Node node = path.poll();
                 enemy.setDirection(node.dir);
                 enemy.setStep(node.step);
                 enemy.shoot();
             }
+//            Iterator<IntelligentAI.Node> iterator = path.iterator();
+//            if(iterator.hasNext()) {
+//                IntelligentAI.Node node = iterator.next();
+//                iterator.remove();
+//                enemy.setDirection(node.dir);
+//                enemy.setStep(node.step);
+//                enemy.shoot();
+//            }
         }
         go(1);
     }
