@@ -51,7 +51,6 @@ public class LevelState extends GameState implements ActionListener {
         this.gsm = gsm;
         init = false;
         init();
-        action();
     }
 
     public void init() {

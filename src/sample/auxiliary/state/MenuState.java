@@ -50,15 +50,17 @@ public class MenuState extends GameState {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-
+        System.out.println("menu");
     }
 
     @Override
     public void stateAction() {
         if(Keys.PLAY2_UP.use()) {
             ch_y = Math.max(ch_y - Constant.ELEMENT_SIZE, CHOICE_TOP_Y);
+            System.out.println("up");
         }
         if(Keys.PLAY2_DOWN.use()) {
+            System.out.println("down");
             ch_y = Math.min(ch_y + Constant.ELEMENT_SIZE, CHOICE_TOP_Y + Constant.ELEMENT_SIZE * 2);
         }
         if(Keys.ENTER.use()) {

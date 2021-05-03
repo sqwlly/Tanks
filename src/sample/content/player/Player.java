@@ -43,7 +43,7 @@ public class Player extends Tank {
             level++;
         };
         if(level == 3) {
-            this.hp.setValue(100);
+            this.hp.setValue(120);
         }
     }
 

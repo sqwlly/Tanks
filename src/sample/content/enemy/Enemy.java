@@ -122,7 +122,7 @@ public class Enemy extends Tank {
     public void setType(int type) {
         this.type = type;
         if(type == 3 || type == 4) {
-            hp.setValue(hp.getValue() * 2);
+            hp.setValue(hp.getValue() * 3);
             speed.setValue(1);
         }else if(type == 2) {
             level = 1;
