@@ -15,6 +15,15 @@ public abstract class BaseElement implements IDraw{
 //    protected int speed;
     protected Direction direction;
 
+    public long getActionTime() {
+        return actionTime;
+    }
+
+    public void setActionTime(long actionTime) {
+        this.actionTime = actionTime;
+    }
+
+    protected long actionTime;
 
     public Attribute getAttack() {
         return attack;

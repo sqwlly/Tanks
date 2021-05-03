@@ -12,25 +12,27 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@IElement(width = Constant.ELEMENT_SIZE / 2, height = Constant.ELEMENT_SIZE / 2, defense = 0)
+@IElement(width = Constant.ELEMENT_SIZE / 2, height = Constant.ELEMENT_SIZE / 2, defense = 0, hp = 200)
 public class Tile extends BaseElement {
 
-    private final int type;
-
-    private int[] state = new int[4];
+    private final int[] state;
     private int[][] sie;
     private final List<Sprite> sprites = new ArrayList<>();
+    private final ArrayList<Rectangle> rec = new ArrayList<>();
 
-
-    public Tile(int x, int y, int type) {
+    public Tile(int x, int y) {
         super(x, y);
-        this.type = type;
+        for(int i = 0; i < 2; ++i) {
+            for(int j = 0; j < 2; ++j) {
+                int w = width / 2, h = height / 2;
+                rec.add(new Rectangle(x + w * j, y + h * i, w, h));
+            }
+        }
         SpriteSheet sheet = new SpriteSheet(TextureAtlas.cut(4 * Constant.ELEMENT_SIZE, 5 * Constant.ELEMENT_SIZE,
                 15 * Constant.ELEMENT_SIZE, Constant.ELEMENT_SIZE), Constant.ELEMENT_SIZE, Constant.ELEMENT_SIZE);
         for(int i = 0; i < sheet.getSpriteCount(); ++i) {
             sprites.add(new Sprite(sheet, 1, i));
         }
-        //for(int i = 0; i < 4; ++i) state[i] = 1;
         state = new int[] {1,1,1,1};
         diversity();
         System.out.println(defense.getValue());
@@ -66,28 +68,28 @@ public class Tile extends BaseElement {
                 {0, 1, 1, 0},
                 {1, 1, 1, 0},
                 {0, 0, 0, 1},
-                {1, 0, 1, 0},
+                {1, 0, 0, 1},
                 {0, 1, 0, 1},
                 {1, 1, 0, 1},
                 {0, 0, 1, 1},
                 {1, 0, 1, 1},
                 {0, 1, 1, 1},
-                {1, 1, 1, 1}
+                {1, 1, 1, 1},
+                {0, 0, 0, 0}
         };
     }
 
     /**
-     * @Description 四个角存在状态翻转, 0 -> 1 or 1 -> 0
+     * @Description 将四个角中的其中一个角状态设为0,  1 -> 0
      * @Param [idx]
      * @return void
      */
-    public void flipState(int idx) {
-        if(state[idx] == 0) {
-            state[idx] = 1;
-        }else{
-            state[idx] = 0;
-        }
+    public void hitState(int idx) {
+        state[idx % 4] = 0;
+    }
 
+    public int getRecState(int idx) {
+        return state[idx];
     }
 
     /**
@@ -114,6 +116,10 @@ public class Tile extends BaseElement {
         return sie.length - 1;
     }
 
+    public ArrayList<Rectangle> getRec() {
+        return rec;
+    }
+
     /**
      * @Description 重构一下绘画方法，根据type不同画出不同大小砖块
      * @Param [g]
@@ -122,17 +128,18 @@ public class Tile extends BaseElement {
     @Override
     public void drawImage(Graphics g) {
         if(!alive()) return; //temp handle
-        switch (type) {
-            case 0:
-                for(int i = 0; i < 2; ++i) {
-                    for(int j = 0; j < 2; ++j) {
-                        sprites.get(getState()).render(g, x + j * width, y + height * i, width * 2 + 1, height * 2 + 1);
-                    }
-                }
-                break;
-            case 1:
-                sprites.get(getState()).render(g, x, y, Constant.ELEMENT_SIZE + 1, Constant.ELEMENT_SIZE + 1);
-                break;
+        if(getState() == sie.length - 1) {
+            die();
+            return;
         }
+        sprites.get(getState()).render(g, x, y, Constant.ELEMENT_SIZE + 1, Constant.ELEMENT_SIZE + 1);
+////
+//        switch (type) {
+//            case 0:
+//                break;
+//            case 1:
+//                sprites.get(getState()).render(g, x, y, Constant.ELEMENT_SIZE + 1, Constant.ELEMENT_SIZE + 1);
+//                break;
+//        }
     }
 }

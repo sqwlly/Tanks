@@ -35,9 +35,8 @@ public class EnemyElementService extends ElementService {
                 return true;
             }
             if(myself instanceof Tank && other instanceof Tank) {
-                ((Tank) myself).stay();
+                ((Enemy) myself).stay();
                 ((Tank) other).stay();
-
                 //啊，杀了我吧！
 //                boolean stay = false;
 //                switch (myself.getDirection()) {

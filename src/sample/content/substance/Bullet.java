@@ -20,11 +20,22 @@ public class Bullet extends BaseElement implements IMovable {
 
     private final Tank from;
 
+    private boolean hitTarget;
+
+    public boolean hitTarget() {
+        return hitTarget;
+    }
+
+    public void hit() {
+        this.hitTarget = true;
+    }
+
     public Bullet(int x, int y, Direction direction, Tank from) {
         super(x, y);
         this.from = from;
         this.direction = direction;
         spriteMap = new HashMap<>();
+
         SpriteSheet sheet = new SpriteSheet(TextureAtlas.cut(0 * Constant.ELEMENT_SIZE, 5 * Constant.ELEMENT_SIZE,
                 20, 20), 10, 10);
         spriteMap.put(Direction.UP, new Sprite(sheet, 1, 0));
@@ -82,9 +93,9 @@ public class Bullet extends BaseElement implements IMovable {
 
     @Override
     public boolean remove(BaseElement element) {
-        if(!alive() || encounterSide()) {
+        if(!alive() || encounterSide() || hitTarget()) {
+            die();
             boom();
-//            System.out.println("bullet remove");
             return true;
         }
         return super.remove(element);

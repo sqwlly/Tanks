@@ -3,6 +3,7 @@ package sample.auxiliary.state;
 import sample.auxiliary.*;
 import sample.auxiliary.audio.Audio;
 import sample.auxiliary.service.EnemyElementService;
+import sample.auxiliary.service.PlayerElementService;
 import sample.auxiliary.service.SubstanceElementService;
 import sample.base.ElementService;
 import sample.content.common.Tank;
@@ -128,13 +129,12 @@ public class LevelState extends GameState implements ActionListener {
 
     public void wholeAction() {
         //玩家
-        ElementService playerService = (ElementService) ElementBean.Player.getService();
-        playerService.action(gsm);
-        ElementService substanceService = (SubstanceElementService) ElementBean.Substance.getService();
-        ElementService enemyService = (EnemyElementService) ElementBean.Enemy.getService();
+        PlayerElementService playerService = (PlayerElementService) ElementBean.Player.getService();
+        SubstanceElementService substanceService = (SubstanceElementService) ElementBean.Substance.getService();
+        EnemyElementService enemyService = (EnemyElementService) ElementBean.Enemy.getService();
+        substanceService.action(gsm, enemyService, playerService);
         enemyService.action(gsm, playerService);
-        substanceService.action(gsm, enemyService);
-        substanceService.action(gsm, playerService);
+        playerService.action(gsm);
     }
 
     public void reduceEnemyIcon() {

@@ -2,6 +2,7 @@ package sample.auxiliary.service;
 
 import sample.base.BaseElement;
 import sample.base.ElementService;
+import sample.content.common.Tank;
 import sample.content.player.Player;
 
 public class PlayerElementService extends ElementService {

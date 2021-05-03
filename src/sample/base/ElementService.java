@@ -2,6 +2,7 @@ package sample.base;
 
 import sample.auxiliary.GameStateManager;
 import sample.content.player.Player;
+import sample.content.substance.Bullet;
 
 import java.awt.*;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -9,12 +10,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public abstract class ElementService<T extends BaseElement> extends BaseService<T> {
     public final <S extends BaseElement> void action(GameStateManager gsm, ElementService<S>... services) {
         this.getElementList().forEach(element -> {
-            for(Player player : gsm.getPlayers()) {
-                if(element.remove(player)) {
-                    this.remove(element);
-                    return;
-                }
-            }
 
             //前置操作
             if (!element.beforeActionJudge()) {
@@ -36,6 +31,15 @@ public abstract class ElementService<T extends BaseElement> extends BaseService<
                         }
                     }
                 });
+            }
+            for(Player player : gsm.getPlayers()) {
+                if(element.remove(player)) {
+                    this.remove(element);
+                    return;
+                }
+            }
+            if (System.currentTimeMillis() - element.getActionTime() >= 7000) {
+                element.setStop(false);
             }
             //停止状态不能做行动
             if (element.isStop()) {

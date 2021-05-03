@@ -79,7 +79,7 @@ public class Map {
                 break;
             //砖瓦
             case 2:
-                draw = new Tile(x, y, 1);
+                draw = new Tile(x, y);
 //                ElementBean.Substance.getService().add(new Tile(x, y, 1));
                 break;
             //草丛

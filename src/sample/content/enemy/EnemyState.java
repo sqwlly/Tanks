@@ -45,9 +45,11 @@ public class EnemyState {
         if(enemy.getStep() == 0) {
             if(path.size() > 0) {
                 IntelligentAI.Node node = path.poll();
-                enemy.setDirection(node.dir);
-                enemy.setStep(node.step);
-                enemy.shoot();
+                if(node != null) { //试了两种方法，总是偶尔为空，可能这就是多线程的缘故吧。。
+                    enemy.setDirection(node.dir);
+                    enemy.setStep(node.step);
+                }
+//                enemy.shoot();
             }
 //            Iterator<IntelligentAI.Node> iterator = path.iterator();
 //            if(iterator.hasNext()) {

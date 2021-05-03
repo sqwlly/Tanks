@@ -33,32 +33,51 @@ public class SubstanceElementService extends ElementService {
         if (other instanceof Bullet) {
             //如果可移动物体的攻击力大于当前物体的防御力，就要减少生命值
             if (other.getAttack().getValue() > myself.getDefense().getValue()) {
+
+                //砖瓦墙要特殊处理，因为有不同状态
+                if (myself instanceof Tile) {
+                    Tile tile = (Tile) myself;
+                    for(int i = 0; i < tile.getRec().size(); ++i) {
+                        //击中了四个角的一个角
+                        if(tile.getRecState(i) == 1 && tile.getRec().get(i).intersects(other.getRectangle())) {
+                            tile.hitState(i);
+                            ((Bullet) other).hit();
+                            System.out.println("hit " + i);
+                            //break;
+                        }
+                    }
+                }
                 if (myself instanceof Home && !myself.getHp().health()) {
                     myself.getDefense().setValue(1000);
                 }
                 if(myself instanceof IBulletCross) {
                     myself.getDefense().setValue(0);
                 }
-                System.out.println("抵消 " + (double) myself.getDefense().getValue() / (myself.getHp().getMaxValue() + myself.getDefense().getValue()) + " " +
-                        myself.getHp().getMaxValue());
+//                System.out.println("抵消 " + (double) myself.getDefense().getValue() / (myself.getHp().getMaxValue() + myself.getDefense().getValue()) + " " +
+//                        myself.getHp().getMaxValue());
 
                 int subValue = (int) ((1 - (double) myself.getDefense().getValue() / myself.getHp().getMaxValue()) * other.getAttack().getValue());
-                System.out.println(subValue);
+//                System.out.println(subValue);
                 myself.getHp().subtract(subValue);
-                System.out.println("restHP: " + myself.getHp().getValue());
+//                System.out.println("restHP: " + myself.getHp().getValue());
 
             } else if (myself instanceof IBulletCross || myself instanceof Home) {
                 return false;
             }
             //玩家子弹击中钢铁播放音效
             if (myself instanceof Steel && ((Bullet) other).getFrom() instanceof Player) {
+                ((Bullet) other).hit();
                 Audio.bullet_hit_steel.play();
             }
-            other.die(); //why??
+//            if(((Bullet) other).hitTarget()) {
+//                System.out.println("bullet die");
+//                ((Bullet) other).die(); //why??
+//            }
             if (!myself.alive() && !(myself instanceof Home)) {
                 this.remove(myself);
             }
-            return true;
+            //终于找到bug在哪了！！！QAQ，泪目啊T_T
+            //return true;
         }
         //如果可移动物体（本游戏只有坦克和子弹）与不能让坦克穿越的物体相交
         if (other instanceof Tank && !(myself instanceof ITankCross)) {
@@ -137,7 +156,10 @@ public class SubstanceElementService extends ElementService {
                 case StopWatch:
                     if (other instanceof Player) {
                         ElementBean.Enemy.getService().getElementList().forEach(e -> {
-                            ((BaseElement) e).setStop(true);
+                            if(e instanceof Tank) {
+                                ((BaseElement) e).setActionTime(System.currentTimeMillis());
+                                ((BaseElement) e).setStop(true);
+                            }
                         });
                     }
                     break;

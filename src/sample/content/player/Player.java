@@ -55,6 +55,7 @@ public class Player extends Tank {
         }else {
             this.setX(4 * 34);
         }
+        level = 3;
         this.setY(12 * 34);
         this.hp.setValue(50);
         this.setDirection(Direction.UP);
