@@ -25,7 +25,8 @@ public class GameStateManager implements IDraw {
         return home;
     }
 
-    private Home home;
+    private final Home home;
+
     public GameStateManager() {
         players.add(new Player(4 * 34, 12 * 34));
         players.add(new Player_II(8 * 34, 12 * 34));
@@ -52,7 +53,7 @@ public class GameStateManager implements IDraw {
         });
 
         //按周期生成道具
-        CommonUtils.task(13000, () -> {
+        CommonUtils.task(14000, () -> {
             if (gameState instanceof LevelState) {
                 ((LevelState) gameState).generateProps();
             }

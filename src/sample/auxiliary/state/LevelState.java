@@ -39,7 +39,8 @@ public class LevelState extends GameState implements ActionListener {
     }
 
     private Map map;
-    private Timer timer = new Timer();
+    private final Timer 
+            timer = new Timer();
     private long finishTime;
     private PlayerIcon playerIcon;
     private Stack<EnemyIcon> enemyIcons;

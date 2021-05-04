@@ -151,7 +151,7 @@ public class Enemy extends Tank {
     }
 
     public void addLevel() {
-        if(level + 2 < 2) {
+        if(level + 2 < 4) {
             level += 2;
         }
     }

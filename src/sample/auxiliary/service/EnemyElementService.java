@@ -1,6 +1,5 @@
 package sample.auxiliary.service;
 
-import sample.auxiliary.Direction;
 import sample.auxiliary.audio.Audio;
 import sample.base.BaseElement;
 import sample.base.ElementService;
@@ -31,7 +30,6 @@ public class EnemyElementService extends ElementService {
                 if(myself instanceof Tank && ((Enemy) myself).getType() >= 3 && myself.alive()) {
                     Audio.bullet_hit_steel.play();
                 }
-
                 return true;
             }
             if(myself instanceof Tank && other instanceof Tank) {
@@ -78,10 +76,10 @@ public class EnemyElementService extends ElementService {
                 myself.die();
                 //如果玩家不处于无敌状态
                 if(!((Player) other).getInvincible().alive()) {
-                    int subValue = (int) ((double) other.getDefense().getValue() / other.getHp().getValue() * myself.getAttack().getValue());
+                    int subValue = (int) ((1 - (double) other.getDefense().getValue() / other.getHp().getMaxValue()) * myself.getAttack().getValue());
                     other.getHp().subtract(subValue);
                 }
-                //System.out.println(other.getHp().getValue());
+                System.out.println("玩家剩余生命值：" + other.getHp().getValue());
             }
         }
         return super.intersectsHandle(myself, other);

@@ -16,7 +16,7 @@ public class Map {
     private IDraw[][] cells; //先暂时放着吧
     private Queue<Enemy> enemies;
     private String[] enemyType;
-    private String fileName;
+    private final String fileName;
     private GameStateManager gsm;
     public int getSumReward() {
         return sumReward;

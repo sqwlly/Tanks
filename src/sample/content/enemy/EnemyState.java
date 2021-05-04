@@ -49,7 +49,7 @@ public class EnemyState {
                     enemy.setDirection(node.dir);
                     enemy.setStep(node.step);
                 }
-//                enemy.shoot();
+                enemy.shoot();
             }
 //            Iterator<IntelligentAI.Node> iterator = path.iterator();
 //            if(iterator.hasNext()) {

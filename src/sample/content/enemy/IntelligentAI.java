@@ -4,6 +4,7 @@ import sample.auxiliary.*;
 import sample.content.substance.Grass;
 import sample.content.substance.Home;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -23,7 +24,6 @@ public class IntelligentAI {
 
     private final LinkedList<Node> path = new LinkedList<>();
     private final static int cellW = Constant.ELEMENT_SIZE / 2;
-
 
     private final Map map;
     private final Home home;
@@ -51,6 +51,7 @@ public class IntelligentAI {
 
     public void bfs(Enemy enemy) {
         if(home == null) return;
+        long elapseTime = System.currentTimeMillis();
         path.clear();
 //        System.out.println("start bfs");
         int width = 26, height = 26;
@@ -58,17 +59,22 @@ public class IntelligentAI {
         int[][] dis = new int[26][26];
         for(int i = 0; i < width; ++i) {
             for(int j = 0; j < height; ++j) {
-                dis[i][j] = Integer.MAX_VALUE - 1;
+                dis[i][j] = Integer.MAX_VALUE - 1000;
             }
         }
         Queue<Node> nodes = new LinkedList<>();
         int sx = enemy.getX() / cellW, sy = enemy.getY() / cellW;
-//        System.out.println("sx = " + sx + " | sy = " + sy);
+//        System.out.println("sx = " + sx + " | sy = " + sy + " | " + map.getCell(sx, sy));
+        if(!ok(sx, sy)) return;
         int dx = home.getX() / cellW, dy = home.getY() / cellW;
         nodes.add(new Node(dx, dy, 0, enemy.getDirection()));
         vis[dx][dy] = true;
         dis[dx][dy] = 0;
         while(!nodes.isEmpty()) {
+
+            if(System.currentTimeMillis() - elapseTime > 3000) {
+                return;
+            }
             Node cur = nodes.poll();
             for(int i = 0; i < 4; ++i) {
                 int tx = cur.x + dir[i][0];
@@ -76,6 +82,7 @@ public class IntelligentAI {
                 if(tx < 0 || tx >= width || ty < 0 || ty >= height || !ok(tx, ty) || vis[tx][ty] ) {
                     continue;
                 }
+
                 dis[tx][ty] = dis[cur.x][cur.y] + 1;
                 vis[tx][ty] = true;
                 nodes.add(new Node(tx, ty, cur.step + 1, d[i]));
@@ -85,6 +92,9 @@ public class IntelligentAI {
         int x = sx, y = sy;
 //        System.out.println(dx + " : " + dy);
         while (x != dx || y != dy) {
+            if(System.currentTimeMillis() - elapseTime > 3000) {
+                return;
+            }
             for (int i = 0; i < 4; ++i) {
                 int tx = x + dir[i][0];
                 int ty = y + dir[i][1];
@@ -93,12 +103,11 @@ public class IntelligentAI {
                 }
                 if (dis[x][y] == dis[tx][ty] + 1) {
                     path.add(new Node(tx, ty, (int) Math.ceil((double) cellW / enemy.getSpeed()), d[i]));
-//                    path.add(new Node(tx, ty,  cellW / enemy.getSpeed(), d[i]));
 
 //                    System.out.println("cell : " + map.getCell(tx, ty));
 //                    if(map.getCell(tx, ty) == 0) {
 //                        map.setCell(tx, ty, 3);
-//                        ElementBean.Substance?.getService().add(new Grass(tx * cellW, ty * cellW));
+//                        ElementBean.Substance.getService().add(new Grass(tx * cellW, ty * cellW));
 //                    }
 //                    System.out.println(tx + " " + ty + " " + d[i].toString());
                     x = tx;
@@ -112,12 +121,6 @@ public class IntelligentAI {
         enemy.setEnemyMode(EnemyMode.INTELLIGENT);
 
 //        System.out.println("end bfs");
-//        t
-//        ry{
-//            Thread.sleep(100 * 10000);
-//        }catch (Exception e) {
-//
-//        }
     }
 
 }

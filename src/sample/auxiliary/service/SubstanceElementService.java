@@ -42,7 +42,7 @@ public class SubstanceElementService extends ElementService {
                         if(tile.getRecState(i) == 1 && tile.getRec().get(i).intersects(other.getRectangle())) {
                             tile.hitState(i);
                             ((Bullet) other).hit();
-                            System.out.println("hit " + i);
+//                            System.out.println("hit " + i);
                             //break;
                         }
                     }
@@ -64,10 +64,12 @@ public class SubstanceElementService extends ElementService {
             } else if (myself instanceof IBulletCross || myself instanceof Home) {
                 return false;
             }
-            //玩家子弹击中钢铁播放音效
-            if (myself instanceof Steel && ((Bullet) other).getFrom() instanceof Player) {
+            if (myself instanceof Steel) {
                 ((Bullet) other).hit();
-                Audio.bullet_hit_steel.play();
+                //玩家子弹击中钢铁播放音效
+                if(((Bullet) other).getFrom() instanceof Player) {
+                    Audio.bullet_hit_steel.play();
+                }
             }
 //            if(((Bullet) other).hitTarget()) {
 //                System.out.println("bullet die");
@@ -142,7 +144,9 @@ public class SubstanceElementService extends ElementService {
         //坦克吃到道具
         if (myself instanceof Prop && other instanceof Tank) {
             Props props = ((Prop) myself).getProp();
-            Audio.get_bonus.play();
+            if(other instanceof Player) {
+                Audio.get_bonus.play();
+            }
             switch (props) {
                 case Star:
                     if (other instanceof Player) {
@@ -184,6 +188,8 @@ public class SubstanceElementService extends ElementService {
                         int hearts = Integer.parseInt(Progress.getInstance().get("hearts")) + 1;
                         Progress.getInstance().set("hearts", hearts + "");
                         Audio.bonus_life.play();
+                    }else{
+                        other.getDefense().add(10);
                     }
                     break;
                 case Gun:
@@ -202,7 +208,7 @@ public class SubstanceElementService extends ElementService {
                         ((Player) other).beInvincible();
                     } else {
                         //加血不变相相当于加防御力嘛~
-                        other.getHp().add(50);
+                        other.getHp().add(80);
                     }
                     break;
                 case Spade:

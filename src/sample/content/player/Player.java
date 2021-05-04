@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-@IElement(width = Constant.ELEMENT_SIZE - 2, height = Constant.ELEMENT_SIZE - 2, speed = 2, defense = 51)
+@IElement(width = Constant.ELEMENT_SIZE - 2, height = Constant.ELEMENT_SIZE - 2, speed = 2, defense = 0)
 public class Player extends Tank {
     public final static int size = Constant.ELEMENT_SIZE;
 
@@ -43,8 +43,8 @@ public class Player extends Tank {
             level++;
         };
         if(level == 3) {
-            //这种防御力和生命值可以抗50攻击力的子弹四下
-            this.defense.setValue(50);
+            //这种防御力和生命值可以抗50攻击力的子弹三下
+            this.defense.setValue(20);
             this.hp.setValue(100);
         }
     }
@@ -55,7 +55,6 @@ public class Player extends Tank {
         }else {
             this.setX(4 * 34);
         }
-        level = 3;
         this.setY(12 * 34);
         this.hp.setValue(50);
         this.setDirection(Direction.UP);
@@ -63,6 +62,9 @@ public class Player extends Tank {
         ElementBean.Substance.getService().add(born);
         beInvincible();
         bulletNumInit();
+        for(int i = 0; i < 3; ++i) {
+            addLevel();
+        }
     }
 
     public void initLevel() {
