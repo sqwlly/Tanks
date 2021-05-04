@@ -57,7 +57,7 @@ public class Enemy extends Tank {
     }
 
     public boolean fire() {
-        return fire >= 1 && fire <= 4;
+        return fire >= 1 && fire <= 5;
     }
 
     public void randomFire() {

@@ -62,9 +62,9 @@ public class Player extends Tank {
         ElementBean.Substance.getService().add(born);
         beInvincible();
         bulletNumInit();
-        for(int i = 0; i < 3; ++i) {
-            addLevel();
-        }
+//        for(int i = 0; i < 3; ++i) {
+//            addLevel();
+//        }
     }
 
     public void initLevel() {

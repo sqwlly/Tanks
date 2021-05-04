@@ -12,11 +12,6 @@ import java.awt.event.MouseEvent;
 
 public class GameFrame extends JFrame{
 
-    private int FPS = 30;
-    private int targetTime = 1000 / FPS;
-    private Thread thread;
-    private boolean running;
-
     public GameFrame() {
         this.setTitle("Tanks");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

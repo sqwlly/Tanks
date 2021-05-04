@@ -45,7 +45,7 @@ public class GameStateManager implements IDraw {
             gameState.stateAction();
         });
         //刷新动作内容
-        CommonUtils.task(20, () -> {
+        CommonUtils.task(16, () -> {
             if(gameState instanceof LevelState &&
                     ((LevelState) gameState).isInit()) {
                 ((LevelState) gameState).wholeAction();
@@ -53,7 +53,7 @@ public class GameStateManager implements IDraw {
         });
 
         //按周期生成道具
-        CommonUtils.task(14000, () -> {
+        CommonUtils.task(17000, () -> {
             if (gameState instanceof LevelState) {
                 ((LevelState) gameState).generateProps();
             }

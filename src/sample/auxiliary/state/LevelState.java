@@ -1,6 +1,7 @@
 package sample.auxiliary.state;
 
 import sample.auxiliary.*;
+import sample.auxiliary.Map;
 import sample.auxiliary.audio.Audio;
 import sample.auxiliary.service.EnemyElementService;
 import sample.auxiliary.service.PlayerElementService;
@@ -22,9 +23,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
-import java.util.Stack;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class LevelState extends GameState implements ActionListener {
     private int Level_ID;
@@ -150,8 +149,20 @@ public class LevelState extends GameState implements ActionListener {
     }
 
     public void generateProps() {
-        Props p = Props.values()[CommonUtils.nextInt(0, Props.values().length)];
+        //每个道具出现的概率
+        int[] base = new int[] {15, 5, 15, 30, 10, 15, 10};
+        int got = CommonUtils.nextInt(0, 100);
+        ArrayList<Props> props = new ArrayList<>();
+        for(int i = 0; i < base.length; ++i) {
+            for(int j = 0; j < base[i]; ++j) {
+                props.add(Props.values()[i]);
+            }
+        }
+        //要打乱数组
+        Collections.shuffle(props);
+//        Props p = Props.values()[CommonUtils.nextInt(0, Props.values().length)];
 //        Props p = Props.Bomb;
+        Props p = props.get(got);
         int tx = CommonUtils.nextInt(0, Constant.GAME_WIDTH - 34);
         int ty = CommonUtils.nextInt(0, Constant.GAME_HEIGHT - 34);
         new Prop(tx, ty, p);
