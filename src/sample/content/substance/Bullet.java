@@ -86,7 +86,7 @@ public class Bullet extends BaseElement implements IMovable {
 
     public void boom() {
         ElementBean.Substance.getService().add(new BulletBoom(x - 17 + 5, y - 17 + 5));
-        if(!from.fireAble()) {
+        if(from.getCurrentBulletNum() + 1 <= from.getBulletNum()) {
             from.bulletNumAdd();
         }
     }

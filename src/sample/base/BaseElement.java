@@ -12,7 +12,6 @@ import java.awt.*;
 public abstract class BaseElement implements IDraw{
     protected int x, y;
     protected int width, height;
-//    protected int speed;
     protected Direction direction;
 
     public long getActionTime() {
@@ -79,18 +78,6 @@ public abstract class BaseElement implements IDraw{
     public void action() {
 
     }
-
-//    protected void move() {
-//        if(direction.up()) {
-//            this.y -= speed;
-//        }else if(direction.down()) {
-//            this.y += speed;
-//        }else if(direction.right()) {
-//            this.x += speed;
-//        }else if(direction.left()) {
-//            this.x -= speed;
-//        }
-//    }
 
     public Rectangle getRectangle() {
         return new Rectangle(x, y, width, height);

@@ -2,7 +2,6 @@ package sample.base;
 
 import sample.auxiliary.GameStateManager;
 import sample.content.player.Player;
-import sample.content.substance.Bullet;
 
 import java.awt.*;
 import java.util.concurrent.CopyOnWriteArrayList;

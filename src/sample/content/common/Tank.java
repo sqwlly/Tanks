@@ -13,14 +13,23 @@ import sample.content.substance.TankBoom;
 public abstract class Tank extends BaseElement implements IMovable {
     protected Born born;
     protected int oldX, oldY;
-    protected int bulletNum;
+    protected int bulletNum, currentBulletNum;
 
     public void bulletNumAdd() {
-        bulletNum++;
+        currentBulletNum++;
+    }
+
+    public int getBulletNum() {
+        return bulletNum;
+    }
+
+    public int getCurrentBulletNum() {
+        return currentBulletNum;
     }
 
     public void bulletNumInit() {
         bulletNum = 1;
+        currentBulletNum = bulletNum;
     }
 
     @Override
@@ -35,7 +44,7 @@ public abstract class Tank extends BaseElement implements IMovable {
     }
 
     public boolean fireAble() {
-        return bulletNum > 0;
+        return currentBulletNum > 0;
     }
 
     @Override

@@ -43,6 +43,7 @@ public class Player extends Tank {
             level++;
         };
         if(level == 3) {
+            bulletNum = 2;
             //这种防御力和生命值可以抗50攻击力的子弹三下
             this.defense.setValue(20);
             this.hp.setValue(100);
@@ -76,14 +77,13 @@ public class Player extends Tank {
         animationInit();
         born = new Born(x, y);
         born();
-        //bulletNumInit();
     }
 
     protected void animationInit() {
         int c = 0;
         BufferedImage[] act = new BufferedImage[2];
         SpriteSheet sheet = new SpriteSheet(TextureAtlas.cut(0, 0, size * 32, size), size, size);
-        for(int i = 0; i < 4; ++i) {
+        for(int i = 0; i < 3; ++i) {
             //一共四个方向，四种形态
             HashMap<Direction, Animation> sprites = new HashMap<>();
             for(Direction d : Direction.values()) {
@@ -98,6 +98,21 @@ public class Player extends Tank {
             //将一种形态的四个方向animation加入sprite列表，随后可以通过level来分别取得不同形态
             sprite.add(sprites);
         }
+        sheet = new SpriteSheet(TextureAtlas.cut(0, 8 * Constant.ELEMENT_SIZE,
+                8 * Constant.ELEMENT_SIZE, Constant.ELEMENT_SIZE), Constant.ELEMENT_SIZE, Constant.ELEMENT_SIZE);
+        HashMap<Direction, Animation> sprites = new HashMap<>();
+        c = 0;
+        for(Direction d : Direction.values()) {
+            //一个方向有两帧
+            for(int j = 0; j < 2; ++j) {
+                act[j] = sheet.getSprite(c++);
+            }
+            Animation animation = new Animation(act, 50);
+            sprites.put(d, animation);
+            animation.start();
+        }
+        //将一种形态的四个方向animation加入sprite列表，随后可以通过level来分别取得不同形态
+        sprite.add(sprites);
     }
 
     public void initScore() {
@@ -135,7 +150,7 @@ public class Player extends Tank {
     @Override
     public void shoot() {
         if(!fireAble()) return;
-        bulletNum--;
+        currentBulletNum--;
         int tx = x + 17 - 3;
         int ty = y + 17 - 3;
         switch (direction) {

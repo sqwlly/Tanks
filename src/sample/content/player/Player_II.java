@@ -69,7 +69,7 @@ public class Player_II extends Player{
         sprite = new ArrayList<>();
         BufferedImage[] act = new BufferedImage[2];
         SpriteSheet sheet = new SpriteSheet(TextureAtlas.cut(0, size, size * 32, size), size, size);
-        for(int i = 0; i < 4; ++i) {
+        for(int i = 0; i < 3; ++i) {
             //一共四个方向，四种形态
             HashMap<Direction, Animation> sprites = new HashMap<>();
             for(Direction d : Direction.values()) {
@@ -84,5 +84,20 @@ public class Player_II extends Player{
             //将一种形态的四个方向animation加入sprite列表，随后可以通过level来分别取得不同形态
             sprite.add(sprites);
         }
+        sheet = new SpriteSheet(TextureAtlas.cut(8 * 34, 8 * 34, 8 * 34, 34),
+                34, 34);
+        HashMap<Direction, Animation> sprites = new HashMap<>();
+        c = 0;
+        for(Direction d : Direction.values()) {
+            //一个方向有两帧
+            for(int j = 0; j < 2; ++j) {
+                act[j] = sheet.getSprite(c++);
+            }
+            Animation animation = new Animation(act, 50);
+            sprites.put(d, animation);
+            animation.start();
+        }
+        //将一种形态的四个方向animation加入sprite列表，随后可以通过level来分别取得不同形态
+        sprite.add(sprites);
     }
 }

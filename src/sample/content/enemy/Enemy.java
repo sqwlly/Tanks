@@ -172,7 +172,7 @@ public class Enemy extends Tank {
         if(!fire()) return;
 //        System.out.println("fire = " + fire);
         if(!fireAble()) return;
-        bulletNum--;
+        currentBulletNum--;
         int tx = x + 17 - 3;
         int ty = y + 17 - 3;
         switch (direction) {
