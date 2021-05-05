@@ -101,32 +101,6 @@ public class Animation {
                 currentFrame = 0;
                 timesPlayed++;
             }
-//            frameCount++;
-
-//            long elapsed = (System.nanoTime() - startTime) / 1000000;
-//            if(elapsed > frameDelay) {
-//                currentFrame++;
-//                startTime = System.nanoTime();
-//            }
-
-//            if (frameCount > frameDelay) {
-//                timesPlayed += frameCount;
-//                frameCount = 0;
-//                currentFrame += animationDirection;
-//
-//                if (currentFrame > totalFrames - 1) {
-//                    currentFrame = 0;
-//                }
-//                else if (currentFrame < 0) {
-//                    currentFrame = totalFrames - 1;
-//                }
-//            }
-//            System.out.println(frameCount);
-//            if(currentFrame == totalFrames) {
-//                currentFrame = 0;
-//                timesPlayed++;
-//            }
-
         }
 
     }

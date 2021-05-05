@@ -133,13 +133,5 @@ public class Tile extends BaseElement {
             return;
         }
         sprites.get(getState()).render(g, x, y, Constant.ELEMENT_SIZE + 1, Constant.ELEMENT_SIZE + 1);
-////
-//        switch (type) {
-//            case 0:
-//                break;
-//            case 1:
-//                sprites.get(getState()).render(g, x, y, Constant.ELEMENT_SIZE + 1, Constant.ELEMENT_SIZE + 1);
-//                break;
-//        }
     }
 }

@@ -2,7 +2,6 @@ package sample.content.player;
 
 import sample.auxiliary.*;
 import sample.auxiliary.audio.Audio;
-import sample.auxiliary.audio.MediaPlayer;
 import sample.auxiliary.graphics.Animation;
 import sample.auxiliary.graphics.SpriteSheet;
 import sample.auxiliary.graphics.TextureAtlas;
