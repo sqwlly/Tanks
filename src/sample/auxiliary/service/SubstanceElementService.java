@@ -18,7 +18,6 @@ import java.util.ArrayList;
 
 public class SubstanceElementService extends ElementService {
 
-
     @Override
     public void init() {
         super.init();
@@ -45,6 +44,15 @@ public class SubstanceElementService extends ElementService {
 //                            System.out.println("hit " + i);
                             //break;
                         }
+                    }
+                    boolean remove = true;
+                    for(int i = 0; i < tile.getRec().size(); ++i) {
+                        if(tile.getRecState(i) == 1) {
+                            remove = false;
+                        }
+                    }
+                    if(remove) {
+                        other.die();
                     }
                 }
                 if (myself instanceof Home && !myself.getHp().health()) {
@@ -89,7 +97,7 @@ public class SubstanceElementService extends ElementService {
 
             // 主要目标是让坦克拐弯的时候流畅。
 
-            // 基本思想是当坦克与障碍物碰撞时，枚举其三分之一
+            // 基本思想是当坦克与障碍物碰撞时，从坦克坐标开始枚举其三分之一
             // 坦克宽度或者高度相对应的矩形，找到一个没有与障
             // 碍物碰撞的矩形，再将其坐标赋值即可
 
@@ -134,7 +142,6 @@ public class SubstanceElementService extends ElementService {
             }
             /*               坦克平滑移动核心代码！！           */
             /*************************************************/
-
 
             if(!ok) {
                 ((Tank) other).stay(); //就要stay

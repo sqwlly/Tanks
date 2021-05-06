@@ -53,13 +53,13 @@ public class GameStateManager implements IDraw {
         });
 
         //按周期生成道具
-        CommonUtils.task(17000, () -> {
+        CommonUtils.task(13000, () -> {
             if (gameState instanceof LevelState) {
                 ((LevelState) gameState).generateProps();
             }
         });
         //按时间周期生成敌方坦克
-        CommonUtils.task(4100, () -> {
+        CommonUtils.task(3500, () -> {
             int cnt = (int) ElementBean.Enemy.getService().getElementList().stream().filter(e -> e instanceof Tank).count();
             //为了减小游戏难度，场上敌方坦克数量不能超过四个 * playerNum
             int playerNum = Integer.parseInt(Progress.getInstance().get("playerNum"));

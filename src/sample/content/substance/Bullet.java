@@ -13,7 +13,7 @@ import sample.content.common.Tank;
 import java.awt.*;
 import java.util.HashMap;
 
-@IElement(width = 9, height = 10, speed = 5, attack = 50)
+@IElement(width = 9, height = 10, speed = 7, attack = 50)
 public class Bullet extends BaseElement implements IMovable {
 
     private final HashMap<Direction, Sprite> spriteMap;

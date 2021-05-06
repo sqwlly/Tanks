@@ -18,21 +18,26 @@ public class EnemyState {
 
     public int getState() {
         //用一个容器似乎很不错
-        HashMap<Integer, Integer> hp_type_map = new HashMap<>();
-        int cur = enemy.getHp().getValue();
-        hp_type_map.put(enemy.getHp().getMaxValue(), enemy.getType());
-        hp_type_map.put(75, 3);
-        hp_type_map.put(50, 3);
-        hp_type_map.put(25, 5);
-        return hp_type_map.get(cur);
-//        if (enemy.getHp().getValue() == enemy.getHp().getMaxValue()) {
+//        HashMap<Integer, Integer> hp_type_map = new HashMap<>();
+//        int cur = enemy.getHp().getValue();
+//        hp_type_map.put(enemy.getHp().getMaxValue(), enemy.getType());
+//        hp_type_map.put(75, 3);
+//        hp_type_map.put(50, 3);
+//        hp_type_map.put(25, 5);
+//        if(hp_type_map.containsKey(cur)) {
+//            System.out.println(cur + " " + hp_type_map.get(cur));
+//            return hp_type_map.get(cur);
+//        }else{
 //            return enemy.getType();
-//        } else if (enemy.getHp().getValue() == 75 || enemy.getHp().getValue() == 50) {
-//            return 3;
-//        } else if (enemy.getHp().getValue() == 25) {
-//            return 5;
 //        }
-//        return enemy.getType();
+        if (enemy.getHp().getValue() == enemy.getHp().getMaxValue()) {
+            return enemy.getType();
+        } else if (enemy.getHp().getValue() == 75 || enemy.getHp().getValue() == 50) {
+            return 3;
+        } else if (enemy.getHp().getValue() == 25) {
+            return 5;
+        }
+        return enemy.getType();
     }
 
     public void setPath(LinkedList<IntelligentAI.Node> path) {

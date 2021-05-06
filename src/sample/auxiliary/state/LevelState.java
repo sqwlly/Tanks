@@ -150,7 +150,7 @@ public class LevelState extends GameState implements ActionListener {
 
     public void generateProps() {
         //每个道具出现的概率
-        int[] base = new int[] {15, 5, 15, 30, 10, 15, 10};
+        int[] base = new int[] {15, 5, 20, 25, 10, 15, 10};
         int got = CommonUtils.nextInt(0, 100);
         ArrayList<Props> props = new ArrayList<>();
         for(int i = 0; i < base.length; ++i) {

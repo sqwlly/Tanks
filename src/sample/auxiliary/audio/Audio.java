@@ -35,9 +35,6 @@ public enum Audio {
         AudioStream as;
         try {
             InputStream resourceAsStream = new FileInputStream(url);
-            if(resourceAsStream == null) {
-
-            }
             as = new AudioStream(resourceAsStream);
             AudioPlayer.player.start(as);
         } catch (IOException e) {

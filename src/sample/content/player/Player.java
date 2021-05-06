@@ -32,7 +32,6 @@ public class Player extends Tank {
 
     protected long bornTime;
     protected int score;
-    protected int level;
     private final List<HashMap<Direction, Animation>> sprite = new ArrayList<>();
 
     protected Invincible invincible;

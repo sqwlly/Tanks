@@ -14,6 +14,7 @@ public abstract class Tank extends BaseElement implements IMovable {
     protected Born born;
     protected int oldX, oldY;
     protected int bulletNum, currentBulletNum;
+    protected int level;
 
     public void bulletNumAdd() {
         currentBulletNum++;
@@ -28,7 +29,11 @@ public abstract class Tank extends BaseElement implements IMovable {
     }
 
     public void bulletNumInit() {
-        bulletNum = 1;
+        if (level < 3) {
+            bulletNum = 1;
+        }else{
+            bulletNum = 2;
+        }
         currentBulletNum = bulletNum;
     }
 
