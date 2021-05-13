@@ -35,7 +35,6 @@ public class Tile extends BaseElement {
         }
         state = new int[] {1,1,1,1};
         diversity();
-        System.out.println(defense.getValue());
     }
 
     /**

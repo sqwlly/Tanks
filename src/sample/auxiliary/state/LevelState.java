@@ -38,14 +38,15 @@ public class LevelState extends GameState implements ActionListener {
     }
 
     private Map map;
-    private final Timer 
-            timer = new Timer();
+    private final Timer timer = new Timer();
     private long finishTime;
     private PlayerIcon playerIcon;
     private Stack<EnemyIcon> enemyIcons;
     private P p_image;
 
     private IntelligentAI intelligentAI;
+
+    private int playerNum;
 
     public LevelState(GameStateManager gsm) {
         ElementBean.init();
@@ -82,11 +83,11 @@ public class LevelState extends GameState implements ActionListener {
         }
         p_image = new P(tx + 5, Constant.ELEMENT_SIZE * 10 - 17, 1);
         playerIcon = new PlayerIcon(tx - 3, Constant.ELEMENT_SIZE * 10 + 4);
-        int playerNum = Integer.parseInt(progress.get("playerNum"));
+        playerNum = Integer.parseInt(progress.get("playerNum"));
+        int t = playerNum;
         for(Player player : gsm.getPlayers()) {
-            if(playerNum <= 0) break;
-            playerNum--;
-            System.out.println(playerNum);
+            if(t <= 0) break;
+            t--;
             player.born();
             player.setBornTime(0);
             player.initScore();
@@ -150,7 +151,7 @@ public class LevelState extends GameState implements ActionListener {
 
     public void generateProps() {
         //每个道具出现的概率
-        int[] base = new int[] {15, 5, 20, 25, 10, 15, 10};
+        int[] base = new int[] {16, 5, 25, 25, 7, 10, 12};
         int got = CommonUtils.nextInt(0, 100);
         ArrayList<Props> props = new ArrayList<>();
         for(int i = 0; i < base.length; ++i) {
@@ -175,7 +176,7 @@ public class LevelState extends GameState implements ActionListener {
         if(hearts < 0) {
             gsm.getHome().die();
         }
-
+        int all_die = 0;
         for(Player player : gsm.getPlayers()) {
             if(!player.alive() && player.getBornTime() == 0) {
                 System.out.println("player die");
@@ -184,14 +185,13 @@ public class LevelState extends GameState implements ActionListener {
             //ok, problem solved, use a bornTime var!
             //控制玩家在1.5s内复活
             if(!player.alive() && System.currentTimeMillis() - player.getBornTime() > 1500) {
+                all_die++;
                 if(hearts > 0) {
                     player.born();
                     player.initLevel();
                     player.setBornTime(0);
                     ElementBean.Player.getService().add(player);
                     hearts--;
-                }else{
-                    gsm.getHome().die();
                 }
                 System.out.println(hearts);
                 Progress.getInstance().set("hearts", hearts + "");
@@ -207,7 +207,6 @@ public class LevelState extends GameState implements ActionListener {
                             System.out.println("player die");
                         }
                         Progress.getInstance().set("hearts", "0");
-
                         //gsm.setGameState(STATE.COUNT);
                     }
                 }
@@ -223,6 +222,9 @@ public class LevelState extends GameState implements ActionListener {
                 player.initScore();
                 gsm.setGameState(STATE.COUNT);
             }
+        }
+        if(all_die == playerNum && hearts == 0) {
+            gsm.getHome().die();
         }
         if(!gsm.getHome().getHp().health()) {
             timer.cancel();

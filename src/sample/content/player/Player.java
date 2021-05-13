@@ -148,7 +148,7 @@ public class Player extends Tank {
     @Override
     public void shoot() {
         if(!fireAble()) return;
-        currentBulletNum--;
+        super.shoot();
         int tx = x + 17 - 3;
         int ty = y + 17 - 3;
         switch (direction) {

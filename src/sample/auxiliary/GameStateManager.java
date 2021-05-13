@@ -45,7 +45,7 @@ public class GameStateManager implements IDraw {
             gameState.stateAction();
         });
         //刷新动作内容
-        CommonUtils.task(16, () -> {
+        CommonUtils.task(20, () -> {
             if(gameState instanceof LevelState &&
                     ((LevelState) gameState).isInit()) {
                 ((LevelState) gameState).wholeAction();

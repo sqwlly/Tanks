@@ -5,7 +5,7 @@ public abstract class Constant {
 
     public final static int ELEMENT_SIZE = 34;//素材原始尺寸
     public final static int FRAME_WIDTH = ELEMENT_SIZE * 15 + 1;//主窗体宽
-    public final static int FRAME_HEIGHT = ELEMENT_SIZE * 14 - 6 + 17;//主窗体高
+    public final static int FRAME_HEIGHT = ELEMENT_SIZE * 14 - 6;//主窗体高
     public final static int GAME_WIDTH = ELEMENT_SIZE * 13;
     public final static int GAME_HEIGHT = ELEMENT_SIZE * 13;
     public static final String ATLAS_FILE_NAME	= "images/tank_sprite.png";

@@ -196,7 +196,7 @@ public class SubstanceElementService extends ElementService {
                         Progress.getInstance().set("hearts", hearts + "");
                         Audio.bonus_life.play();
                     }else{
-                        other.getDefense().add(10);
+                        other.getHp().add(80);
                     }
                     break;
                 case Gun:

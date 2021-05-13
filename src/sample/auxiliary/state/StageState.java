@@ -33,6 +33,8 @@ public class StageState extends GameState{
         int c = e.getButton();
         System.out.println("clicked");
         if(c == MouseEvent.BUTTON1) {
+            progress.set("levelToPlay", level_Id + "");
+            progress.store();
             gsm.setGameState(STATE.LEVEL);
         }
     }

@@ -13,7 +13,7 @@ import sample.content.common.Tank;
 import java.awt.*;
 import java.util.HashMap;
 
-@IElement(width = 9, height = 10, speed = 7, attack = 50)
+@IElement(width = 9, height = 10, speed = 5, attack = 50)
 public class Bullet extends BaseElement implements IMovable {
 
     private final HashMap<Direction, Sprite> spriteMap;
@@ -86,7 +86,7 @@ public class Bullet extends BaseElement implements IMovable {
 
     public void boom() {
         ElementBean.Substance.getService().add(new BulletBoom(x - 17 + 5, y - 17 + 5));
-        if(from.getCurrentBulletNum() + 1 <= from.getBulletNum()) {
+        if(!from.fireAble()) {
             from.bulletNumAdd();
         }
     }

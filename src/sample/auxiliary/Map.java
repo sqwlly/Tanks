@@ -119,10 +119,8 @@ public class Map {
             bufferedWriter.newLine();
             for(int i = 0; i < HEIGHT; ++i) {
                 for(int j = 0; j < WIDTH; ++j) {
-                    System.out.print(map[i][j] + (" "));
                     bufferedWriter.write(map[i][j] + "");
                 }
-                System.out.println();
                 bufferedWriter.newLine();
             }
 

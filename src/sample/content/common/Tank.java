@@ -17,24 +17,11 @@ public abstract class Tank extends BaseElement implements IMovable {
     protected int level;
 
     public void bulletNumAdd() {
-        currentBulletNum++;
-    }
-
-    public int getBulletNum() {
-        return bulletNum;
-    }
-
-    public int getCurrentBulletNum() {
-        return currentBulletNum;
+        bulletNum++;
     }
 
     public void bulletNumInit() {
-        if (level < 3) {
-            bulletNum = 1;
-        }else{
-            bulletNum = 2;
-        }
-        currentBulletNum = bulletNum;
+        bulletNum = 1;
     }
 
     @Override
@@ -49,7 +36,7 @@ public abstract class Tank extends BaseElement implements IMovable {
     }
 
     public boolean fireAble() {
-        return currentBulletNum > 0;
+        return bulletNum > 0;
     }
 
     @Override
@@ -77,6 +64,7 @@ public abstract class Tank extends BaseElement implements IMovable {
     }
 
     public void shoot() {
+        bulletNum--;
     }
 
     public void stay() {
