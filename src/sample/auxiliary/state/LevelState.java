@@ -88,10 +88,14 @@ public class LevelState extends GameState implements ActionListener {
         for(Player player : gsm.getPlayers()) {
             if(t <= 0) break;
             t--;
+            //int hearts = Integer.parseInt(Progress.getInstance().get("hearts"));
             player.born();
             player.setBornTime(0);
             player.initScore();
             ElementBean.Player.getService().add(player);
+//            if(hearts > 0 && !player.alive()) {
+//
+//            }
         }
         gsm.getHome().born();
         map = new Map("/levels/Level_" + Level_ID, gsm);
@@ -162,8 +166,9 @@ public class LevelState extends GameState implements ActionListener {
         //要打乱数组
         Collections.shuffle(props);
 //        Props p = Props.values()[CommonUtils.nextInt(0, Props.values().length)];
-//        Props p = Props.Bomb;
         Props p = props.get(got);
+//        p = Props.Spade;
+
         int tx = CommonUtils.nextInt(0, Constant.GAME_WIDTH - 34);
         int ty = CommonUtils.nextInt(0, Constant.GAME_HEIGHT - 34);
         new Prop(tx, ty, p);
@@ -183,20 +188,22 @@ public class LevelState extends GameState implements ActionListener {
                 player.setBornTime(System.currentTimeMillis());
             }
             //ok, problem solved, use a bornTime var!
-            //控制玩家在1.5s内复活
-            if(!player.alive() && System.currentTimeMillis() - player.getBornTime() > 1500) {
-                all_die++;
+            //控制玩家在1.2s内复活
+            if(!player.alive() && System.currentTimeMillis() - player.getBornTime() > 1200) {
                 if(hearts > 0) {
                     player.born();
                     player.initLevel();
                     player.setBornTime(0);
                     ElementBean.Player.getService().add(player);
                     hearts--;
+                }else{
+                    all_die++;
                 }
-                System.out.println(hearts);
+                //System.out.println(hearts);
                 Progress.getInstance().set("hearts", hearts + "");
 
             }
+
             ElementBean.Player.getService().getElementList().forEach(e -> {
                 //必须是服务列表里的player
                 if(e == player) {
@@ -223,7 +230,7 @@ public class LevelState extends GameState implements ActionListener {
                 gsm.setGameState(STATE.COUNT);
             }
         }
-        if(all_die == playerNum && hearts == 0) {
+        if(all_die == playerNum && hearts <= 0) {
             gsm.getHome().die();
         }
         if(!gsm.getHome().getHp().health()) {

@@ -7,6 +7,7 @@ import sample.auxiliary.graphics.Animation;
 import sample.auxiliary.graphics.SpriteSheet;
 import sample.auxiliary.graphics.TextureAtlas;
 import sample.base.IElement;
+import sample.content.substance.Invincible;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -17,10 +18,9 @@ import java.util.List;
 @IElement(width = Constant.ELEMENT_SIZE - 2, height = Constant.ELEMENT_SIZE - 2, speed = 2, defense = 0)
 public class Player_II extends Player{
     private List<HashMap<Direction, Animation>> sprite = new ArrayList<>();
-
     public Player_II(int x, int y) {
         super(x, y);
-        animationInit();
+        this.animationInit();
     }
     @Override
     public void action() {

@@ -75,9 +75,10 @@ public class EnemyElementService extends ElementService {
             if(myself instanceof Bullet) {
                 myself.die();
                 //如果玩家不处于无敌状态
-                if(!((Player) other).getInvincible().alive()) {
+                if(!((Player) other).invulnerable()) {
                     int subValue = (int) ((1 - (double) other.getDefense().getValue() / other.getHp().getMaxValue()) * myself.getAttack().getValue());
                     other.getHp().subtract(subValue);
+                    System.out.println("玩家减少生命值：" + subValue);
                 }
                 System.out.println("玩家剩余生命值：" + other.getHp().getValue());
             }

@@ -61,6 +61,8 @@ public class Player extends Tank {
         ElementBean.Substance.getService().add(born);
         beInvincible();
         bulletNumInit();
+        this.defense.setValue(0);
+        bornTime = 0;
 //        for(int i = 0; i < 3; ++i) {
 //            addLevel();
 //        }
@@ -73,7 +75,6 @@ public class Player extends Tank {
     public Player(int x, int y) {
         super(x, y);
         animationInit();
-        born = new Born(x, y);
         born();
     }
 
@@ -141,8 +142,9 @@ public class Player extends Tank {
         ElementBean.Substance.getService().add(invincible);
     }
 
-    public Invincible getInvincible() {
-        return invincible;
+    public boolean invulnerable() {
+        System.out.println(invincible.getHp().getValue());
+        return invincible.alive();
     }
 
     @Override

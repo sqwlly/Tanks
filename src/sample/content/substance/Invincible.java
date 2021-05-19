@@ -20,7 +20,7 @@ import java.awt.image.BufferedImage;
 public class Invincible extends BaseElement implements IBulletCross, ITankCross {
 
     private final Animation animation;
-    private Born born;
+    private final Born born;
     public Invincible(int x, int y, Born born) {
         super(x, y);
         this.born = born;
@@ -38,19 +38,24 @@ public class Invincible extends BaseElement implements IBulletCross, ITankCross 
         this.setY(player.getY());
     }
 
-    @Override
-    public boolean remove(BaseElement element) {
-        if(element instanceof Player && (!element.alive())) {
-            return true;
-        }
-        return super.remove(element);
-    }
+//    @Override
+//    public boolean remove(BaseElement element) {
+//        if(element instanceof Player) {
+//            System.out.println("invincible:" + hp.getValue());
+//            if(!element.alive()) {
+//                die();
+//                return true;
+//            }
+//        }
+//        return super.remove(element);
+//    }
 
     @Override
     public void drawImage(Graphics g) {
-        if(!born.isComplete()) return;
+        if(!born.isComplete() || !alive()) return;
         if(animation.hasPlayed(200)) {
             die();
+            System.out.println("invincible die");
             return;
         }
         g.drawImage(animation.getSprite(), x, y, Constant.ELEMENT_SIZE - 2, Constant.ELEMENT_SIZE - 2, null);
